@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\{Dashboardcontroller};
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+//Auth Routes
+Route::get('login', [AuthController::class,'login'])->name('auth.login');
+Route::get('forget_password', [AuthController::class,'forget_password'])->name('auth.forget.password');
+Route::get('reset_password_view', [AuthController::class,'password_reset_view'])->name('password.reset.view');
+Route::post('reset_password', [AuthController::class,'password_reset'])->name('password.reset');
+Route::post('verify', [AuthController::class,'verify'])->name('auth.verify.email');
+Route::get('logout', [AuthController::class,'logout'])->name('auth.logout');
+Route::post('authenticate', [AuthController::class,'authenticate'])->name('auth.authenticate');
+
+// Admin Panel Routes
+
+Route::prefix('/panel')->middleware('auth')->group(function(){
+    Route::get('/', [Dashboardcontroller::class,'index'])->name('dashboard');
 });
