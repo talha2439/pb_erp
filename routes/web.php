@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{Dashboardcontroller, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{Dashboardcontroller, MenuAccessController, MenuSettingController, UserAccessController, UserController};
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +14,26 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// GET ICONS
 
+Route::get('/svg-list', function () {
+    $svgFilePath = public_path('assets/fonts/Feather144f.svg');
+
+    // Load SVG content
+    $svgContent = file_get_contents($svgFilePath);
+
+    // Extract glyph names
+    $matches = [];
+    preg_match_all('/glyph-name="([^"]+)"/', $svgContent, $matches);
+
+    // Append to icon list
+    $iconList = [];
+    foreach ($matches[1] as $glyphName) {
+        $iconList[] = ['file' => $glyphName, 'class' => strtolower($glyphName)];
+    }
+
+    return response()->json($iconList);
+});
 //Auth Routes
 Route::get('login', [AuthController::class,'login'])->name('auth.login');
 Route::get('forget_password', [AuthController::class,'forget_password'])->name('auth.forget.password');
@@ -29,6 +48,7 @@ Route::post('authenticate', [AuthController::class,'authenticate'])->name('auth.
 Route::prefix('/panel')->middleware('auth')->group(function(){
     Route::get('/', [Dashboardcontroller::class,'index'])->name('dashboard');
     Route::get('profile/setting/{id?}' , [AuthController::class,'profile_settings'])->name('profile_settings');
+    // Users Settings
     Route::prefix('users/')->group(function(){
         Route::get('/', [UserController::class, 'index'])->name('users.index');
         Route::get('/create/{id?}' , [UserController::class ,'create'])->name('users.create');
@@ -39,4 +59,16 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
         Route::get('/user/access/{id?}' , [UserAccessController::class , 'index'])->name('users.role');
         Route::post('/change/access/{id?}' , [UserAccessController::class , 'changeAccess'])->name('users.change.access');
     });
+    // Menu Settings
+     // Menu Settings
+     Route::prefix('menu/')->group(function(){
+        Route::get('/' , [MenuSettingController::class ,'index'])->name('menusettings.index');
+        Route::get('/create/{id?}' , [MenuSettingController::class ,'create'])->name('menusettings.create');
+        Route::get('/menuaccess/{id?}' , [MenuAccessController::class ,'index'])->name('menusettings.access');
+        Route::post('/store/{id?}' , [MenuSettingController::class ,'store'])->name('menusettings.store');
+        Route::post('/changeAccess/{id?}' , [MenuAccessController::class ,'changeAccess'])->name('menusettings.changeAccess');
+        Route::post('/check_routes' , [MenuSettingController::class ,'check_routes'])->name('menusettings.check_routes');
+        Route::get('/delete/{id?}' , [MenuSettingController::class , 'delete'])->name('menusettings.delete');
+    });
+
 });
