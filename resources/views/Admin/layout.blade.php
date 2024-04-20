@@ -33,23 +33,23 @@
 
 <div class="header header-one">
 <a href="index.html" class="d-inline-flex d-sm-inline-flex align-items-center d-md-inline-flex d-lg-none align-items-center device-logo">
-<img src="assets/img/logo.png" class="img-fluid logo2" alt="Logo">
+<img src="{{ asset('assets/img/logo.png') }}" class="img-fluid logo2" alt="Logo">
 </a>
 <div class="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none">
 <div class="logo-white">
 <a href="index.html">
-<img src="assets/img/logo-full-white.png" class="img-fluid logo-blue" alt="Logo">
+<img src="{{ asset('assets/img/logo-full-white.png') }}" class="img-fluid logo-blue" alt="Logo">
 </a>
 <a href="index.html">
-<img src="assets/img/logo-small-white.png" class="img-fluid logo-small" alt="Logo">
+<img src="{{ asset('assets/img/logo-small-white.png') }}" class="img-fluid logo-small" alt="Logo">
 </a>
 </div>
 <div class="logo-color">
 <a href="index.html">
-<img src="assets/img/logo.png" class="img-fluid logo-blue" alt="Logo">
+<img src="{{ asset('assets/img/logo.png') }}" class="img-fluid logo-blue" alt="Logo">
 </a>
 <a href="index.html">
-<img src="assets/img/logo-small.png" class="img-fluid logo-small" alt="Logo">
+<img src="{{ asset('assets/img/logo-small.png') }}" class="img-fluid logo-small" alt="Logo">
 </a>
 </div>
 </div>
@@ -67,7 +67,7 @@
 <div class="top-nav-search">
 <form>
 <input type="text" class="form-control" placeholder="Search here">
-<button class="btn" type="submit"><img src="assets/img/icons/search.svg" alt="img"></button>
+<button class="btn" type="submit"><img src="{{ asset('assets/img/icons/search.svg') }}" alt="img"></button>
 </form>
 </div>
 
@@ -81,20 +81,20 @@
 
 <li class="nav-item dropdown has-arrow flag-nav">
 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
-<img src="assets/img/flags/us1.png" alt="flag"><span>English</span>
+<img src="{{ asset('assets/img/flags/us1.png') }}" alt="flag"><span>English</span>
 </a>
 <div class="dropdown-menu dropdown-menu-end">
 <a href="javascript:void(0);" class="dropdown-item">
-<img src="assets/img/flags/us.png" alt="flag"><span>English</span>
+<img src="{{ asset('assets/img/flags/us.png') }}" alt="flag"><span>English</span>
 </a>
 <a href="javascript:void(0);" class="dropdown-item">
-<img src="assets/img/flags/fr.png" alt="flag"><span>French</span>
+<img src="{{ asset('assets/img/flags/fr.png') }}" alt="flag"><span>French</span>
 </a>
 <a href="javascript:void(0);" class="dropdown-item">
-<img src="assets/img/flags/es.png" alt="flag"><span>Spanish</span>
+<img src="{{ asset('assets/img/flags/es.png') }}" alt="flag"><span>Spanish</span>
 </a>
 <a href="javascript:void(0);" class="dropdown-item">
-<img src="assets/img/flags/de.png" alt="flag"><span>German</span>
+<img src="{{ asset('assets/img/flags/de.png') }}" alt="flag"><span>German</span>
 </a>
 </div>
 </li>
@@ -114,7 +114,7 @@
 <a href="profile.html">
 <div class="d-flex">
 <span class="avatar avatar-md active">
-<img class="avatar-img rounded-circle" alt="avatar-img" src="assets/img/profiles/avatar-02.jpg">
+<img class="avatar-img rounded-circle" alt="avatar-img" src="{{ asset('assets/img/profiles/avatar-02.jpg') }}">
 </span>
 <div class="media-body">
 <p class="noti-details"><span class="noti-title">Lex Murphy</span> requested access to <span class="noti-title">UNIX directory tree hierarchy</span></p>
@@ -127,48 +127,7 @@
 </div>
 </a>
 </li>
-<li class="notification-message">
-<a href="profile.html">
-<div class="d-flex">
-<span class="avatar avatar-md active">
-<img class="avatar-img rounded-circle" alt="avatar-img" src="assets/img/profiles/avatar-10.jpg">
-</span>
-<div class="media-body">
-<p class="noti-details"><span class="noti-title">Ray Arnold</span> left 6 comments <span class="noti-title">on Isla Nublar SOC2 compliance report</span></p>
-<p class="noti-time"><span class="notification-time">Yesterday at 11:42 PM</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="profile.html">
-<div class="d-flex">
-<span class="avatar avatar-md">
-<img class="avatar-img rounded-circle" alt="avatar-img" src="assets/img/profiles/avatar-13.jpg">
-</span>
-<div class="media-body">
-<p class="noti-details"><span class="noti-title">Dennis Nedry</span> commented on <span class="noti-title"> Isla Nublar SOC2 compliance report</span></p>
-<blockquote>
-“Oh, I finished de-bugging the phones, but the system's compiling for eighteen minutes, or twenty. So, some minor systems may go on and off for a while.”
-</blockquote>
-<p class="noti-time"><span class="notification-time">Yesterday at 5:42 PM</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="profile.html">
-<div class="d-flex">
-<span class="avatar avatar-md">
-<img class="avatar-img rounded-circle" alt="avatar-img" src="assets/img/profiles/avatar-05.jpg">
-</span>
-<div class="media-body">
-<p class="noti-details"><span class="noti-title">John Hammond</span> created <span class="noti-title">Isla Nublar SOC2 compliance report</span></p>
-<p class="noti-time"><span class="notification-time">Last Wednesday at 11:15 AM</span></p>
-</div>
-</div>
-</a>
-</li>
+
 </ul>
 </div>
 <div class="topnav-dropdown-footer">
@@ -185,12 +144,12 @@
 <li class="nav-item dropdown">
 <a href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
 <span class="user-img">
-<img src="assets/img/profiles/avatar-07.jpg" alt="img" class="profilesidebar">
+<img src="{{ Auth::user()->image != null ? asset('assets\images\userimages' . Auth::user()->image)  : asset('assets/img/profiles/avatar-07.jpg')}}" alt="img" class="profilesidebar">
 <span class="animate-circle"></span>
 </span>
 <span class="user-content">
-<span class="user-details">Admin</span>
-<span class="user-name">John Smith</span>
+<span class="user-details">{{ strtoupper(Auth::user()->role == 1 ? 'Admin' : 'Employee') }}</span>
+<span class="user-name">{{ ucfirst(Auth::user()->name) }}</span>
 </span>
 </a>
 <div class="dropdown-menu menu-drop-user">
@@ -201,7 +160,7 @@
 <a class="dropdown-item" href="profile.html">Profile</a>
 </li>
 <li>
-<a class="dropdown-item" href="settings.html">Settings</a>
+<a class="dropdown-item" href="{{ route('profile_settings' , encrypt(Auth::user()->id)) }}">Settings</a>
 </li>
 </ul>
 </div>
@@ -894,13 +853,7 @@
 </li>
 
 
-<li class="menu-title"><span>Settings</span></li>
-<li>
-<a href="settings.html"><i class="fe fe-settings"></i> <span>Settings</span></a>
-</li>
-<li>
-<a href="{{ route('auth.logout') }}"><i class="fe fe-power"></i> <span>Logout</span></a>
-</li>
+
 
 <li class="menu-title">
 <span>Extras</span>
@@ -933,7 +886,13 @@
 </li>
 </ul>
 </li>
-
+<li class="menu-title"><span>Settings</span></li>
+<li>
+<a href="settings.html"><i class="fe fe-settings"></i> <span>Settings</span></a>
+</li>
+<li>
+<a href="{{ route('auth.logout') }}"><i class="fe fe-power"></i> <span>Logout</span></a>
+</li>
 </ul>
 </div>
 </div>
@@ -952,7 +911,7 @@
 
 
 <div class="settings-icon">
-<span data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas"><img src="assets/img/icons/siderbar-icon2.svg" class="feather-five" alt="layout"></span>
+<span data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas"><img src="{{ asset('assets/img/icons/siderbar-icon2.svg') }}" class="feather-five" alt="layout"></span>
 </div>
 <div class="offcanvas offcanvas-end border-0 " tabindex="-1" id="theme-settings-offcanvas">
 <div class="sidebar-headerset">
@@ -961,7 +920,7 @@
 <h3>Customize your overview Page layout</h3>
 </div>
 <div class="sidebar-headerclose">
-<a data-bs-dismiss="offcanvas" aria-label="Close"><img src="assets/img/close.png" alt="img"></a>
+<a data-bs-dismiss="offcanvas" aria-label="Close"><img src="{{ asset('assets/img/close.png') }}" alt="img"></a>
 </div>
 </div>
 <div class="offcanvas-body p-0">
@@ -976,7 +935,7 @@
 <div class="form-check card-radio p-0">
 <input id="customizer-layout01" name="data-layout" type="radio" value="vertical" class="form-check-input">
 <label class="form-check-label avatar-md w-100" for="customizer-layout01">
-<img src="assets/img/vertical.png" alt="img">
+<img src="{{ asset('assets/img/vertical.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2">Vertical</h5>
@@ -985,7 +944,7 @@
 <div class="form-check card-radio p-0">
 <input id="customizer-layout02" name="data-layout" type="radio" value="horizontal" class="form-check-input">
 <label class="form-check-label  avatar-md w-100" for="customizer-layout02">
-<img src="assets/img/horizontal.png" alt="img">
+<img src="{{ asset('assets/img/horizontal.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2">Horizontal</h5>
@@ -994,7 +953,7 @@
 <div class="form-check card-radio p-0">
 <input id="customizer-layout03" name="data-layout" type="radio" value="twocolumn" class="form-check-input">
 <label class="form-check-label  avatar-md w-100" for="customizer-layout03">
-<img src="assets/img/two-col.png" alt="img">
+<img src="{{ asset('assets/img/two-col.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2">Two Column</h5>
@@ -1011,7 +970,7 @@
 <div class="form-check card-radio blue  p-0 ">
 <input class="form-check-input" type="radio" name="data-layout-mode" id="layout-mode-blue" value="blue">
 <label class="form-check-label  avatar-md w-100" for="layout-mode-blue">
-<img src="assets/img/vertical.png" alt="img">
+<img src="{{ asset('assets/img/vertical.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2 mb-2">Blue</h5>
@@ -1020,7 +979,7 @@
 <div class="form-check card-radio p-0">
 <input class="form-check-input" type="radio" name="data-layout-mode" id="layout-mode-light" value="light">
 <label class="form-check-label  avatar-md w-100" for="layout-mode-light">
-<img src="assets/img/vertical.png" alt="img">
+<img src="{{ asset('assets/img/vertical.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2 mb-2">Light</h5>
@@ -1029,7 +988,7 @@
 <div class="form-check card-radio dark  p-0 ">
 <input class="form-check-input" type="radio" name="data-layout-mode" id="layout-mode-dark" value="dark">
 <label class="form-check-label avatar-md w-100 " for="layout-mode-dark">
-<img src="assets/img/vertical.png" alt="img">
+<img src="{{ asset('assets/img/vertical.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2 mb-2">Dark</h5>
@@ -1038,7 +997,7 @@
 <div class="form-check card-radio p-0">
 <input class="form-check-input" type="radio" name="data-layout-mode" id="layout-mode-orange" value="orange">
 <label class="form-check-label  avatar-md w-100 " for="layout-mode-orange">
-<img src="assets/img/vertical.png" alt="img">
+<img src="{{ asset('assets/img/vertical.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2 mb-2">Orange</h5>
@@ -1047,7 +1006,7 @@
 <div class="form-check card-radio maroon p-0">
 <input class="form-check-input" type="radio" name="data-layout-mode" id="layout-mode-maroon" value="maroon">
 <label class="form-check-label  avatar-md w-100 " for="layout-mode-maroon">
-<img src="assets/img/vertical.png" alt="img">
+<img src="{{ asset('assets/img/vertical.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2 mb-2">Brink Pink</h5>
@@ -1056,7 +1015,7 @@
 <div class="form-check card-radio purple p-0">
 <input class="form-check-input" type="radio" name="data-layout-mode" id="layout-mode-purple" value="purple">
 <label class="form-check-label  avatar-md w-100 " for="layout-mode-purple">
-<img src="assets/img/vertical.png" alt="img">
+<img src="{{ asset('assets/img/vertical.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2 mb-2">Green</h5>
@@ -1073,7 +1032,7 @@
 <div class="form-check card-radio p-0">
 <input class="form-check-input" type="radio" name="data-layout-width" id="layout-width-fluid" value="fluid">
 <label class="form-check-label avatar-md w-100" for="layout-width-fluid">
-<img src="assets/img/vertical.png" alt="img">
+<img src="{{ asset('assets/img/vertical.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2">Fluid</h5>
@@ -1082,7 +1041,7 @@
 <div class="form-check card-radio p-0 ">
 <input class="form-check-input" type="radio" name="data-layout-width" id="layout-width-boxed" value="boxed">
 <label class="form-check-label avatar-md w-100 px-2" for="layout-width-boxed">
-<img src="assets/img/boxed.png" alt="img">
+<img src="{{ asset('assets/img/boxed.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2">Boxed</h5>
@@ -1110,7 +1069,7 @@
 <div class="form-check card-radio  p-0">
 <input class="form-check-input" type="radio" name="data-topbar" id="topbar-color-light" value="light">
 <label class="form-check-label avatar-md w-100" for="topbar-color-light">
-<img src="assets/img/vertical.png" alt="img">
+<img src="{{ asset('assets/img/vertical.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2">Light</h5>
@@ -1119,7 +1078,7 @@
 <div class="form-check card-radio p-0">
 <input class="form-check-input" type="radio" name="data-topbar" id="topbar-color-dark" value="dark">
 <label class="form-check-label  avatar-md w-100" for="topbar-color-dark">
-<img src="assets/img/dark.png" alt="img">
+<img src="{{ asset('assets/img/dark.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2">Dark</h5>
@@ -1135,7 +1094,7 @@
 <div class="form-check sidebar-setting card-radio  p-0 ">
 <input class="form-check-input" type="radio" name="data-sidebar-size" id="sidebar-size-default" value="lg">
 <label class="form-check-label avatar-md w-100" for="sidebar-size-default">
-<img src="assets/img/vertical.png" alt="img">
+<img src="{{ asset('assets/img/vertical.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2">Default</h5>
@@ -1144,7 +1103,7 @@
 <div class="form-check sidebar-setting card-radio p-0">
 <input class="form-check-input" type="radio" name="data-sidebar-size" id="sidebar-size-compact" value="md">
 <label class="form-check-label  avatar-md w-100" for="sidebar-size-compact">
-<img src="assets/img/compact.png" alt="img">
+<img src="{{ asset('assets/img/compact.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2">Compact</h5>
@@ -1153,7 +1112,7 @@
 <div class="form-check sidebar-setting card-radio p-0 ">
 <input class="form-check-input" type="radio" name="data-sidebar-size" id="sidebar-size-small-hover" value="md">
 <label class="form-check-label avatar-md w-100" for="sidebar-size-small-hover">
-<img src="assets/img/small-hover.png" alt="img">
+<img src="{{ asset('assets/img/small-hover.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2">Small Sidebar</h5>
@@ -1170,7 +1129,7 @@
 <div class="form-check sidebar-setting card-radio  p-0">
 <input class="form-check-input" type="radio" name="data-layout-style" id="sidebar-view-default" value="default">
 <label class="form-check-label avatar-md w-100" for="sidebar-view-default">
-<img src="assets/img/compact.png" alt="img">
+<img src="{{ asset('assets/img/compact.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2">Default</h5>
@@ -1179,7 +1138,7 @@
 <div class="form-check sidebar-setting card-radio p-0">
 <input class="form-check-input" type="radio" name="data-layout-style" id="sidebar-view-detached" value="detached">
 <label class="form-check-label  avatar-md w-100" for="sidebar-view-detached">
-<img src="assets/img/detached.png" alt="img">
+<img src="{{ asset('assets/img/detached.png') }}" alt="img">
 </label>
 </div>
 <h5 class="fs-13 text-center mt-2">Detached</h5>
