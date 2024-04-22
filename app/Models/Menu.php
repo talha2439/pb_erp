@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    protected $fillable  = ['name', 'icon' , 'route' , 'has_sub'];
+    protected $fillable  = ['name', 'icon' , 'route' , 'has_sub' , 'menu_title'];
     use HasFactory;
     public function submenu(){
         return $this->hasMany(SubMenu::class , 'menu_id' , 'id');

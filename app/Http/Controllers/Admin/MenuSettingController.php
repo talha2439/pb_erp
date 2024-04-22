@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\{Menu , SubMenu};
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
+use Route;
 
 class MenuSettingController extends Controller
 {
@@ -32,6 +32,7 @@ class MenuSettingController extends Controller
 
         if($data['has_sub'] == 1){
             $storeMenu  = $this->parentModel::updateOrCreate(['id' => $id],[
+                'menu_title' => $data['menu_title'],
                 'name' => $data['name'],
                 'icon' => $data['icon'],
                 'has_sub' => $data['has_sub'],
@@ -55,6 +56,7 @@ class MenuSettingController extends Controller
         else{
             $storeMenu  = $this->parentModel::updateOrCreate(['id' => $id],[
                 'name' => $data['name'],
+                'menu_title' => $data['menu_title'],
                 'icon' => $data['icon'],
                 'route' => $data['route'][0],
             ]);

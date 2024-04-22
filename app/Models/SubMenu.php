@@ -13,9 +13,9 @@ class SubMenu extends Model
     public function menu(){
         return $this->hasOne(Menu::class , 'id' , 'menu_id');
     }
-    // public function access(){
-    //     return $this->hasOne(UserAccess::class , 'sub_menu_id' , 'id');
-    // }
+    public function access(){
+        return $this->hasOne(UserAccess::class , 'sub_menu_id' , 'id');
+    }
     public function menu_access(){
         return $this->hasOne(MenuAccessManagment::class , 'sub_menu_id' , 'id');
     }
