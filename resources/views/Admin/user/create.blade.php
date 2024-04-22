@@ -18,7 +18,7 @@
 
 <div class="row my-4">
 
-    <div class="card-header"><h1>{{ $title }} Users</h1></div>
+    <div class="card-header mb-2"><h1>{{ $title }} Users</h1></div>
     <div class="card p-3">
         <form action="{{ $parentRoute }}" method="POST"  id="userForm" enctype="multipart/form-data">
             @csrf
@@ -42,10 +42,24 @@
             <input type="text" name="name" placeholder="Enter Full name for user..!" class="form-control mt-3 mb-3">
         </div>
     </div>
-    <div class="col-md-12 menu_container">
+    <div class="col-md-6 menu_container">
         <div class="form-group">
             <label for="name">Email address (<small class="text-danger">Required</small>)</label>
             <input type="text" name="email" placeholder="Enter Email for user..!" class="form-control mt-3 mb-3">
+        </div>
+    </div>
+    <div class="col-md-6 menu_container">
+        <div class="form-group">
+            <label for="name">User Role (<small class="text-danger">Required</small>) | <small>( For Example: Admin , HR etc)</small></label>
+            <select type="text" name="role" placeholder="Enter Email for user..!" class="form-select mt-3 mb-3">
+                <option value="">Select User Role</option>
+                <option value="2">Manager</option>
+                <option value="3">HR ( Human Resource )</option>
+                <option value="0">Employee</option>
+                <option value="1">Admin</option>
+                <option value="4">Basic User</option>
+
+            </select>
         </div>
     </div>
 

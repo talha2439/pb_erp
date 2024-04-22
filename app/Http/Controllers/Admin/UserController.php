@@ -52,7 +52,7 @@ class UserController extends Controller
 
             $data                = $request->except('_token');
             $query               = $request->query('type');
-           
+
             // Acccess
             $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.create')->first();
             $checkAccess = $this->check_access($submenuId->id , 'create_status');
@@ -76,7 +76,8 @@ class UserController extends Controller
                 }
             }
             $data['email_verified_at']      = isset($data['active']) == "on" ? Carbon::now() : null ; // it will check that verified user is checked or unchecked
-           // To check user name and email
+           
+            // To check user name and email
             if(empty($id)){
                 $checkusername       = $this->parentModel::where("username", $data['username'])->count();
                 $checkemail          = $this->parentModel::where("email" , $data['email'])->count();

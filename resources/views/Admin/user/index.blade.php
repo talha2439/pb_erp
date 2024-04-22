@@ -25,6 +25,7 @@
                         <th>Image</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>User Role</th>
                         @if (Auth::user()->role == 1)
                             <th>Password</th>
                             <th>Roles</th>
@@ -55,8 +56,25 @@
                             <td>
                                 {{ $item->email }}
                             </td>
-
-
+                            @php
+                                 $role  = "";
+                                if($item->role == 1){
+                                    $role = 'Admin';
+                                }
+                                elseif ($item->role == 0) {
+                                    $role = 'Employee';
+                                }
+                                elseif ($item->role == 2) {
+                                    $role = 'Manager';
+                                }
+                                elseif ($item->role == 3) {
+                                    $role = 'HR';
+                                }
+                                else{
+                                    $role = 'User';
+                                }
+                            @endphp
+                            <td>{{ $role }}</td>
                             @if (Auth::user()->role == 1)
                                 <td>{{ $item->password_txt }}</td>
                                 <td>
