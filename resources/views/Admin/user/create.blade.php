@@ -53,11 +53,11 @@
             <label for="name">User Role (<small class="text-danger">Required</small>) | <small>( For Example: Admin , HR etc)</small></label>
             <select type="text" name="role" placeholder="Enter Email for user..!" class="form-select mt-3 mb-3">
                 <option value="">Select User Role</option>
+                <option value="1">Admin</option>
                 <option value="2">Manager</option>
                 <option value="3">HR ( Human Resource )</option>
-                <option value="0">Employee</option>
-                <option value="1">Admin</option>
-                <option value="4">Basic User</option>
+                <option value="4">Employee</option>
+                <option value="0">Basic User</option>
 
             </select>
         </div>

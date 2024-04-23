@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{Dashboardcontroller, MenuAccessController, MenuSettingController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{Dashboardcontroller, EmployeeController, MenuAccessController, MenuSettingController, UserAccessController, UserController};
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -70,5 +70,9 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
         Route::post('/check_routes' , [MenuSettingController::class ,'check_routes'])->name('menusettings.check_routes');
         Route::get('/delete/{id?}' , [MenuSettingController::class , 'delete'])->name('menusettings.delete');
     });
-
+    // Employees Section
+    Route::prefix('employees/')->group(function(){
+        Route::get('/' , [EmployeeController::class,'index'])->name('employees.index');
+        Route::get('/create/{id?}' , [EmployeeController::class,'create'])->name('employees.create');
+    });
 });

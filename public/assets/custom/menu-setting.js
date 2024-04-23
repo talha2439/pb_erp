@@ -3,12 +3,12 @@ $(document).ready(function(){
     // You can find the function below.
     let hasMenuSwitch    = $(".switch-input");
     let submenuContainer = $(".subContainer");
-    let menu_title       = $('input[name="menu_title]');
     let menuRoute        = $('.menu_route');
     let menuContainer    = $(".menu_container");
     let menuForm         = $("#menuForm");
     // Input Elements variables
 
+    let menutitle       = $(".menuTitle");
     let name             = $('input[name="name"]');
     let icon             = $('select[name="icon"]');
 
@@ -240,14 +240,15 @@ $(document).ready(function(){
 
     // Edit
     if(action == 'edit'){
-       if(menusData.has_sub == 0){
-        $(menu_title).val(menusData.menu_title);
-         $(name).val(menusData.name);
-         $('input[name="route[]"]').val(menusData.route);
-         getIcons(menusData.icon);
-       }
-       else{
-        $(menu_title).val(menusData.menu_title);
+   
+        if(menusData.has_sub == 0){
+            $(menu_title).val(menusData.menu_title);
+            $(name).val(menusData.name);
+            $('input[name="route[]"]').val(menusData.route);
+           getIcons(menusData.icon);
+        }
+        else{
+        $(menutitle).val(menusData.menu_title);
         $(name).val(menusData.name);
         $('input[name="route[]"]').val(menusData.route);
 
@@ -261,14 +262,14 @@ $(document).ready(function(){
             let button = `<div class="col-md-2">
             <div class="form-group">
             <label for="" class="mb-3"></label>
-            <button class="btn mt-4 mb-2 btn-danger btn-sm removeSubMenu" style="margin-top:44px!important"><i class='bx bx-trash'></i></button>
+            <button class="btn mt-4 mb-2 btn-danger btn-sm removeSubMenu" style="margin-top:44px!important"><i class='fe fe-trash'></i></button>
             </div>
             </div>`;
             if(index === 0){
                 button = ` <div class="col-md-2">
                 <div class="form-group">
                  <label for="" class="mb-3"></label>
-                 <button class="btn mt-4 mb-2 btn-success btn-sm" id="addSubMenu" style="margin-top:44px!important"><i class="bx bx-plus"></i></button>
+                 <button class="btn mt-4 mb-2 btn-success btn-sm" id="addSubMenu" style="margin-top:44px!important"><i class="fe fe-plus"></i></button>
                 </div>
              </div>` ;
             }

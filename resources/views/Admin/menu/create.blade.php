@@ -55,7 +55,7 @@
 
     }
 
-    
+
 </style>
 
 <!-- Collapsible Section -->
@@ -73,7 +73,7 @@
                     <div class="form-group">
                         <label for="name">Menu Title <small>( Optional )</small></label>
                         <input type="text" name="menu_title" placeholder="Enter Menu Title"
-                            class="form-control mt-3 mb-3">
+                            class="form-control mt-3 mb-3 menuTitle">
                     </div>
                 </div>
                 <div class="col-md-3 menu_container">
