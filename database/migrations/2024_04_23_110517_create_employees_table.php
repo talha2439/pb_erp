@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->longText('emp_uniq_id')->unique();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('department');
+            $table->unsignedBigInteger('designation');
+            $table->unsignedBigInteger('shift')->nullable();
             $table->string('image')->nullable();
             $table->string('first_name');
             $table->string('last_name')->nullable();
@@ -35,6 +38,7 @@ return new class extends Migration
             $table->string('blood_group')->nullable();
             $table->integer('martial_status')->default(0);
             $table->integer('no_of_child')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

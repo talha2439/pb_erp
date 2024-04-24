@@ -48,6 +48,42 @@
                 <input type="date" name="date_of_birth" class="form-control">
             </div>
         </div>
+        <div class="col-md-4 mt-2 mb-3">
+            <div class="form-group">
+                <label for="">Department <span class="text-danger">*</span></label>
+                <select name="department" class="form-select select2">
+                    <option value="">-- Select Department --</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Junior">Junior</option>
+                    <option value="Mid-level">Mid-level</option>
+                    <option value="Senior">Senior</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4 mt-2 mb-3">
+            <div class="form-group">
+                <label for="">Designation <span class="text-danger">*</span></label>
+                <select name="designation" class="form-select select2">
+                    <option value="">-- Select Department First --</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Junior">Junior</option>
+                    <option value="Mid-level">Mid-level</option>
+                    <option value="Senior">Senior</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4 mt-2 mb-3">
+            <div class="form-group">
+                <label for="">Shift and Timing <span class="text-danger">*</span></label>
+                <select name="designation" class="form-select select2">
+                    <option value="">-- Select Designation First --</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Junior">Junior</option>
+                    <option value="Mid-level">Mid-level</option>
+                    <option value="Senior">Senior</option>
+                </select>
+            </div>
+        </div>
         <div class="col-md-3 mt-2 mb-3">
             <div class="form-group">
                 <label for="">Country</label>
@@ -159,43 +195,52 @@
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
                 <label for="">CNIC Number <span class="text-danger">*</span></label>
-                <input type="text" name="cnic_number" class="form-control" placeholder="530005-50343-39">
+                <input type="text" name="cnic_number" class="form-control" placeholder="00000-0000000-0">
             </div>
         </div>
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
                 <label for="">Personal Contact Number <span class="text-danger">*</span></label>
-                <input type="text" name="personal_contact" class="form-control" placeholder="+92 123456789">
+                <input type="text" name="personal_contact" class="form-control" placeholder="( +92 ) 0000000000">
             </div>
         </div>
 
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
                 <label for="">Emergency Contact Number</label>
-                <input type="text" name="emergency_contact" class="form-control" placeholder="+92 123456789">
+                <input type="text" name="emergency_contact" class="form-control" placeholder="( +92 ) 0000000000">
             </div>
         </div>
 
         <div class="col-md-12 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Permanent Address <span class="text-dangr">*</span></label>
+                <label for="">Permanent Address <span class="text-danger">*</span></label>
                 <textarea type="text" cols="4" rows="4" name="permanent_address" class="form-control"
                     placeholder="Parment address"></textarea>
             </div>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label class="switch">
+                <input type="checkbox" class="switch-input same_permanent" >
+                <span class="slider round"></span>
+            </label>&nbsp; <strong class="text-secondary mt-5">
+                Same as Permanent Address ?
+            </strong>
         </div>
         <div class="col-md-12 mt-2 mb-3">
             <div class="form-group">
                 <label for="">Present Address</label>
                 <textarea type="text" cols="4" rows="4" name="present_address" class="form-control"
-                    placeholder="Parment address"></textarea>
+                    placeholder="Present address"></textarea>
 
             </div>
         </div>
 
         <div class="col-md-12 g-3">
             <div class="d-flex float-end g-3">
-                <button class="btn btn-secondary me-2">Employees List</button>
-                <button class="btn btn-primary">Next</button>
+                <a href="{{ route('employees.index') }}" class="btn btn-secondary me-2">Employees List</a>
+                <button class="btn btn-success me-2 step_1_next" title="saveonly" id="step1save">Save </button>
+                <button class="btn btn-primary step_1_next" title="saveandnext">Save & Next</button>
             </div>
         </div>
 </form>

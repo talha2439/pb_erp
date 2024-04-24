@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
 use App\Models\Country;
 use App\Models\SubMenu;
 use App\Models\User;
 use App\Models\Employee;
 use App\Models\Nationality;
+use App\Models\State;
 use App\Models\UserAccess;
 use Illuminate\Http\Request;
 use Auth;
@@ -64,6 +66,24 @@ class EmployeeController extends Controller
         }
         else{
             return false;
+        }
+    }
+    public function state($id){
+        $data = State::where('country_id' , $id)->get();
+        if($data){
+            return response()->json($data);
+        }
+        else{
+            return response()->json(['error' => true]);
+        }
+    }
+    public function city($id){
+        $data = City::where('state_id' , $id)->get();
+        if($data){
+            return response()->json($data);
+        }
+        else{
+            return response()->json(['error' => true]);
         }
     }
 }

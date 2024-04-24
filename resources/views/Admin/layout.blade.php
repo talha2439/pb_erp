@@ -21,11 +21,11 @@
     }
 
 @endphp
+
 <!DOCTYPE html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg"
     data-sidebar-image="none">
 
-<!-- Mirrored from kanakku.dreamstechnologies.com/html/template/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 19 Apr 2024 13:32:29 GMT -->
 
 <head>
     <meta charset="utf-8">
@@ -38,6 +38,29 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
 
     <style type="text/css">
+        .select2-container--default .select2-selection--single {
+            background-color: #fff;
+            border: 1px solid #aaaaaa7d !important;
+            border-radius: 5px !important;
+            padding: 4px !important;
+            position: relative !important;
+            top: 2px !important;
+        }
+
+        .select2-container .select2-selection--single {
+            height: 38px !important;
+        }
+
+        .light-style .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 1.8rem !important;
+        }
+
+        .select2-container .select2-selection--single {
+
+            height: 38px !important;
+
+        }
+
         @font-face {
             font-family: Inter;
             font-style: normal;

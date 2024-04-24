@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
-    use HasFactory;
+    use HasFactory , SoftDeletes;
     protected $fillable = [
 
             'emp_uniq_id',
@@ -31,10 +32,11 @@ class Employee extends Model
             'cnic_number',
             'blood_group',
             'martial_status',
-            'no_of_child'
+            'no_of_child',
+            'designation'
     ];
     public function users(){
         return $this->hasOne(User::class, 'id', 'user_id');
     }
-    
+
 }

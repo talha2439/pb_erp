@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{Dashboardcontroller, EmployeeController, MenuAccessController, MenuSettingController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, MenuAccessController, MenuSettingController, ShiftController, UserAccessController, UserController};
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -59,7 +59,7 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
         Route::get('/user/access/{id?}' , [UserAccessController::class , 'index'])->name('users.role');
         Route::post('/change/access/{id?}' , [UserAccessController::class , 'changeAccess'])->name('users.change.access');
     });
-    // Menu Settings
+
      // Menu Settings
      Route::prefix('menu/')->group(function(){
         Route::get('/' , [MenuSettingController::class ,'index'])->name('menusettings.index');
@@ -70,9 +70,39 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
         Route::post('/check_routes' , [MenuSettingController::class ,'check_routes'])->name('menusettings.check_routes');
         Route::get('/delete/{id?}' , [MenuSettingController::class , 'delete'])->name('menusettings.delete');
     });
+     Route::prefix('department/')->group(function(){
+        Route::get('/' , [DepartmentController::class ,'index'])->name('departments.index');
+        Route::get('/trash' , [DepartmentController::class , 'trash'])->name('departments.trash');
+        Route::get('/create/{id?}' , [DepartmentController::class ,'create'])->name('departments.create');
+        Route::post('/store/{id?}' , [DepartmentController::class ,'store'])->name('departments.store');
+        Route::get('/delete/{id?}' , [DepartmentController::class , 'delete'])->name('departments.delete');
+        Route::get('/destroy/{id?}' , [DepartmentController::class , 'destroy'])->name('departments.destroy');
+        Route::get('/restore/{id?}' , [DepartmentController::class , 'restore'])->name('departments.restore');
+    });
+     Route::prefix('designation/')->group(function(){
+        Route::get('/' , [DesignationController::class ,'index'])->name('designations.index');
+        Route::get('/trash' , [DesignationController::class ,'trash'])->name('designations.trash');
+        Route::get('/create/{id?}' , [DesignationController::class ,'create'])->name('designations.create');
+        Route::post('/store/{id?}' , [DesignationController::class ,'store'])->name('designations.store');
+        Route::get('/delete/{id?}' , [DesignationController::class , 'delete'])->name('designations.delete');
+        Route::get('/destroy/{id?}' , [DesignationController::class , 'destroy'])->name('designations.destroy');
+        Route::get('/restore/{id?}' , [DesignationController::class , 'restore'])->name('designations.restore');
+    });
+     Route::prefix('shifts/')->group(function(){
+        Route::get('/' , [ShiftController::class ,'index'])->name('shifts.index');
+        Route::get('/trash' , [ShiftController::class ,'trash'])->name('shifts.trash');
+        Route::get('/create/{id?}' , [ShiftController::class ,'create'])->name('shifts.create');
+        Route::post('/store/{id?}' , [ShiftController::class ,'store'])->name('shifts.store');
+        Route::get('/delete/{id?}' , [ShiftController::class , 'delete'])->name('shifts.delete');
+        Route::get('/destroy/{id?}' , [ShiftController::class , 'destroy'])->name('shifts.destroy');
+        Route::get('/restore/{id?}' , [ShiftController::class , 'restore'])->name('shifts.restore');
+
+    });
     // Employees Section
     Route::prefix('employees/')->group(function(){
         Route::get('/' , [EmployeeController::class,'index'])->name('employees.index');
         Route::get('/create/{id?}' , [EmployeeController::class,'create'])->name('employees.create');
+        Route::get('/state/{id?}' , [EmployeeController::class,'state'])->name('state.get');
+        Route::get('/city/{id?}' , [EmployeeController::class,'city'])->name('city.get');
     });
 });
