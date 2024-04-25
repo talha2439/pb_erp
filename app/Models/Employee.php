@@ -20,7 +20,7 @@ class Employee extends Model
             'personal_email',
             'personal_contact',
             'emergency_contact',
-            'permanent_contact',
+            'permanent_address',
             'present_address',
             'country',
             'state',
@@ -33,7 +33,10 @@ class Employee extends Model
             'blood_group',
             'martial_status',
             'no_of_child',
-            'designation'
+            'designation',
+            'department',
+            'designation',
+            'shift'
     ];
     public function users(){
         return $this->hasOne(User::class, 'id', 'user_id');

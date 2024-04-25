@@ -5,14 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Department;
+use App\Models\Designation;
 use App\Models\SubMenu;
 use App\Models\User;
 use App\Models\Employee;
 use App\Models\Nationality;
+use App\Models\Shift;
 use App\Models\State;
 use App\Models\UserAccess;
 use Illuminate\Http\Request;
 use Auth;
+use Carbon\Carbon;
+use Str;
+
 class EmployeeController extends Controller
 {
     public $parentModel = Employee::class;
@@ -22,68 +28,129 @@ class EmployeeController extends Controller
     public $parentView  = 'Admin.employee';
     public $parentRoute = "employees";
     public $imagePath  = 'images/EmployeesImages/';
-    public function index(Request $request){
-        $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.index')->first();
-        $checkAccess = $this->check_access($submenuId->id , 'view_status');
-        if($checkAccess){
-        $data['user'] = $this->parentModel::whereNot('role' , 1)->get();
-        if(!empty($request->type) && $request->type == "active_users"){
-        $data['user'] = $this->parentModel::whereNot('role' , 1)->whereNot('email_verified_at' , null)->get();
-        }
-        return view($this->parentView.'.index', $data);
-        }
-        else{
-            abort(405);
-        }
-    }
-    public function create($id = null){
-        $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.create')->first();
-        $checkAccess = $this->check_access($submenuId->id , 'create_status');
-        if(!empty($id)){
-        $checkAccess = $this->check_access($submenuId->id , 'update_status');
-        }
-        if($checkAccess){
-        $data['action']     = $id == null? 'create': 'edit';
-        $data['employee']   = $this->parentModel::where('id', $id)->first();
-        $data['country']    = Country::all();
-        $data['nationality'] = Nationality::all();
-        $data['users']       = $this->userModel::where('role' , 4)->get();
-        return view($this->parentView.'.create', $data);
-        }
-        else{
-            abort(405);
-        }
-    }
-    public function check_access($subMenuId , $status)
+    public function index(Request $request)
     {
-        $checkAccess =  UserAccess::where(['sub_menu_id'=> $subMenuId , $status => 1 , 'user_id' => Auth::user()->id ])->first();
-        $checkAdmin  = User::where(['id' => Auth::user()->id , 'role' => 1])->count();
-        if($checkAdmin > 0){
+        $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
+        $checkAccess = $this->check_access($submenuId->id, 'view_status');
+        if ($checkAccess) {
+            $data['user'] = $this->parentModel::whereNot('role', 1)->get();
+            if (!empty($request->type) && $request->type == "active_users") {
+                $data['user'] = $this->parentModel::whereNot('role', 1)->whereNot('email_verified_at', null)->get();
+            }
+
+            return view($this->parentView . '.index', $data);
+        } else {
+            abort(405);
+        }
+    }
+    public function create($id = null)
+    {
+        $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.create')->first();
+        $checkAccess = $this->check_access($submenuId->id, 'create_status');
+        if (!empty($id)) {
+            $checkAccess = $this->check_access($submenuId->id, 'update_status');
+        }
+        if ($checkAccess) {
+            $data['action']      = $id == null ? 'create' : 'edit';
+            $data['employee']    = $this->parentModel::where('id', $id)->first();
+            $data['country']     = Country::all();
+            $data['nationality'] = Nationality::all();
+            $data['users']       = $this->userModel::where('role', 4)->whereNotIn('id', Employee::pluck('user_id')->toArray())
+                ->get();
+
+            $data['department'] = Department::all();
+            return view($this->parentView . '.create', $data);
+        } else {
+            abort(405);
+        }
+    }
+    public function store(Request $request, $id = null)
+    {
+        try {
+            $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.create')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'create_status');
+            if (!empty($id)) {
+                $checkAccess = $this->check_access($submenuId->id, 'update_status');
+            }
+            if ($checkAccess) {
+                $requestData = $request->data;
+                parse_str($requestData, $data);
+                unset($data['_token']);
+                $data['emp_uniq_id']    = Str::random(15);
+                $data['martial_status'] = isset($data['martial_status']) && $data['martial_status'] == "on" ? 1 : 0 ;
+                $data['country']        = isset($data['country']) && !empty($data['country']) ? $data['country'] : 0;
+                $data['state']          = isset($data['state']) && !empty($data['state']) ? $data['state'] : 0;
+                $data['city']           = isset($data['city']) && !empty($data['city']) ? $data['city'] : 0;
+                $data['nationality']    = isset($data['nationality']) && !empty($data['nationality']) ? $data['nationality'] : 0;
+                $data['shift']          = isset($data['shift']) && !empty($data['shift']) ? $data['shift'] : 0;
+                $data['no_of_child']    = isset($data['no_of_child']) && !empty($data['no_of_child']) ? $data['no_of_child'] : 0;
+
+                if (!empty($id)) {
+                    $emp_data = $this->parentModel::where('id', $id)->first();
+                    $data['emp_uniq_id'] = $emp_data->emp_uniq_id;
+                }
+                if ($request->hasFile("image")) {
+                    $filename = $data['emp_uniq_id'] . '.' . $request->file('image')->getClientOriginalExtension();
+                    $request->file('image')->move($this->imagePath, $filename);
+                    $data['image'] = $filename;
+                    if (!empty($id)) {
+                        $imageFile =  $this->parentModel::where('id', $id)->get('image');
+                        $imagePath =  asset($this->imagePath . $imageFile);
+                        unlink($imagePath);
+                    }
+                }
+                $storeData = $this->parentModel::updateOrCreate(['id' => $id], $data);
+                if ($storeData) {
+                    return response()->json(['success' => true, 'emp_id' => $storeData->id]);
+                } else {
+                    return response()->json(['error' => true]);
+                }
+            } else {
+                return response()->json(['unauthorized' => true]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+    public function check_access($subMenuId, $status)
+    {
+        $checkAccess =  UserAccess::where(['sub_menu_id' => $subMenuId, $status => 1, 'user_id' => Auth::user()->id])->first();
+        $checkAdmin  = User::where(['id' => Auth::user()->id, 'role' => 1])->count();
+        if ($checkAdmin > 0) {
             return true;
         }
-        if($checkAccess){
-            return true ;
-        }
-        else{
+        if ($checkAccess) {
+            return true;
+        } else {
             return false;
         }
     }
-    public function state($id){
-        $data = State::where('country_id' , $id)->get();
-        if($data){
+    public function state($id)
+    {
+        $data = State::where('country_id', $id)->get();
+        if ($data) {
             return response()->json($data);
-        }
-        else{
+        } else {
             return response()->json(['error' => true]);
         }
     }
-    public function city($id){
-        $data = City::where('state_id' , $id)->get();
-        if($data){
+    public function city($id)
+    {
+        $data = City::where('state_id', $id)->get();
+        if ($data) {
             return response()->json($data);
-        }
-        else{
+        } else {
             return response()->json(['error' => true]);
+        }
+    }
+    public function designation_and_shift($id)
+    {
+        $data['shift']              = Shift::where('department', $id)->withoutTrashed()->first();
+        $data['shift']->start_time  = Carbon::parse($data['shift']->start_time)->format('h:i A');
+        $data['shift']->end_time    = Carbon::parse($data['shift']->end_time)->format('h:i A');
+        $data['designation']        = Designation::where('department', $id)->withoutTrashed()->first();
+        if ($data) {
+            return response()->json($data);
         }
     }
 }

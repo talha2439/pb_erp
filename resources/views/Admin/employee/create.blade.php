@@ -2,11 +2,11 @@
 @php
     if ($action == 'create') {
         $title = 'Create';
-        $parentRoute = route('menusettings.store');
+        $parentRoute = route('employees.store');
         $parentButton = 'Save';
     } else {
         $title = 'Edit';
-        $parentRoute = route('menusettings.store', $menu->id);
+        $parentRoute = route('employees.store', $employee->id);
         $parentButton = 'Update';
     }
 @endphp
@@ -44,6 +44,12 @@
         <h1>{{ $title }} Employee</h1>
     </div>
     <div class="card p-3">
+        <div class="header-title step_title">
+            <h3><strong class="text-primary ">
+                    Step 1 :</strong > Personal Information</h3>
+            <hr>
+        </div>
+        <input type="hidden" name="emp_id" >
         {{-- step 1 form --}}
         @include('Admin.forms.employees.step1')
 
@@ -59,10 +65,12 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.js"></script>
     <script src="{{ asset('assets/plugins/masking/jquery.mask.min.js') }}"></script>
-    <script src="{{ asset('assets/custom/employee.js') }}"></script>
+    <script src="{{ asset('assets/custom/employee-step1.js') }}"></script>
     <script >
         let stateURL = "{{ route('state.get') }}";
         let cityURL = "{{ route('city.get') }}";
+        let designationAndShiftURL = "{{ route('shift.designations') }}";
+        let employeeStore = "{{ $parentRoute }}";
     </script>
 
 @endpush

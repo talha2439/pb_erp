@@ -96,7 +96,6 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
         Route::get('/delete/{id?}' , [ShiftController::class , 'delete'])->name('shifts.delete');
         Route::get('/destroy/{id?}' , [ShiftController::class , 'destroy'])->name('shifts.destroy');
         Route::get('/restore/{id?}' , [ShiftController::class , 'restore'])->name('shifts.restore');
-
     });
     // Employees Section
     Route::prefix('employees/')->group(function(){
@@ -104,5 +103,9 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
         Route::get('/create/{id?}' , [EmployeeController::class,'create'])->name('employees.create');
         Route::get('/state/{id?}' , [EmployeeController::class,'state'])->name('state.get');
         Route::get('/city/{id?}' , [EmployeeController::class,'city'])->name('city.get');
+        Route::post('/store/{id?}' , [EmployeeController::class ,'store'])->name('employees.store');
+
+        Route::get('shift/designations/{id?}' , [EmployeeController::class,'designation_and_shift'])->name('shift.designations');
+
     });
 });
