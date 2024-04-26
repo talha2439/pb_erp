@@ -1,35 +1,35 @@
 $(document).ready(function () {
     $(".select2").select2({});
     // Country , State , City Cascading Dropdown
-    let employee            = $('select[name="user_id"]');
-    let first_name          = $('input[name="first_name"]');
-    let personal_email      = $('input[name="personal_email"]');
-    let department          = $('select[name="department"]');
-    let designation         = $('select[name="designation"]');
-    let joining_date        = $('input[name="joining_date"]');
-    let shift               = $('select[name="shift"]');
-    let country             = $('select[name="country"]');
-    let state               = $('select[name="state"]');
-    let city                = $('select[name="city"]');
-    let gender              = $('select[name="gender"]');
-    let cnic                = $("input[name='cnic_number']");
-    let personalNumber      = $('input[name="personal_contact"]');
-    let emergency_number    = $('input[name="emergency_contact"]');
-    let permanent_address   = $('textarea[name="permanent_address"]');
-    let present_address     = $('textarea[name="present_address"]');
-    let check_permanent     = $(".same_permanent");
-    let martial_status      = $('input[name="martial_status"]');
-    let date_of_birth       = $('input[name="date_of_birth"]');
-    let image               = $('input[name="image"]');
-    let csrfToken           = $('input[name="csrf_token"]');
-    let empId               = $('input[name="emp_id"]');
+    let employee = $('select[name="user_id"]');
+    let first_name = $('input[name="first_name"]');
+    let personal_email = $('input[name="personal_email"]');
+    let department = $('select[name="department"]');
+    let designation = $('select[name="designation"]');
+    let joining_date = $('input[name="joining_date"]');
+    let shift = $('select[name="shift"]');
+    let country = $('select[name="country"]');
+    let state = $('select[name="state"]');
+    let city = $('select[name="city"]');
+    let gender = $('select[name="gender"]');
+    let cnic = $("input[name='cnic_number']");
+    let personalNumber = $('input[name="personal_contact"]');
+    let emergency_number = $('input[name="emergency_contact"]');
+    let permanent_address = $('textarea[name="permanent_address"]');
+    let present_address = $('textarea[name="present_address"]');
+    let check_permanent = $(".same_permanent");
+    let martial_status = $('input[name="martial_status"]');
+    let date_of_birth = $('input[name="date_of_birth"]');
+    let image = $('input[name="image"]');
+    let csrfToken = $('input[name="csrf_token"]');
+    let empId = $('input[name="emp_id"]');
     // Form Input Variables Ended here
-    var isrequiredcnic      = false;
+    var isrequiredcnic = false;
     $(date_of_birth).on("change", function (e) {
         e.preventDefault();
         let dob = new Date(date_of_birth.val()).getFullYear();
         let currentDate = new Date().getFullYear();
-         TotalYears = currentDate - dob;
+        TotalYears = currentDate - dob;
         if (TotalYears >= 18) {
             isrequiredcnic = true;
             $(".requiredCnic").show();
@@ -185,7 +185,7 @@ $(document).ready(function () {
             toastr["error"]("Enter Employee's Date of Birth");
             isValid = false;
             return false;
-        }else if ($(department).val() == "") {
+        } else if ($(department).val() == "") {
             e.preventDefault();
             toastr["error"]("Department is required");
             isValid = false;
@@ -215,13 +215,13 @@ $(document).ready(function () {
                 return false;
             }
         }
-         if ($(personalNumber).val() == "") {
+        if ($(personalNumber).val() == "") {
             e.preventDefault();
             toastr["error"]("Enter Employee's Personal Number");
             isValid = false;
             return false;
         }
-         if ($(permanent_address).val() == "") {
+        if ($(permanent_address).val() == "") {
             e.preventDefault();
             toastr["error"]("Enter Employee's Permanent Address");
             isValid = false;
@@ -253,6 +253,7 @@ $(document).ready(function () {
                             $(empId).val(response.emp_id);
                             $('.step_title').html(`<h3><strong class="text-primary ">Step 2 :</strong >  Qualification Information </h3><hr>`);
                             $(step1form).hide();
+                            $("#step2Form").show();
                         }
 
                     }

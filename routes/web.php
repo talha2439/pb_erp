@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, MenuAccessController, MenuSettingController, ShiftController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeQualificationController, MenuAccessController, MenuSettingController, ShiftController, UserAccessController, UserController};
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -104,8 +104,10 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
         Route::get('/state/{id?}' , [EmployeeController::class,'state'])->name('state.get');
         Route::get('/city/{id?}' , [EmployeeController::class,'city'])->name('city.get');
         Route::post('/store/{id?}' , [EmployeeController::class ,'store'])->name('employees.store');
-
         Route::get('shift/designations/{id?}' , [EmployeeController::class,'designation_and_shift'])->name('shift.designations');
+    });
+    Route::prefix('employees/qualification')->group(function(){
+        Route::post('/store/{id?}' , [EmployeeQualificationController::class ,'store'])->name('employees.qualification.store');
 
     });
 });
