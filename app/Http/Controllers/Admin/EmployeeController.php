@@ -28,15 +28,13 @@ class EmployeeController extends Controller
     public $parentView  = 'Admin.employee';
     public $parentRoute = "employees";
     public $imagePath  = 'images/EmployeesImages/';
+    public $childimagePath  = 'images/EmployeesImages/cv_files/';
     public function index(Request $request)
     {
         $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
         $checkAccess = $this->check_access($submenuId->id, 'view_status');
         if ($checkAccess) {
-            $data['user'] = $this->parentModel::whereNot('role', 1)->get();
-            if (!empty($request->type) && $request->type == "active_users") {
-                $data['user'] = $this->parentModel::whereNot('role', 1)->whereNot('email_verified_at', null)->get();
-            }
+            $data['employee'] = $this->parentModel::withoutTrashed()->get();
 
             return view($this->parentView . '.index', $data);
         } else {
@@ -76,8 +74,10 @@ class EmployeeController extends Controller
                 $requestData = $request->data;
                 parse_str($requestData, $data);
                 unset($data['_token']);
-                $data['emp_uniq_id']    = Str::random(15);
-                $data['martial_status'] = isset($data['martial_status']) && $data['martial_status'] == "on" ? 1 : 0 ;
+                $data['max_id']         = $this->parentModel::max('id') ?? 0;
+                $data['max_id']         = ($data['max_id'] + 1);
+                $data['emp_uniq_id']    = "pbhub-".str_replace(" ", "", strtolower($data['first_name'])).'-'.str_pad($data['max_id'] , 3,'0',STR_PAD_LEFT);
+                $data['martial_status'] = isset($data['martial_status']) && $data['martial_status'] == "on" ? 1 : 0;
                 $data['country']        = isset($data['country']) && !empty($data['country']) ? $data['country'] : 0;
                 $data['state']          = isset($data['state']) && !empty($data['state']) ? $data['state'] : 0;
                 $data['city']           = isset($data['city']) && !empty($data['city']) ? $data['city'] : 0;
@@ -96,7 +96,21 @@ class EmployeeController extends Controller
                     if (!empty($id)) {
                         $imageFile =  $this->parentModel::where('id', $id)->get('image');
                         $imagePath =  asset($this->imagePath . $imageFile);
-                        unlink($imagePath);
+                        if (file_exists($imagePath)) {
+                            unlink($imagePath);
+                        }
+                    }
+                }
+                if ($request->hasFile("cv_file")) {
+                    $cv_file = $data['emp_uniq_id'] . '.' . $request->file('cv_file')->getClientOriginalExtension();
+                    $request->file('cv_file')->move($this->childimagePath, $cv_file);
+                    $data['cv_file'] = $cv_file;
+                    if (!empty($id)) {
+                        $imageFile =  $this->parentModel::where('id', $id)->get('cv_file');
+                        $cvPath =  asset($this->childimagePath . $imageFile);
+                        if (file_exists($cvPath)) {
+                            unlink($cvPath);
+                        }
                     }
                 }
                 $storeData = $this->parentModel::updateOrCreate(['id' => $id], $data);

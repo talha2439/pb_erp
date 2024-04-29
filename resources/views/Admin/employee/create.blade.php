@@ -52,6 +52,9 @@
         <input type="hidden" name="emp_id">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
+
+        {{-- Step 3 from --}}
+        @include('Admin.forms.employees.step3')
         {{-- Step 2 from --}}
         @include('Admin.forms.employees.step2')
         {{-- step 1 form --}}
@@ -69,14 +72,17 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.js"></script>
     <script src="{{ asset('assets/plugins/masking/jquery.mask.min.js') }}"></script>
-    <script src="{{ asset('assets/custom/employee-step1.js') }}"></script>
-    <script src="{{ asset('assets/custom/employee-step2.js') }}"></script>
+    <script src="{{ asset('assets/custom/employee/employee-step1.js') }}"></script>
+    <script src="{{ asset('assets/custom/employee/employee-step2.js') }}"></script>
+    <script src="{{ asset('assets/custom/employee/employee-step3.js') }}"></script>
     <script>
         let stateURL = "{{ route('state.get') }}";
         let cityURL = "{{ route('city.get') }}";
         let designationAndShiftURL = "{{ route('shift.designations') }}";
-        let employeeStore = "{{ $parentRoute }}";
-        let qualificationPost = "{{ route('employees.qualification.store') }}";
+        let employeeStore          = "{{ $parentRoute }}";
+        let qualificationPost      = "{{ route('employees.qualification.store') }}";
+        let storeExperiencePost    = "{{ route('employees.experience.store') }}";
+        let employeesListUrl       = "{{ route('employees.index') }}";
     </script>
 @endpush
 @endsection

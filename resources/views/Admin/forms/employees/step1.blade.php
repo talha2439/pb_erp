@@ -2,13 +2,9 @@
 <form id="step1" enctype="multipart/form-data"
 >
     @csrf
-   
+
     <div class="row p-3">
-        <div class="col-md-12">
-            <div class="form-group"><label for="">Employee Image <small class="text-secondary">( Optional )</small></label>
-                <input type="file" name="image" class="form-control">
-            </div>
-        </div>
+
         {{-- Select employee --}}
         <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
@@ -40,7 +36,22 @@
                 <input type="text" name="personal_email" class="form-control" placeholder="example@gmail.com">
             </div>
         </div>
-        <div class="col-md-12 mt-2 mb-3">
+        <div class="col-md-6 mt-2 mb-3">
+            <div class="form-group">
+                <label for="">Employement Status <span class="text-danger">( Required )</span></label>
+                <select type="text" name="employment_status" class="form-select select2">
+                    <option value="">-- Select Employment Status --</option>
+                    <option value="probition">Probition</option>
+                    <option value="intership">Intership</option>
+                    <option value="parmanent" selected>Parmanent</option>
+                    @if($action == "edit")
+                    <option value="resigned">Resigned</option>
+                    @endif
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
                 <label for="">Date of Birth <small class="text-danger">( Required )</small></label>
                 <input type="date" name="date_of_birth" class="form-control">
@@ -176,6 +187,27 @@
 
 
         </div>
+        <div class="col-md-6 mb-3">
+            <div class="form-group"><label for="">Employee Image <small class="text-secondary">( Optional ) * Should be a valid .jpg , jpeg or .png file  <div class="text-danger">( max file size : 15mb) </div></small></label>
+                <input type="file" name="image" class="form-control">
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="form-group"><label for="">Employee Cv / Resume <small class="text-secondary">( Optional )  Should be a valid   .pdf , .jpeg , .jpg , .docx , .doc  or .png file  <div class="text-danger">( max file size : 15mb) </div></small></label>
+                <input type="file" name="cv_file" class="form-control">
+            </div>
+        </div>
+        <hr>
+        <div class="col-md-12">
+            <h3 class="text-primary">Salary Information</h3>
+        </div>
+        <br>
+        <div class="col-md-12 mb-3 mt-2">
+            <div class="form-group">
+                <label for="">Monthly Salary <small class="text-danger">( Required )</small></label>
+                <input type="number" name="salary" placeholder="Employee Monthly Salary" class="form-control">
+            </div>
+        </div><br>
         <hr>
         <div class="col-md-12">
             <h3 class="text-primary">Contact Information</h3>

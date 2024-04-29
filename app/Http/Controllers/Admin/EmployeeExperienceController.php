@@ -4,18 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
-use App\Models\EmployeeQualification;
+use App\Models\EmployeeExperience;
 use App\Models\SubMenu;
 use App\Models\User;
 use App\Models\UserAccess;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
-class EmployeeQualificationController extends Controller
+use Auth;
+class EmployeeExperienceController extends Controller
 {
-    public $parentModel = EmployeeQualification::class;
-    public $imagePath = 'images/employee_qualification/';
+    public $parentModel = EmployeeExperience::class;
+    public $imagePath = 'images/emp_experience_attachment/';
     public $parentRoute = "employees";
     public $menuModel = SubMenu::class;
 
@@ -34,27 +33,26 @@ class EmployeeQualificationController extends Controller
                 unset($data['_token']);
                 unset($data['csrf_token']);
 
+                $employeeData = Employee::where('id' ,$data['employee_id'])->first();
 
-                $currentDate = Carbon::now()->format('Y-m-d');
+                foreach ($data['job_title'] as $key => $value) {
 
-                foreach ($data['institute'] as $key => $value) {
-                    if (!empty($request->file("document")[$key])) {
-                        $fileNames = str_replace(" ", "", $data['qualification'][$key]) . '_' . time() . '.' . $request->file('document')[$key]->getClientOriginalExtension();
-                        $request->file('document')[$key]->move($this->imagePath, $fileNames);
+                    if (!empty($request->file("attachment")[$key])) {
+                        $fileNames = str_replace(" ", "", $employeeData->emp_uniq_id) . '_' . time() . '.' . $request->file('attachment')[$key]->getClientOriginalExtension();
+                        $request->file('attachment')[$key]->move($this->imagePath, $fileNames);
                     }
-                    $enddate = Carbon::parse($data['end_date'][$key])->format('Y-m-d');
-                    $status = $currentDate == $enddate ? 1 : 0;
                     $storedata = $this->parentModel::updateOrCreate(['id' => $id], [
-                        'institute' => $data['institute'][$key],
-                        'document' => $fileNames ?? "",
-                        'qualification' => $data['qualification'][$key],
                         'employee_id' => $data['employee_id'],
-                        'start_date' => $data['start_date'][$key],
-                        'end_date' => $data['end_date'][$key],
-                        'status' => $status,
-                        'gpa' => !empty($data['gpa'][$key]) ? $data['gpa'][$key] : 0,
-                        'percentage' => !empty($data['percentage'][$key]) ? $data['percentage'][$key] : 0,
+                        'job_title' => $data['job_title'][$key],
+                        'attachment' => $fileNames ?? "",
+                        'salary' => $data['salary'][$key] ?? "" ,
+                        'designation' => $data['designation'][$key]?? "",
+                        'start_date' => $data['exp_start_date'][$key],
+                        'end_date' => $data['exp_end_date'][$key],
+                        'reason_for_leaving' => $data['reason_for_leaving'][$key] ?? "",
+                        'description' => $data['description'][$key] ?? "",
                     ]);
+
                 }
                 if ($storedata) {
                     return response()->json(['success' => true]);
@@ -65,6 +63,7 @@ class EmployeeQualificationController extends Controller
                 return response()->json(['unauthorized' => true]);
             }
         } catch (\Exception $e) {
+
             return response()->json(['error' => $e->getMessage()]);
         }
     }

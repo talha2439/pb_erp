@@ -14,6 +14,7 @@ class Employee extends Model
             'emp_uniq_id',
             'user_id',
             'image',
+            'cv_file',
             'first_name',
             'last_name',
             'date_of_birth',
@@ -36,7 +37,8 @@ class Employee extends Model
             'designation',
             'department',
             'designation',
-            'shift'
+            'shift',
+            'salary'
     ];
     public function users(){
         return $this->hasOne(User::class, 'id', 'user_id');

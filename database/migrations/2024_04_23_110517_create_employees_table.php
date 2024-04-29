@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('nationality')->nullable();
             $table->string('religion')->nullable();
             $table->string('joining_date');
-            $table->string('employment_status')->default('Pending');
+            $table->string('employment_status')->default('parmanent');
             $table->string('cnic_number')->unique()->nullable();
             $table->string('blood_group')->nullable();
             $table->integer('martial_status')->default(0);

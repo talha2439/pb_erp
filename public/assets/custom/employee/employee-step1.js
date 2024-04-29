@@ -9,9 +9,11 @@ $(document).ready(function () {
     let joining_date = $('input[name="joining_date"]');
     let shift = $('select[name="shift"]');
     let country = $('select[name="country"]');
-    let state = $('select[name="state"]');
-    let city = $('select[name="city"]');
+    let state   = $('select[name="state"]');
+    let salary  = $('input[name="salary"]');
+    let city  = $('select[name="city"]');
     let gender = $('select[name="gender"]');
+    let empstatus = $('select[name="employment_status"]');
     let cnic = $("input[name='cnic_number']");
     let personalNumber = $('input[name="personal_contact"]');
     let emergency_number = $('input[name="emergency_contact"]');
@@ -23,6 +25,7 @@ $(document).ready(function () {
     let image = $('input[name="image"]');
     let csrfToken = $('input[name="csrf_token"]');
     let empId = $('input[name="emp_id"]');
+    let cv_file = $('input[name="cv_file"]');
     // Form Input Variables Ended here
     var isrequiredcnic = false;
     $(date_of_birth).on("change", function (e) {
@@ -180,7 +183,15 @@ $(document).ready(function () {
             toastr["error"]("Enter Employee's personal email");
             isValid = false;
             return false;
-        } else if ($(date_of_birth).val() == "") {
+        }
+        else if($(empstatus).val() == ""){
+            e.preventDefault();
+            toastr["error"]("Please Select Employment Status");
+            isValid = false;
+            return false;
+        }
+
+        else if ($(date_of_birth).val() == "") {
             e.preventDefault();
             toastr["error"]("Enter Employee's Date of Birth");
             isValid = false;
@@ -203,6 +214,48 @@ $(document).ready(function () {
         } else if ($(joining_date).val() == "") {
             e.preventDefault();
             toastr["error"]("Enter Employee's Joining Date");
+            isValid = false;
+            return false;
+        }
+        //Image format validation and MB
+        if (!image.val() == "") {
+            let allowedExtensions = ["jpg", "jpeg", "png"];
+            let ext = image.val().split('.').pop().toLowerCase();
+            if (!allowedExtensions.includes(ext)) {
+                e.preventDefault();
+                toastr["error"]("Only jpg, jpeg, and png files are allowed for employee image");
+                isValid = false;
+                return false;
+            }  // To Validate Image extension
+              // File Size validation
+            if (image[0].files[0].size > 15 * (1024 * 1024)) {
+                e.preventDefault();
+                toastr["error"]("Image file size should be less than 15MB");
+                isValid = false;
+                return false;
+            }
+        }
+
+        if (!cv_file.val() == "") {
+            let allowedExtensions = ["jpg", "jpeg", "png", "pdf", "doc", "docx"];
+            let ext = cv_file.val().split('.').pop().toLowerCase();
+            if (!allowedExtensions.includes(ext)) {
+                e.preventDefault();
+                toastr["error"]("Only jpg, jpeg, png, pdf, doc, and docx files are allowed for employee resume / CV files");
+                isValid = false;
+                return false;
+            } // To Validate CV extension
+            // File Size validation
+            if (cv_file[0].files[0].size > 15 * (1024 * 1024)) {
+                e.preventDefault();
+                toastr["error"]("CV file size should be less than 15MB");
+                isValid = false;
+                return false;
+            }
+        }
+        else if ($(salary).val() == "") {
+            e.preventDefault();
+            toastr["error"]("Enter Employee's Monthly Salary");
             isValid = false;
             return false;
         }
@@ -234,6 +287,10 @@ $(document).ready(function () {
             if (image.val() !== "") {
                 let imageData = image[0].files[0];
                 formData.append("image", imageData);
+            }
+            if(cv_file.val() !== "") {
+                let cv_fileData = cv_file[0].files[0];
+                formData.append("cv_file", cv_fileData);
             }
             formData.append('data', step1form.serialize());
             $.ajax({

@@ -172,6 +172,11 @@ $(document).ready(function () {
                         toastr["error"](response.error);
                         return false;
                     }
+                    else{
+                        e.preventDefault();
+                        toastr["error"]("An error occurred while saving qualification information for employee");
+                        return false;
+                    }
                 },
                 error: function (xhr, status, error) {
                     e.preventDefault();
