@@ -6,7 +6,8 @@
         $parentButton = 'Save';
     } else {
         $title = 'Edit';
-        $parentRoute = route('employees.store', $employee->id);
+        $parentRoute = route('employees.store');
+        $employeeId  =  $employee->id;
         $parentButton = 'Update';
     }
 @endphp
@@ -49,7 +50,7 @@
                     Step 1 :</strong> Personal Information</h3>
             <hr>
         </div>
-        <input type="hidden" name="emp_id">
+        <input type="hidden" name="emp_id" value="{{ $employeeId ?? "" }}">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
 
@@ -75,14 +76,30 @@
     <script src="{{ asset('assets/custom/employee/employee-step1.js') }}"></script>
     <script src="{{ asset('assets/custom/employee/employee-step2.js') }}"></script>
     <script src="{{ asset('assets/custom/employee/employee-step3.js') }}"></script>
+    {{-- Edit Employee JS Links --}}
+    <script src="{{ asset('assets/custom/employee/edit-employee-step1.js') }}"></script>
+    <script src="{{ asset('assets/custom/employee/employee_update.js') }}"></script>
+ 
+    {{-- Back button JS --}}
+    <script src="{{ asset("assets/custom/employee/backbutton.js") }}"></script>
     <script>
         let stateURL = "{{ route('state.get') }}";
         let cityURL = "{{ route('city.get') }}";
+        let action  = "{{ $action }}";
         let designationAndShiftURL = "{{ route('shift.designations') }}";
         let employeeStore          = "{{ $parentRoute }}";
         let qualificationPost      = "{{ route('employees.qualification.store') }}";
         let storeExperiencePost    = "{{ route('employees.experience.store') }}";
         let employeesListUrl       = "{{ route('employees.index') }}";
+        let employeeData           = <?php echo isset($employee) && $employee ? json_encode($employee) : 0 ?>;
+        let qualificationEdit      = "{{ route('employees.qualification.edit') }}";
+        let deleteQualification    = "{{ route('employees.qualification.delete') }}";
+        let deleteExperience       = "{{ route('employees.experience.delete') }}";
+        let experienceEdit         = "{{ route('employees.experience.edit') }}";
+        $(document).ready(function(){
+            editQualification();
+            editExperience();
+        })
     </script>
 @endpush
 @endsection

@@ -38,7 +38,8 @@ class Employee extends Model
             'department',
             'designation',
             'shift',
-            'salary'
+            'salary',
+            'gender'
     ];
     public function users(){
         return $this->hasOne(User::class, 'id', 'user_id');

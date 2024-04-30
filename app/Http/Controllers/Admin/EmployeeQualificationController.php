@@ -18,7 +18,11 @@ class EmployeeQualificationController extends Controller
     public $imagePath = 'images/employee_qualification/';
     public $parentRoute = "employees";
     public $menuModel = SubMenu::class;
-
+    public function edit($id)
+    {
+        $emp_qualification = $this->parentModel::where('employee_id', $id)->get();
+        return response()->json(['qualification' => $emp_qualification]);
+    }
     public function store(Request $request, $id = null)
     {
         try {
@@ -38,13 +42,13 @@ class EmployeeQualificationController extends Controller
                 $currentDate = Carbon::now()->format('Y-m-d');
 
                 foreach ($data['institute'] as $key => $value) {
-                    if (!empty($request->file("document")[$key])) {
+                    if (!empty($request->file("document")[$key]) && isset($request->file("document")[$key])) {
                         $fileNames = str_replace(" ", "", $data['qualification'][$key]) . '_' . time() . '.' . $request->file('document')[$key]->getClientOriginalExtension();
                         $request->file('document')[$key]->move($this->imagePath, $fileNames);
                     }
                     $enddate = Carbon::parse($data['end_date'][$key])->format('Y-m-d');
                     $status = $currentDate == $enddate ? 1 : 0;
-                    $storedata = $this->parentModel::updateOrCreate(['id' => $id], [
+                    $storedata = $this->parentModel::updateOrCreate(['id' => $data['qualification_id'][$key] ?? ""], [
                         'institute' => $data['institute'][$key],
                         'document' => $fileNames ?? "",
                         'qualification' => $data['qualification'][$key],
@@ -68,6 +72,26 @@ class EmployeeQualificationController extends Controller
             return response()->json(['error' => $e->getMessage()]);
         }
     }
+    public function delete($id)
+    {
+        try {
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
+            if ($checkAccess) {
+                $delete        = $this->parentModel::where('id', $id)->forceDelete();
+                if ($delete) {
+                    return response()->json(['success' => true]);
+                } else {
+                    return response()->json(['error' => true]);
+                }
+            } else {
+                return response()->json(['unauthorized' => true]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
     public function check_access($subMenuId, $status)
     {
         $checkAccess = UserAccess::where(['sub_menu_id' => $subMenuId, $status => 1, 'user_id' => Auth::user()->id])->first();

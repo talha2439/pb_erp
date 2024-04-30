@@ -38,6 +38,21 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
 
     <style type="text/css">
+         /* Loader */
+         .loader-container{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+         }
+         /* End of Loader */
         .select2-container--default .select2-selection--single {
             background-color: #fff;
             border: 1px solid #aaaaaa7d !important;
@@ -644,7 +659,10 @@
 </head>
 
 <body>
-
+    <div class="loader-container" >
+        <div class="spinner-grow text-primary"></div>
+        <div class="text-center p-3"> Please wait... </div>
+    </div>
     <div class="main-wrapper">
 
         <div class="header header-one">
@@ -931,7 +949,9 @@
 @endif
 <script>
     $(document).ready(function() {
-
+        setTimeout(() => {
+            $('.loader-container').hide();
+        }, 1000);
         var currentroute = "{{ Route::currentRouteName('') }}";
         $(".dynamic_sub_menu").each(function() {
             var subMenuRoute = $(this).data("route");

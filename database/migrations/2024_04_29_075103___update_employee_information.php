@@ -13,6 +13,7 @@ return new class extends Migration
     {
        Schema::table('employees',function(Blueprint $table){
         $table->string('cv_file')->after('image')->nullable();
+        $table->string('gender')->after('date_of_birth');
         $table->string('salary')->default(0);
        });
     }
@@ -25,6 +26,8 @@ return new class extends Migration
        Schema::table('employees',function(Blueprint $table){
         $table->dropColumn('cv_file');
         $table->dropColumn('salary');
+        $table->dropColumn('gender');
+
 
        });
     }

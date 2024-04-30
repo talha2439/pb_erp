@@ -1,11 +1,9 @@
-
-<form id="step1" enctype="multipart/form-data"
->
+<form id="step1" enctype="multipart/form-data">
     @csrf
 
     <div class="row p-3">
 
-        {{-- Select employee --}}
+
         <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
                 <label for="">Select Employee <span class="text-danger">( Required )</span></label>
@@ -17,6 +15,7 @@
                 </select>
             </div>
         </div>
+
 
         <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
@@ -41,11 +40,11 @@
                 <label for="">Employement Status <span class="text-danger">( Required )</span></label>
                 <select type="text" name="employment_status" class="form-select select2">
                     <option value="">-- Select Employment Status --</option>
-                    <option value="probition">Probition</option>
-                    <option value="intership">Intership</option>
+                    <option value="prohibition">Prohibition</option>
+                    <option value="internship">Intership</option>
                     <option value="parmanent" selected>Parmanent</option>
-                    @if($action == "edit")
-                    <option value="resigned">Resigned</option>
+                    @if ($action == 'edit')
+                        <option value="resigned">Resigned</option>
                     @endif
                 </select>
             </div>
@@ -57,6 +56,7 @@
                 <input type="date" name="date_of_birth" class="form-control">
             </div>
         </div>
+        
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
                 <label for="">Department <small class="text-danger">( Required )</small></label>
@@ -188,12 +188,16 @@
 
         </div>
         <div class="col-md-6 mb-3">
-            <div class="form-group"><label for="">Employee Image <small class="text-secondary">( Optional ) * Should be a valid .jpg , jpeg or .png file  <div class="text-danger">( max file size : 15mb) </div></small></label>
+            <div class="form-group"><label for="">Employee Image <small class="text-secondary">( Optional ) *
+                        Should be a valid .jpg , jpeg or .png file <div class="text-danger">( max file size : 15mb)
+                        </div></small></label>
                 <input type="file" name="image" class="form-control">
             </div>
         </div>
         <div class="col-md-6 mb-3">
-            <div class="form-group"><label for="">Employee Cv / Resume <small class="text-secondary">( Optional )  Should be a valid   .pdf , .jpeg , .jpg , .docx , .doc  or .png file  <div class="text-danger">( max file size : 15mb) </div></small></label>
+            <div class="form-group"><label for="">Employee Cv / Resume <small class="text-secondary">(
+                        Optional ) Should be a valid .pdf , .jpeg , .jpg , .docx , .doc or .png file <div
+                            class="text-danger">( max file size : 15mb) </div></small></label>
                 <input type="file" name="cv_file" class="form-control">
             </div>
         </div>
@@ -215,20 +219,21 @@
 
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
-                <label for="">CNIC Number <span class="text-secondary unrequired" >( Optional )</span><span class="text-danger requiredCnic" style="display: none">( Required )</span></label>
+                <label for="">CNIC Number <span class="text-secondary unrequired">( Optional )</span><span
+                        class="text-danger requiredCnic" style="display: none">( Required )</span></label>
                 <input type="text" name="cnic_number" class="form-control" placeholder="00000-0000000-0">
             </div>
         </div>
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Personal Contact  <span class="text-danger">( Required )</span></label>
+                <label for="">Personal Contact <span class="text-danger">( Required )</span></label>
                 <input type="text" name="personal_contact" class="form-control" placeholder="( +92 ) 0000000000">
             </div>
         </div>
 
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Emergency Contact  <small class="text-secondary">( Optional )</small></label>
+                <label for="">Emergency Contact <small class="text-secondary">( Optional )</small></label>
                 <input type="text" name="emergency_contact" class="form-control"
                     placeholder="( +92 ) 0000000000">
             </div>
@@ -252,8 +257,7 @@
         <div class="col-md-12 mt-2 mb-3">
             <div class="form-group">
                 <label for="">Present Address</label>
-                <textarea type="text" cols="4" rows="4" name="present_address" class="form-control"
-                 ></textarea>
+                <textarea type="text" cols="4" rows="4" name="present_address" class="form-control"></textarea>
 
             </div>
         </div>

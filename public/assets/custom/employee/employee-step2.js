@@ -6,9 +6,9 @@ $(document).ready(function () {
     let save2Button = $(".step_2_next");
     let emp_id = $("input[name='emp_id']");
     let csrfToken = $('input[name="csrf_token"]');
-    $(addMoreBtn).on('click', function (e) {
+    $(document).on('click', '#addMoreQualification', function (e) {
         e.preventDefault();
-        let qualificationAppend = `<div class="row">
+        let qualificationAppend = `<div class="row p-2">
         <hr><div class="col-md-12 d-flex justify-content-end ">
 
                 <div class="form-group ">
@@ -60,14 +60,47 @@ $(document).ready(function () {
                 <input type="file" name="document[]" class="form-control documentFile" >
             </div>
         </div>
-
-    </div>`;
-        $(qualificationContainer).append(qualificationAppend);
+</div>
+   `;
+        $(".step_2_formContainer").append(qualificationAppend);
     });
     // Removing the Row
     $(document).on('click', '.removeBtn', function (e) {
         e.preventDefault();
         $(this).closest('.row').remove();
+        let id = $(this).data('id');
+        if (id != undefined || id == '') {
+            let confirm = window.confirm("Do you want to remove this?");
+            if (confirm) {
+                $.ajax({
+                    url: deleteQualification + '/' + id,
+                    type: "GET",
+                    success: function (res) {
+                        if (res.success) {
+                            toastr['success']("Qualification deleted successfully");
+                            return false;
+                        }
+                        else if (res.unauthorized) {
+                            toastr['error']("You are not authorized to delete this..!");
+                            return false;
+                        }
+                        else if (res.error) {
+
+                            toastr['error'](res.error);
+                            return false;
+                        }
+                        else {
+                            toastr['error']("Something went wrong..!");
+                            return false;
+                        }
+                    }, error: function (xhr, status, error) {
+                        e.preventDefault();
+                        toastr["error"](xhr.responseJSON.message);
+                        return false;
+                    }
+                })
+            }
+        }
     })
     // Adding Data and Validations
     $(save2Button).on('click', function (e) {
@@ -111,6 +144,32 @@ $(document).ready(function () {
             isValid = false;
             return false;
         }
+        $('input[name="document[]"]').each(function (index, input) {
+            let documents = $(input).val();
+
+            if (documents !== "") {
+                let ext = documents.split('.').pop().toLowerCase();
+                if ($.inArray(ext, ['pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx']) === -1) {
+                    toastr['error']("Only PDF, DOCX, DOC, PNG, JPG, and JPEG files are allowed..!");
+                    isValid = false;
+                    return false; // Stop further iteration
+                }
+
+                let fileSize = input.files[0].size;
+                if (fileSize > 15 * (1024 * 1024)) {
+                    e.preventDefault();
+                    toastr["error"]("Document file size should be less than 15MB");
+                    isValid = false;
+                    return false; // Stop further iteration
+                }
+
+                if (!isValid) {
+                    return false;
+                }
+            }
+        }
+        );
+
         // Iterate over each pair of start and end dates to validate that end should be after start date
         for (let i = 0; i < start_date.length; i++) {
             let start_dates = start_date[i];
@@ -143,7 +202,7 @@ $(document).ready(function () {
             formData.append('data', formStep2.serialize());
             formData.append('employee_id', $(emp_id).val());
             $.ajax({
-                url: qualificationPost,
+                url: qualificationPost + "/" + emp_id.val(),
                 'type': 'POST',
                 data: formData,
                 processData: false,
@@ -154,8 +213,11 @@ $(document).ready(function () {
                 success: function (response) {
                     if (response.success) {
                         e.preventDefault();
+
                         toastr.success("Employee Qualification Information has been saved successfully");
+                        editQualification();
                         if (saveButton.attr('title') == "Save and Next") {
+                            editExperience();
                             $('.step_title').html(`<h3><strong class="text-primary ">Step 3 :</strong >  Experience Information</h3><hr>`);
                             $("#step1").hide();
                             $(formStep2).hide();
@@ -172,7 +234,7 @@ $(document).ready(function () {
                         toastr["error"](response.error);
                         return false;
                     }
-                    else{
+                    else {
                         e.preventDefault();
                         toastr["error"]("An error occurred while saving qualification information for employee");
                         return false;

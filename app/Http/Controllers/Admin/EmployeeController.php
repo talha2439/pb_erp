@@ -10,6 +10,8 @@ use App\Models\Designation;
 use App\Models\SubMenu;
 use App\Models\User;
 use App\Models\Employee;
+use App\Models\EmployeeExperience;
+use App\Models\EmployeeQualification;
 use App\Models\Nationality;
 use App\Models\Shift;
 use App\Models\State;
@@ -41,6 +43,18 @@ class EmployeeController extends Controller
             abort(405);
         }
     }
+    public function trash(Request $request)
+    {
+        $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.trash')->first();
+        $checkAccess = $this->check_access($submenuId->id, 'view_status');
+        if ($checkAccess) {
+            $data['employee'] = $this->parentModel::onlyTrashed()->get();
+
+            return view($this->parentView . '.trash', $data);
+        } else {
+            abort(405);
+        }
+    }
     public function create($id = null)
     {
         $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.create')->first();
@@ -55,7 +69,9 @@ class EmployeeController extends Controller
             $data['nationality'] = Nationality::all();
             $data['users']       = $this->userModel::where('role', 4)->whereNotIn('id', Employee::pluck('user_id')->toArray())
                 ->get();
-
+            if ($data['action'] == 'edit') {
+                $data['users'] = $this->userModel::where('role', 4)->get();
+            }
             $data['department'] = Department::all();
             return view($this->parentView . '.create', $data);
         } else {
@@ -76,7 +92,7 @@ class EmployeeController extends Controller
                 unset($data['_token']);
                 $data['max_id']         = $this->parentModel::max('id') ?? 0;
                 $data['max_id']         = ($data['max_id'] + 1);
-                $data['emp_uniq_id']    = "pbhub-".str_replace(" ", "", strtolower($data['first_name'])).'-'.str_pad($data['max_id'] , 3,'0',STR_PAD_LEFT);
+                $data['emp_uniq_id']    = "pbhub-" . str_replace(" ", "", strtolower($data['first_name'])) . '-' . str_pad($data['max_id'], 3, '0', STR_PAD_LEFT);
                 $data['martial_status'] = isset($data['martial_status']) && $data['martial_status'] == "on" ? 1 : 0;
                 $data['country']        = isset($data['country']) && !empty($data['country']) ? $data['country'] : 0;
                 $data['state']          = isset($data['state']) && !empty($data['state']) ? $data['state'] : 0;
@@ -165,6 +181,69 @@ class EmployeeController extends Controller
         $data['designation']        = Designation::where('department', $id)->withoutTrashed()->first();
         if ($data) {
             return response()->json($data);
+        }
+    }
+    public function delete($id)
+    {
+        try {
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
+            if ($checkAccess) {
+                $delete        = $this->parentModel::where('id', $id)->delete();
+                $removeQualification = EmployeeQualification::where('employee_id', $id)->delete();
+                $removeExp           = EmployeeExperience::where('employee_id', $id)->delete();
+                if ($delete) {
+                    return response()->json(['success' => true]);
+                } else {
+                    return response()->json(['error' => true]);
+                }
+            } else {
+                return response()->json(['unauthorized' => true]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
+
+            if ($checkAccess) {
+                $delete        = $this->parentModel::where('id', $id)->forceDelete();
+                $forceDeleteQualification = EmployeeQualification::where('employee_id', $id)->forceDelete();
+                $forceDeleteExp           = EmployeeExperience::where('employee_id', $id)->forceDelete();
+                if ($delete) {
+                    return response()->json(['success' => true]);
+                } else {
+                    return response()->json(['error' => true]);
+                }
+            } else {
+                return response()->json(['unauthorized' => true]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+    public function restore($id)
+    {
+        try {
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
+            if ($checkAccess) {
+                $restore = $this->parentModel::where('id', $id)->restore();
+                $restoreQualification = EmployeeQualification::where('employee_id', $id)->restore();
+                $restoreExp           = EmployeeExperience::where('employee_id', $id)->restore();
+                if ($restore) {
+                    return redirect(route($this->parentRoute . '.index'))->with(['success' => 'Employee Information has been restored successfully']);
+                } else {
+                    return redirect(route($this->parentRoute . '.index'))->with(['error' => 'Failed to restore Employee Information']);
+                }
+            }
+        } catch (\Exception $e) {
+            return redirect(route($this->parentRoute . '.index'))->with(['error' => $e->getMessage()]);
         }
     }
 }

@@ -1,7 +1,7 @@
 
-<form id="step2Form" enctype="multipart/form-data" style="display: none">
-
-    <div class="row p-3">
+<form id="step2Form" enctype="multipart/form-data" style="display: none" >
+    <div class="step_2_formContainer">
+    <div class="row  p-3">
 
         <div class="col-md-12" id="qualificationContainer">
             <div class="row">
@@ -12,6 +12,7 @@
                         </div>
 
                 </div>
+
                 <div class="col-md-3 mt-2 mb-3">
                     <div class="form-group">
                         <label for="">Institute Name <span class="text-danger">( Required )</span></label>
@@ -72,11 +73,11 @@
 
 
         </div>
-
+    </div>
         <div class="col-md-12 g-3">
             <div class="d-flex float-end g-3">
                 <a href="{{ route('employees.index') }}" class="btn btn-secondary me-2">Employees List</a>
-                <button class="btn btn-warning text-white me-2 back_2" >Back </button>
+                <button class="btn btn-warning text-white me-2 back_button" title="step1"  data-id="{{ $employeeId ?? "" }}" >Back </button>
                 <button class="btn btn-success me-2 step_2_next" title="Save" >Save </button>
                 <button class="btn btn-primary step_2_next" title="Save and Next">Save & Next</button>
             </div>

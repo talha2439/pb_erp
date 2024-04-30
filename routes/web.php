@@ -100,16 +100,24 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
     // Employees Section
     Route::prefix('employees/')->group(function(){
         Route::get('/' , [EmployeeController::class,'index'])->name('employees.index');
+        Route::get('/trash' , [EmployeeController::class,'trash'])->name('employees.trash');
         Route::get('/create/{id?}' , [EmployeeController::class,'create'])->name('employees.create');
+        Route::get('/delete/{id?}' , [EmployeeController::class,'delete'])->name('employees.delete');
+        Route::get('/destroy/{id?}' , [EmployeeController::class,'destroy'])->name('employees.destroy');
+        Route::get('/restore/{id?}' , [EmployeeController::class,'restore'])->name('employees.restore');
         Route::get('/state/{id?}' , [EmployeeController::class,'state'])->name('state.get');
         Route::get('/city/{id?}' , [EmployeeController::class,'city'])->name('city.get');
         Route::post('/store/{id?}' , [EmployeeController::class ,'store'])->name('employees.store');
         Route::get('shift/designations/{id?}' , [EmployeeController::class,'designation_and_shift'])->name('shift.designations');
     });
     Route::prefix('employees/qualification')->group(function(){
+        Route::get('/edit/{id?}' , [EmployeeQualificationController::class ,'edit'])->name('employees.qualification.edit');
         Route::post('/store/{id?}' , [EmployeeQualificationController::class ,'store'])->name('employees.qualification.store');
+        Route::get('/delete/{id?}' , [EmployeeQualificationController::class ,'delete'])->name('employees.qualification.delete');
     });
     Route::prefix('employees/experience')->group(function(){
         Route::post('/store/{id?}' , [EmployeeExperienceController::class ,'store'])->name('employees.experience.store');
+        Route::Get('/edit/{id?}' , [EmployeeExperienceController::class ,'edit'])->name('employees.experience.edit');
+        Route::Get('/delete/{id?}' , [EmployeeExperienceController::class ,'delete'])->name('employees.experience.delete');
     });
 });

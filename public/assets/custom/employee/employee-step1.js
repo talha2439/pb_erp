@@ -9,9 +9,9 @@ $(document).ready(function () {
     let joining_date = $('input[name="joining_date"]');
     let shift = $('select[name="shift"]');
     let country = $('select[name="country"]');
-    let state   = $('select[name="state"]');
-    let salary  = $('input[name="salary"]');
-    let city  = $('select[name="city"]');
+    let state = $('select[name="state"]');
+    let salary = $('input[name="salary"]');
+    let city = $('select[name="city"]');
     let gender = $('select[name="gender"]');
     let empstatus = $('select[name="employment_status"]');
     let cnic = $("input[name='cnic_number']");
@@ -173,7 +173,9 @@ $(document).ready(function () {
             toastr["error"]("Please Select Employee's from User List");
             isValid = false;
             return false;
-        } else if ($(first_name).val() == "") {
+        }
+
+        else if ($(first_name).val() == "") {
             e.preventDefault();
             toastr["error"]("Enter Employee's first name");
             isValid = false;
@@ -184,7 +186,7 @@ $(document).ready(function () {
             isValid = false;
             return false;
         }
-        else if($(empstatus).val() == ""){
+        else if ($(empstatus).val() == "") {
             e.preventDefault();
             toastr["error"]("Please Select Employment Status");
             isValid = false;
@@ -227,7 +229,7 @@ $(document).ready(function () {
                 isValid = false;
                 return false;
             }  // To Validate Image extension
-              // File Size validation
+            // File Size validation
             if (image[0].files[0].size > 15 * (1024 * 1024)) {
                 e.preventDefault();
                 toastr["error"]("Image file size should be less than 15MB");
@@ -288,13 +290,13 @@ $(document).ready(function () {
                 let imageData = image[0].files[0];
                 formData.append("image", imageData);
             }
-            if(cv_file.val() !== "") {
+            if (cv_file.val() !== "") {
                 let cv_fileData = cv_file[0].files[0];
                 formData.append("cv_file", cv_fileData);
             }
             formData.append('data', step1form.serialize());
             $.ajax({
-                url: employeeStore,
+                url: employeeStore + '/' + empId.val(),
                 type: 'post',
                 data: formData,
                 processData: false,
@@ -305,7 +307,9 @@ $(document).ready(function () {
                 success: function (response) {
                     if (response.success) {
                         e.preventDefault();
-                        toastr.success("Employee Personal Information has been saved successfully");
+                        let message = action == "edit" &&  empId != "" ? "Updated" : "Saved";
+                        toastr.success("Employee Personal Information has been " + message + " successfully");
+                        editQualification();
                         if (button.attr('title') == 'Save and Next') {
                             $(empId).val(response.emp_id);
                             $('.step_title').html(`<h3><strong class="text-primary ">Step 2 :</strong >  Qualification Information </h3><hr>`);
