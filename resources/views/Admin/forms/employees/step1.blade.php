@@ -50,13 +50,27 @@
             </div>
         </div>
 
+        <div class="col-md-6 mt-2 mb-3 emp_dates" style="display: none">
+            <div class="form-group">
+                <label for="">Start Date <small class="text-danger">( Required )</small></label>
+                <input type="date" name="start_date" class="form-control ">
+            </div>
+        </div>
+
+        <div class="col-md-6 mt-2 mb-3 emp_dates" style="display: none">
+            <div class="form-group">
+                <label for="">End Date <small class="text-danger">( Required )</small></label>
+                <input type="date" name="end_date" class="form-control">
+            </div>
+        </div>
+
         <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
                 <label for="">Date of Birth <small class="text-danger">( Required )</small></label>
                 <input type="date" name="date_of_birth" class="form-control">
             </div>
         </div>
-        
+
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
                 <label for="">Department <small class="text-danger">( Required )</small></label>

@@ -26,7 +26,9 @@ $(document).ready(function () {
     let csrfToken = $('input[name="csrf_token"]');
     let empId = $('input[name="emp_id"]');
     let cv_file = $('input[name="cv_file"]');
+    $(joining_date).val(getfullDate())
     // Form Input Variables Ended here
+
     var isrequiredcnic = false;
     $(date_of_birth).on("change", function (e) {
         e.preventDefault();
@@ -37,6 +39,7 @@ $(document).ready(function () {
             isrequiredcnic = true;
             $(".requiredCnic").show();
             $(".unrequired").hide();
+
         }
         else {
             isrequiredcnic = false;
@@ -44,6 +47,7 @@ $(document).ready(function () {
             $(".unrequired").show();
         }
     });
+
     $(date_of_birth).on("keypress", function (e) {
         e.preventDefault();
         let dob = new Date(date_of_birth.val()).getFullYear();
@@ -69,6 +73,23 @@ $(document).ready(function () {
             $(".no_of_child").fadeOut();
         }
     });
+    // Employment Status
+    $(empstatus).on('change', function(e){
+        e.preventDefault();
+        let value = $(this);
+
+        if($(value).val() == "prohibition" || $(value).val() == "internship"){
+            $('.emp_dates').show();
+            $(value).closest('.col-md-6').addClass('col-md-12');
+            $('input[name="start_date"]').val(getfullDate());
+        }
+        else{
+            $('.emp_dates').hide();
+            $(value).closest('.col-md-6').removeClass('col-md-12');
+            $('input[name="start_date"]').val("");
+
+        }
+    })
     // Shift And Designations
     $(department).on("change", function (e) {
         e.preventDefault();
@@ -174,7 +195,6 @@ $(document).ready(function () {
             isValid = false;
             return false;
         }
-
         else if ($(first_name).val() == "") {
             e.preventDefault();
             toastr["error"]("Enter Employee's first name");
@@ -192,7 +212,6 @@ $(document).ready(function () {
             isValid = false;
             return false;
         }
-
         else if ($(date_of_birth).val() == "") {
             e.preventDefault();
             toastr["error"]("Enter Employee's Date of Birth");
@@ -307,7 +326,7 @@ $(document).ready(function () {
                 success: function (response) {
                     if (response.success) {
                         e.preventDefault();
-                        let message = action == "edit" &&  empId != "" ? "Updated" : "Saved";
+                        let message = action == "edit" && empId != "" ? "Updated" : "Saved";
                         toastr.success("Employee Personal Information has been " + message + " successfully");
                         editQualification();
                         if (button.attr('title') == 'Save and Next') {
@@ -337,6 +356,10 @@ $(document).ready(function () {
             })
         }
     });
+    function getfullDate(){
+        let date = new Date();
+        date = date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + date.getDate()).slice(-2);
+        return date;
+    }
 
-    // End of Step 1
 });

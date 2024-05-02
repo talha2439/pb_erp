@@ -53,6 +53,15 @@ $(document).ready(function () {
             $('.same_permanent').prop('checked', true);
             $('textarea[name="present_address"]').prop('readonly', true);
         }
+        if(employeeData.employment_status == "internship" || employeeData.employment_status == "prohibition"){
+            $('.emp_dates').show();
+            $('input[name="start_date"]').val(employeeData.start_date);
+            $('input[name="end_date"]').val(employeeData.end_date);
+        }
+        else{
+            
+
+        }
 
     }
 })

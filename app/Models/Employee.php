@@ -39,10 +39,17 @@ class Employee extends Model
             'designation',
             'shift',
             'salary',
-            'gender'
+            'gender',
+            'start_date',
+            'end_date',
     ];
     public function users(){
         return $this->hasOne(User::class, 'id', 'user_id');
     }
-
+    public function qualifications(){
+        return $this->hasOne(EmployeeQualification::class , 'employee_id' , 'id');
+    }
+    public function experience(){
+        return $this->hasOne(EmployeeExperience::class , 'employee_id' , 'id');
+    }
 }

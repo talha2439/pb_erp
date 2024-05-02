@@ -91,6 +91,24 @@ class EmployeeExperienceController extends Controller
             return response()->json(['error' => $e->getMessage()]);
         }
     }
+    public function get_experience($id){
+        try {
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'view_status');
+            if ($checkAccess) {
+                $qualification        = $this->parentModel::where('employee_id', $id)->get();
+                if ($qualification) {
+                    return response()->json(['success' => true , 'data' => $qualification]);
+                } else {
+                    return response()->json(['error' => true]);
+                }
+            } else {
+                return response()->json(['unauthorized' => true]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
     public function check_access($subMenuId, $status)
     {
         $checkAccess = UserAccess::where(['sub_menu_id' => $subMenuId, $status => 1, 'user_id' => Auth::user()->id])->first();

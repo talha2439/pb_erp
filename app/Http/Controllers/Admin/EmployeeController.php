@@ -43,6 +43,22 @@ class EmployeeController extends Controller
             abort(405);
         }
     }
+    public function employee_details($id)
+    {
+        $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
+        $checkAccess = $this->check_access($submenuId->id, 'view_status');
+        if ($checkAccess) {
+            try {
+                $id  =  decrypt($id);
+                $data['employee'] = $this->parentModel::where('id', $id)->first();
+                return view($this->parentView . '.templates.employee_details', $data);
+            } catch (\Exception $e) {
+                return redirect(route($this->parentRoute.'.index'))->with('error', $e->getMessage());
+            }
+        } else {
+            abort(405);
+        }
+    }
     public function trash(Request $request)
     {
         $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.trash')->first();
@@ -83,6 +99,7 @@ class EmployeeController extends Controller
         try {
             $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.create')->first();
             $checkAccess = $this->check_access($submenuId->id, 'create_status');
+
             if (!empty($id)) {
                 $checkAccess = $this->check_access($submenuId->id, 'update_status');
             }
@@ -90,6 +107,12 @@ class EmployeeController extends Controller
                 $requestData = $request->data;
                 parse_str($requestData, $data);
                 unset($data['_token']);
+                if (empty($id)) {
+                    $validateEmailandCnic = $this->parentModel::where('personal_email', $data['personal_email'])->orWhere('cnic_number', $data['cnic_number'])->count();
+                    if ($validateEmailandCnic > 0) {
+                        return response()->json(['error' => "Personal email or cnic number already used"]);
+                    }
+                }
                 $data['max_id']         = $this->parentModel::max('id') ?? 0;
                 $data['max_id']         = ($data['max_id'] + 1);
                 $data['emp_uniq_id']    = "pbhub-" . str_replace(" ", "", strtolower($data['first_name'])) . '-' . str_pad($data['max_id'], 3, '0', STR_PAD_LEFT);
@@ -100,7 +123,7 @@ class EmployeeController extends Controller
                 $data['nationality']    = isset($data['nationality']) && !empty($data['nationality']) ? $data['nationality'] : 0;
                 $data['shift']          = isset($data['shift']) && !empty($data['shift']) ? $data['shift'] : 0;
                 $data['no_of_child']    = isset($data['no_of_child']) && !empty($data['no_of_child']) ? $data['no_of_child'] : 0;
-
+                $data['start_date']     = !empty($data['start_date']) ? $data['start_date'] : null;
                 if (!empty($id)) {
                     $emp_data = $this->parentModel::where('id', $id)->first();
                     $data['emp_uniq_id'] = $emp_data->emp_uniq_id;

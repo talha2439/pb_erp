@@ -88,21 +88,25 @@
                             </td>
                             <td>
                                 <center>
-                                    <a class="btn btn-info text-white btn-sm"  data-bs-toggle="modal" data-bs-target="#qualificationModal">
+                                    <a class="btn btn-info text-white btn-sm showQualification"
+                                        data-id="{{ $item->id }}" data-bs-toggle="modal"
+                                        data-bs-target="#qualificationModal">
                                         <i class="fa-solid fa-file-invoice"></i>
                                     </a>
                                 </center>
                             </td>
                             <td>
                                 <center>
-                                    <a class="btn btn-warning text-white btn-sm" data-bs-toggle="modal" data-bs-target="#experienceModal">
+                                    <a class="btn btn-warning text-white btn-sm showExperience" data-bs-toggle="modal"
+                                        data-bs-target="#experienceModal"data-id="{{ $item->id }}"
+                                        data-id="{{ $item->id }}">
                                         <i class="fa-solid fa-square-poll-horizontal"></i>
                                     </a>
                                 </center>
                             </td>
                             <td>
                                 <center>
-                                    <a class="btn btn-primary text-white btn-sm">
+                                    <a href="{{ route('employees.details' , encrypt($item->id)) }}" class="btn btn-primary text-white btn-sm">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                 </center>
@@ -129,6 +133,7 @@
         <link rel="stylesheet" href="{{ asset('assets/plugins/datatables/datatables.min.css') }}">
         <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
         <script>
+            let basePath = "{{ asset('') }}";
             $(document).on('click', '.eye_icon', function(e) {
                 e.preventDefault();
                 if ($(this).data('type') == "show") {
@@ -169,6 +174,75 @@
 
 
             });
+            let getQualificationUrl = "{{ route('employees.get.qualification') }}";
+            $(document).on('click', '.showQualification', function(e) {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: getQualificationUrl + '/' + id,
+                    type: 'Get',
+                    success: function(res) {
+                        let qualificationData = "";
+                        if (res.success) {
+                            if (res.data.length > 0) {
+                                $(res.data).each(function(key, val) {
+                                    let docspath = "../images/employee_qualification/" + val
+                                        .document;
+                                    qualificationData += `
+                                <tr>
+                                <td>${key + 1}</td>
+                                <td>${val.institute}</td>
+                                <td>${val.qualification}</td>
+                                <td>${val.start_date}</td>
+                                <td>${val.end_date}</td>
+                                <td>${val.gpa}</td>
+                                <td>${val.percentage}%</td>
+                                <td><a  ${val.document ? '' : 'disabled="true"'} href="${val.document ? docspath : '#'}" class="btn btn-primary text-white btn-sm" ><i class="fa fa-download"></i></a ></td>
+                                </tr>
+                                `;
+                                })
+                            } else if (res.data.length == 0) {
+                                qualificationData =
+                                    "<tr><td colspan='3' class='text-center text-danger'>No Qualification Information Found</td></tr>";
+                            }
+                            $("#qualificationData").html(qualificationData)
+                        }
+                    }
+                })
+            })
+            let getExperienceUrl = "{{ route('employees.get.experience') }}";
+            $(document).on('click', '.showExperience', function(e) {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: getExperienceUrl + '/' + id,
+                    type: 'Get',
+                    success: function(res) {
+                        let experienceData = "";
+                        if (res.success) {
+                            if (res.data.length > 0) {
+                                $(res.data).each(function(key, val) {
+                                    let docspath = "../images/emp_experience_attachment/" + val
+                                        .attachment;
+                                    experienceData += `
+                                <tr>
+                                <td>${key + 1}</td>
+                                <td>${val.job_title}</td>
+                                <td>${val.designation}</td>
+                                <td>${val.start_date}</td>
+                                <td>${val.end_date}</td>
+                                <td>${val.salary}</td>
+                                <td><a  ${val.attachment ? '' : 'disabled="true"'} href="${val.attachment ? docspath : '#'}" class="btn btn-primary text-white btn-sm" ><i class="fa fa-download"></i></a ></td>
+                                </tr>
+                                `;
+                                })
+                            } else if (res.data.length == 0) {
+                                experienceData =
+                                    "<tr><td colspan='3' class='text-center text-danger'>No Experience Information Found</td></tr>";
+                            }
+                            $("#experienceData").html(experienceData)
+                        }
+                    }
+                })
+            })
         </script>
     @endpush
 @endsection

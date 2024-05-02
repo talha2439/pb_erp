@@ -100,6 +100,7 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
     // Employees Section
     Route::prefix('employees/')->group(function(){
         Route::get('/' , [EmployeeController::class,'index'])->name('employees.index');
+        Route::get('/details/{id}' , [EmployeeController::class,'employee_details'])->name('employees.details');
         Route::get('/trash' , [EmployeeController::class,'trash'])->name('employees.trash');
         Route::get('/create/{id?}' , [EmployeeController::class,'create'])->name('employees.create');
         Route::get('/delete/{id?}' , [EmployeeController::class,'delete'])->name('employees.delete');
@@ -114,10 +115,12 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
         Route::get('/edit/{id?}' , [EmployeeQualificationController::class ,'edit'])->name('employees.qualification.edit');
         Route::post('/store/{id?}' , [EmployeeQualificationController::class ,'store'])->name('employees.qualification.store');
         Route::get('/delete/{id?}' , [EmployeeQualificationController::class ,'delete'])->name('employees.qualification.delete');
+        Route::get('/qualifications/{id?}' , [EmployeeQualificationController::class ,'get_qualification'])->name('employees.get.qualification');
     });
     Route::prefix('employees/experience')->group(function(){
         Route::post('/store/{id?}' , [EmployeeExperienceController::class ,'store'])->name('employees.experience.store');
         Route::Get('/edit/{id?}' , [EmployeeExperienceController::class ,'edit'])->name('employees.experience.edit');
         Route::Get('/delete/{id?}' , [EmployeeExperienceController::class ,'delete'])->name('employees.experience.delete');
+        Route::Get('/get_experience/{id?}' , [EmployeeExperienceController::class ,'get_experience'])->name('employees.get.experience');
     });
 });
