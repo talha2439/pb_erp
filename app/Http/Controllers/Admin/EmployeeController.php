@@ -50,7 +50,7 @@ class EmployeeController extends Controller
         if ($checkAccess) {
             try {
                 $id  =  decrypt($id);
-                $data['employee'] = $this->parentModel::where('id', $id)->first();
+                $data['employee'] = $this->parentModel::withTrashed()->where('id', $id)->first();
                 return view($this->parentView . '.templates.employee_details', $data);
             } catch (\Exception $e) {
                 return redirect(route($this->parentRoute.'.index'))->with('error', $e->getMessage());
@@ -83,7 +83,7 @@ class EmployeeController extends Controller
             $data['employee']    = $this->parentModel::where('id', $id)->first();
             $data['country']     = Country::all();
             $data['nationality'] = Nationality::all();
-            $data['users']       = $this->userModel::where('role', 4)->whereNotIn('id', Employee::pluck('user_id')->toArray())
+            $data['users']       = $this->userModel::whereNot('role', 1)->whereNotIn('id', Employee::pluck('user_id')->toArray())
                 ->get();
             if ($data['action'] == 'edit') {
                 $data['users'] = $this->userModel::where('role', 4)->get();

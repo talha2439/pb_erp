@@ -75,49 +75,64 @@ $(document).ready(function () {
     });
     $(document).on('click', '.removeExp', function (e) {
         e.preventDefault();
-        $(this).closest('.row').remove();
         totalAdded --;
         let id = $(this).data('id');
         if (id != undefined || id == '') {
-            let confirm = window.confirm("Do you want to remove this?");
-            if (confirm) {
-                $.ajax({
-                    url: deleteExperience + '/' + id,
-                    type: "GET",
-                    success: function (res) {
-                        if (res.success) {
-                            toastr['success']("Experience deleted successfully");
-                            return false;
-                        }
-                        else if (res.unauthorized) {
-                            toastr['error']("You are not authorized to delete this..!");
-                            return false;
-                        }
-                        else if (res.error) {
+            Swal.fire({
+                title:"Are you sure?",
+                text: "You sure you want to remove it ? ",
+                icon:'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#6C05A8',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((res) => {
+                if(res.isConfirmed){
+                 $(this).closest('.row').remove();
 
-                            toastr['error'](res.error);
+                    $.ajax({
+                        url: deleteExperience + '/' + id,
+                        type: "GET",
+                        success: function (res) {
+                            if (res.success) {
+                                toastr['success']("Experience deleted successfully");
+                                return false;
+                            }
+                            else if (res.unauthorized) {
+                                toastr['error']("You are not authorized to delete this..!");
+                                return false;
+                            }
+                            else if (res.error) {
+
+                                toastr['error'](res.error);
+                                return false;
+                            }
+                            else {
+                                toastr['error']("Something went wrong..!");
+                                return false;
+                            }
+                        }, error: function (xhr, status, error) {
+                            e.preventDefault();
+                            toastr["error"](xhr.responseJSON.message);
                             return false;
                         }
-                        else {
-                            toastr['error']("Something went wrong..!");
-                            return false;
-                        }
-                    }, error: function (xhr, status, error) {
-                        e.preventDefault();
-                        toastr["error"](xhr.responseJSON.message);
-                        return false;
-                    }
-                })
+                    })
+                }
+
+
+            });
+
+
+
             }
-        }
+            else{
+                $(this).closest('.row').remove();
+            }
+
     });
     // Validation For Form
     let expForm = $("#step3Form");
-    let designation = $('input[name="designation[]"]');
-    let salary = $('input[name="salary[]"]');
-    let attachments = $('input[name="attachment[]"]');
-    let description = $('textarea[name="description[]"]');
-    let reasonforleaving = $('textarea[name="reason_for_leaving[]"]');
     let emp_id = $('input[name="emp_id"]');
     let csrf_token = $('input[name="csrf_token"]');
     let submitBtn = $('.step_3_next');
@@ -160,7 +175,7 @@ $(document).ready(function () {
                     e.preventDefault();
                     toastr['error']("Only PDF, DOCX, DOC, PNG, JPG, and JPEG files are allowed..!");
                     isValid = false;
-                    return false; // Stop further iteration
+                    return false;
                 }
 
                 let fileSize = input.files[0].size;

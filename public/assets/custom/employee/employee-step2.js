@@ -6,10 +6,10 @@ $(document).ready(function () {
     let save2Button = $(".step_2_next");
     let emp_id = $("input[name='emp_id']");
     let csrfToken = $('input[name="csrf_token"]');
-    var totalAdded = 0 ;
+    var totalAdded = 0;
     $(document).on('click', '#addMoreQualification', function (e) {
         e.preventDefault();
-        if(totalAdded < 3){
+        if (totalAdded < 3) {
             let qualificationAppend = `<div class="row p-2">
             <hr><div class="col-md-12 d-flex justify-content-end ">
 
@@ -65,7 +65,7 @@ $(document).ready(function () {
             </div>
             `;
             $(".step_2_formContainer").append(qualificationAppend);
-            totalAdded ++ ;
+            totalAdded++;
 
         }
 
@@ -73,42 +73,56 @@ $(document).ready(function () {
     // Removing the Row
     $(document).on('click', '.removeBtn', function (e) {
         e.preventDefault();
-        $(this).closest('.row').remove();
-        totalAdded -- ;
+        totalAdded--;
 
         let id = $(this).data('id');
         if (id != undefined || id == '') {
-            let confirm = window.confirm("Do you want to remove this?");
-            if (confirm) {
-                $.ajax({
-                    url: deleteQualification + '/' + id,
-                    type: "GET",
-                    success: function (res) {
-                        if (res.success) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You sure you want to remove it ? ",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#6C05A8',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    $(this).closest('.row').remove();
+                    $.ajax({
+                        url: deleteQualification + '/' + id,
+                        type: "GET",
+                        success: function (res) {
+                            if (res.success) {
 
-                            toastr['success']("Qualification deleted successfully");
-                            return false;
-                        }
-                        else if (res.unauthorized) {
-                            toastr['error']("You are not authorized to delete this..!");
-                            return false;
-                        }
-                        else if (res.error) {
+                                toastr['success']("Qualification deleted successfully");
+                                return false;
+                            }
+                            else if (res.unauthorized) {
+                                toastr['error']("You are not authorized to delete this..!");
+                                return false;
+                            }
+                            else if (res.error) {
 
-                            toastr['error'](res.error);
+                                toastr['error'](res.error);
+                                return false;
+                            }
+                            else {
+                                toastr['error']("Something went wrong..!");
+                                return false;
+                            }
+                        }, error: function (xhr, status, error) {
+                            e.preventDefault();
+                            toastr["error"](xhr.responseJSON.message);
                             return false;
                         }
-                        else {
-                            toastr['error']("Something went wrong..!");
-                            return false;
-                        }
-                    }, error: function (xhr, status, error) {
-                        e.preventDefault();
-                        toastr["error"](xhr.responseJSON.message);
-                        return false;
-                    }
-                })
-            }
+                    })
+                }
+            })
+
+        }
+        else {
+            $(this).closest('.row').remove();
         }
     })
     // Adding Data and Validations
@@ -161,7 +175,7 @@ $(document).ready(function () {
                 if ($.inArray(ext, ['pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx']) === -1) {
                     toastr['error']("Only PDF, DOCX, DOC, PNG, JPG, and JPEG files are allowed..!");
                     isValid = false;
-                    return false; // Stop further iteration
+                    return false;
                 }
 
                 let fileSize = input.files[0].size;
@@ -169,7 +183,7 @@ $(document).ready(function () {
                     e.preventDefault();
                     toastr["error"]("Document file size should be less than 15MB");
                     isValid = false;
-                    return false; // Stop further iteration
+                    return false;
                 }
 
                 if (!isValid) {
@@ -179,7 +193,6 @@ $(document).ready(function () {
         }
         );
 
-        // Iterate over each pair of start and end dates to validate that end should be after start date
         for (let i = 0; i < start_date.length; i++) {
             let start_dates = start_date[i];
             let end_dates = end_date[i];
@@ -204,7 +217,7 @@ $(document).ready(function () {
                     imageFiles.push(imageFile);
                 }
             })
-            // Appending all images to form
+
             for (let i = 0; i < imageFiles.length; i++) {
                 formData.append('document[]', imageFiles[i]);
             }
@@ -217,7 +230,7 @@ $(document).ready(function () {
                 processData: false,
                 contentType: false,
                 headers: {
-                    'X-CSRF-TOKEN': csrfToken.val() // Pass the CSRF token in the request headers
+                    'X-CSRF-TOKEN': csrfToken.val()
                 },
                 success: function (response) {
                     if (response.success) {

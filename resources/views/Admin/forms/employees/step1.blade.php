@@ -1,4 +1,4 @@
-<form id="step1" enctype="multipart/form-data" style="display: none">
+<form id="step1" enctype="multipart/form-data">
     @csrf
 
     <div class="row p-3">

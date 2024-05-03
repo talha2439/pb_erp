@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\{Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, MenuAccessController, MenuSettingController, ShiftController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{AttendanceController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, MenuAccessController, MenuSettingController, ShiftController, UserAccessController, UserController};
 use App\Http\Controllers\AuthController;
+use App\Models\Attendance;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -122,5 +123,11 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
         Route::Get('/edit/{id?}' , [EmployeeExperienceController::class ,'edit'])->name('employees.experience.edit');
         Route::Get('/delete/{id?}' , [EmployeeExperienceController::class ,'delete'])->name('employees.experience.delete');
         Route::Get('/get_experience/{id?}' , [EmployeeExperienceController::class ,'get_experience'])->name('employees.get.experience');
+    });
+    Route::prefix('employees/attendance')->group(function(){
+        Route::post('/checkin' , [AttendanceController::class ,'checkin'])->name('attendance.checkin');
+        Route::Get('/edit/{id?}' , [AttendanceController::class ,'edit'])->name('attendance.edit');
+        Route::Get('/delete/{id?}' , [AttendanceController::class ,'delete'])->name('attendance.delete');
+        Route::Get('/get_experience/{id?}' , [AttendanceController::class ,'get_experience'])->name('attendance.get');
     });
 });

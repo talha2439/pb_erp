@@ -12,19 +12,39 @@ Dashboard
     <div class="card-body">
     <div class="dash-widget-header">
     <span class="dash-widget-icon bg-1">
-    <i class="fas fa-dollar-sign"></i>
+    <i class="fas fa-clock"></i>
     </span>
-    <div class="dash-count">
-    <div class="dash-title">Amount Due</div>
-    <div class="dash-counts">
-    <p>1,642</p>
+    <div class="dash-count row">
+       <div class="dash-title" >Check-in</div>
+        <div class="dash-counts">
+        <div class="time-container fw-bold d-flex">
+            <span class="time">{{ $attendance->check_in ?? "click the button below" }} </span> &nbsp;<div class="meridiem"></div>
+        </div>
+        </div>
+
+
+
     </div>
     </div>
+    <div class="row">
+        <div class="col-md-10 d-flex">
+            <p class="text-muted mt-3 mb-0"><span class="text-primary me-1"><i class="fas fa-clock me-1"></i>Working Hours</span>&nbsp; <span class="time-calulation">
+                0 hr 0 min 0 secs</span> </p>
+
+        </div>
+        <div class="col-md-2 ">
+            <input type="hidden" class="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" class="checkInInput">
+            <input type="hidden" class="checkOutInput">
+            <button class="btn btn-success checkInBtn"  @if(!empty($attendance->check_in)) style="display:none" @endif  @if(Auth::user()->role == 1) disabled @endif>
+                <i class="fe fe-check-circle"></i>
+            </button>
+            <button class="btn btn-danger checkoutBtn " @if(empty($attendance->check_in)) style="display:none" @endif @if(Auth::user()->role == 1) disabled @endif>
+                <i class="fe fe-stop-circle"></i>
+            </button>
+
     </div>
-    <div class="progress progress-sm mt-3">
-    <div class="progress-bar bg-5" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
-    <p class="text-muted mt-3 mb-0"><span class="text-danger me-1"><i class="fas fa-arrow-down me-1"></i>1.15%</span> since last week</p>
     </div>
     </div>
     </div>
@@ -543,7 +563,12 @@ Dashboard
 
 {{-- Content Ends --}}
 @push('js')
-<script src="assets/plugins/apexchart/apexcharts.min.js" type="text/javascript"></script>
-<script src="assets/plugins/apexchart/chart-data.js" type="text/javascript"></script>
+<script src="{{ asset('assets/custom/dashboard/attendance.js') }}"></script>
+<script src="{{ asset('assets/plugins/apexchart/apexcharts.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/plugins/apexchart/chart-data.js') }}" type="text/javascript"></script>
+<script>
+    let attendanceCheckin = "{{ route('attendance.checkin') }}";
+
+</script>
 @endpush
 @endsection

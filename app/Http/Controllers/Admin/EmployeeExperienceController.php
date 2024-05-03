@@ -96,7 +96,7 @@ class EmployeeExperienceController extends Controller
             $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
             $checkAccess = $this->check_access($submenuId->id, 'view_status');
             if ($checkAccess) {
-                $qualification        = $this->parentModel::where('employee_id', $id)->get();
+                $qualification        = $this->parentModel::withTrashed()->where('employee_id', $id)->get();
                 if ($qualification) {
                     return response()->json(['success' => true , 'data' => $qualification]);
                 } else {

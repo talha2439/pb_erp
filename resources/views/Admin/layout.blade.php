@@ -935,6 +935,7 @@
 
     <script src="{{ asset('assets/js/script.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/sweetalert/sweetalert2.all.min.js') }}"></script>
 
 </body>
 @if (Session::has('success'))
@@ -949,6 +950,8 @@
 @endif
 <script>
     $(document).ready(function() {
+
+
         setTimeout(() => {
             $('.loader-container').hide();
         }, 1000);

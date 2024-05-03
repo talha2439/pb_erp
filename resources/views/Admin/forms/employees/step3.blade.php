@@ -1,4 +1,4 @@
-<form id="step3Form" enctype="multipart/form-data"  >
+<form id="step3Form" enctype="multipart/form-data" style="display: none" >
 
             <div class="col-md-12" id="experienceContainer">
                 <div class="row">

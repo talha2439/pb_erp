@@ -106,7 +106,8 @@
                             </td>
                             <td>
                                 <center>
-                                    <a href="{{ route('employees.details' , encrypt($item->id)) }}" class="btn btn-primary text-white btn-sm">
+                                    <a href="{{ route('employees.details', encrypt($item->id)) }}"
+                                        class="btn btn-primary text-white btn-sm">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                 </center>
@@ -153,24 +154,35 @@
 
             $(document).on('click', '.deleteEmployee', function(e) {
                 let id = $(this).data('id');
-
-                let confirm = window.confirm('Are you sure you want to delete');
-                if (confirm) {
-                    $.ajax({
-                        url: deleteUrl + "/" + id,
-                        type: 'Get',
-                        success: function(res) {
-                            if (res.success) {
-                                toastr['success']('Employee information has been  Deleted successfully..!')
-                                setTimeout(() => {
-                                    window.location.reload();
-                                }, 1500);
-                            } else {
-                                toastr['error']('Something went wrong..!');
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You sure you want to remove it ? ",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#6C05A8',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Yes'
+                }).then((res) => {
+                    if (res.isConfirmed) {
+                        $.ajax({
+                            url: deleteUrl + "/" + id,
+                            type: 'Get',
+                            success: function(res) {
+                                if (res.success) {
+                                    toastr['success'](
+                                        'Employee information has been  Deleted successfully..!'
+                                        )
+                                    setTimeout(() => {
+                                        window.location.reload();
+                                    }, 1500);
+                                } else {
+                                    toastr['error']('Something went wrong..!');
+                                }
                             }
-                        }
-                    })
-                }
+                        })
+                    }
+                });
 
 
             });

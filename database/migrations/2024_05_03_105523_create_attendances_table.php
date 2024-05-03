@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('employee_id');
+            $table->string('check_in');
+            $table->string('check_out')->nullable();
+            $table->date('date');
+            $table->integer('working_hours')->default(0);
+            $table->integer('extra_hours')->default(0);
+            $table->integer('total_hours')->default(0);
+            $table->string('attendance_status')->default('absent');
+            $table->string('working_status')->default('on-time');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

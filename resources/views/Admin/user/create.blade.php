@@ -57,7 +57,6 @@
                 <option value="2">Manager</option>
                 <option value="3">HR ( Human Resource )</option>
                 <option value="4">Employee</option>
-                <option value="0">Basic User</option>
 
             </select>
         </div>

@@ -61,18 +61,17 @@
                                 if($item->role == 1){
                                     $role = 'Admin';
                                 }
-                                elseif ($item->role == 0) {
-                                    $role = 'Employee';
-                                }
                                 elseif ($item->role == 2) {
                                     $role = 'Manager';
                                 }
                                 elseif ($item->role == 3) {
                                     $role = 'HR';
                                 }
-                                else{
-                                    $role = 'User';
+                                elseif ($item->role == 4) {
+                                    $role = 'Employee';
                                 }
+
+
                             @endphp
                             <td>{{ $role }}</td>
                             @if (Auth::user()->role == 1)
