@@ -47,9 +47,9 @@ class Employee extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
     public function qualifications(){
-        return $this->hasOne(EmployeeQualification::class , 'employee_id' , 'id');
+        return $this->hasMany(EmployeeQualification::class , 'employee_id' , 'id');
     }
-    public function experience(){
-        return $this->hasOne(EmployeeExperience::class , 'employee_id' , 'id');
+    public function experiences(){
+        return $this->hasMany(EmployeeExperience::class , 'employee_id' , 'id');
     }
 }

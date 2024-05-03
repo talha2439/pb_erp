@@ -3,95 +3,168 @@
     All Employees
 @endsection
 @section('content')
+    <style>
+        @media (min-width: 768px)  {
+            .experienceContainer{
+                position: relative; bottom:130px
+            }
+        }
+    </style>
     <div class="container" style="max-width:900px">
-        <div class="card shadow-sm border p-4" style="min-height: 700px ; padding:30px">
+        <div class="card shadow-sm border p-4" style="min-height: 700px; padding:30px">
 
-            <div class="row ">
-                <div class="col-md-12"><a href="" class="btn btn-primary"><i class="fa fa-print"></i></a></div>
-                <div class="col-md-12  m-3" style="width: max-content">
-                        {{-- img --}}
-                        <div class="row">
-                        <div class="ml-3 col-md-4 ">
-                            <img src="{{ asset('images/EmployeesImages/'.$employee->image) }}" alt="" class="border rounded shadow-sm p-2" style="height:250px; width:auto; max-width:250px  ; object-fit:cover">
-                            <div class="ml-3">
-                                <h4 class="fw-bold mt-3">Contact Information</h4><hr>
-                            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="{{ route('employees.index') }}" class="btn btn-secondary"><i class="fe fe-corner-down-left"></i></a> | <a href="" class="btn btn-primary"><i class="fe fe-printer"></i></a>
+                </div>
+            </div>
 
-                            <div class="row p-2 border me-2" style="min-height:200px">
-                                <div class="col-md-2 text-primary  "><i class="fe fe-mail"></i></div>
-                                <div class="col-md-10  "> {{ $employee->personal_email }}</div>
-                                <div class="col-md-2 mt-2 text-primary "><i class="fe fe-mail"></i></div>
-                                <div class="col-md-10 mt-2 "> {{ @$employee->users->email }}</div>
-                                <div class="col-md-2  mt-2 text-primary"><i class="fe fe-phone"></i></div>
-                                <div class="col-md-10 mt-2 "> {{ $employee->personal_contact }}</div>
-                                <div class="col-md-2 mt-2 text-primary"><i class="fe fe-map-pin"></i></div>
-                                <div class="col-md-10 mt-2 "><small>{{$employee->permanent_address}}</small></div>
-
-
-
-                            </div>
-
+            <div class="row">
+                <div class="col-md-12">
+                    {{-- Profile Image and Name --}}
+                    <div class="ml-3 row mt-3 mb-2">
+                        @php
+                            $imagePath = $employee->image ? 'images/EmployeesImages/' . $employee->image : 'assets/img/no-image.png';
+                        @endphp
+                        <div class="col-md-4 ">
+                            <img src="{{ asset( $imagePath ) }}" alt=""
+                            class="border rounded shadow-sm p-2"
+                            style="height:250px; width:auto; max-width:250px; object-fit:cover">
                         </div>
-                        {{-- Personal Information --}}
-                        <div class="text-start col-md-8 ml-3 ">
-                            <h1 class="fw-bold" style="text-transform: uppercase; font-size:50px">{{ $employee->first_name }} {{  $employee->last_name }}</h1>
+
+                        <div class="text col-md-8  col-12">
+                            <h1 class="fw-bold text-uppercase fs-1 fs-md-2 fs-lg-3 fs-xl-4">
+                                {{ $employee->first_name }} {{ $employee->last_name }}
+                            </h1>
                             <h5>Full-stack Developer</h5>
+                        </div>
+                    </div>
+
+                    {{-- Personal Information --}}
+                    <div class="text-start row col-md-12 ml-3">
+                        {{-- Contact Information --}}
+                        <div class="col-md-4">
+                            <div class="ml-3">
+                                <h4 class="fw-bold mt-3">Contact Information</h4>
+                                <hr>
+                                <div class="row rounded p-2 border me-2" style="min-height:200px">
+                                    <div class="col-md-2 text-primary"><i class="fe fe-mail" style="border-right: 2px solid rgb(122, 93, 204); padding-right:5px"></i></div>
+                                    <div class="col-md-10">{{ $employee->personal_email }}</div>
+                                    <div class="col-md-2 mt-2 text-primary"><i class="fe fe-mail" style="border-right: 2px solid rgb(122, 93, 204); padding-right:5px"></i></div>
+                                    <div class="col-md-10 mt-2">{{ @$employee->users->email }}</div>
+                                    <div class="col-md-2 mt-2 text-primary"><i class="fe fe-phone" style="border-right: 2px solid rgb(122, 93, 204); padding-right:5px"></i></div>
+                                    <div class="col-md-10 mt-2">{{ $employee->personal_contact }}</div>
+                                    <div class="col-md-2 mt-2 text-primary"><i class="fe fe-map-pin" style="border-right: 2px solid rgb(122, 93, 204); padding-right:5px"></i></div>
+                                    <div class="col-md-10 mt-2"><small>{{ $employee->permanent_address }}</small></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Qualifications and Experiences --}}
+                        <div class="col-md-8 experienceContainer" >
                             <hr>
                             <div class="d-flex justify-content-between mt-3">
-                                <b style="border-bottom:3px solid rgb(134, 11, 216)"><h4><i class="fe fe-file text-primary ml-3"></i>  Qualification</h4></b> &nbsp; <a href="@if(!empty($employee->qualifications->document )){{ asset('images/employee_qualification/' . $employee->qualifications->document ) }}@else # @endif" class="btn btn-primary"><div class="fa fa-print">  </div></a>
+                                <b style="border-bottom:3px solid rgb(134, 11, 216)">
+                                    <h4><i class="fe fe-file text-primary ml-3"></i> Qualification</h4>
+                                </b>
                             </div>
                             {{-- QualificationTable --}}
                             <div class="me-4 mt-2" style="position:relative;">
-                            <div class="row">
-
-                                <div class="col-md-3  border">Institute</div>
-                                <div class="col-md-8 border"> {{ $employee->qualifications->institute ?? "No Information" }}</div>
-                                <div class="col-md-3 border">Qualification</div>
-                                <div class="col-md-8 border"> {{ $employee->qualifications->qualification ?? "No Information" }}</div>
-                                <div class="col-md-3 border">Date</div>
-                                <div class="col-md-8  border"> {{ $employee->qualifications->start_date ?? "No Information"}} <b>-</b>  {{ $employee->qualifications->start_date ?? "Present" }} </div>
-                                <div class="col-md-3  border">GPA</div>
-                                <div class="col-md-8  border"> {{ $employee->qualifications->gpa ?? 0 }}</div>
-                                <div class="col-md-3  border">Percentage</div>
-                                <div class="col-md-8  border"> {{ $employee->qualifications->percentage ?? 0 }}%</div>
-
+                                <div class="accordion accordion-flush" id="qualification">
+                                @forelse ($employee->qualifications as $key => $qualification)
+                                    <div class="accordion-item border-0">
+                                        <h2 class="accordion-header" id="heading{{ $qualification->id }}">
+                                            <button class="accordion-button bg-white border-0 mt-1 p-1 pe-2 btn-primary" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapse{{ $qualification->id }}" aria-expanded="true"
+                                                aria-controls="collapse{{ $qualification->id }}">
+                                                <a href="" class="btn btn-primary"><i class="fe fe-printer  text-white"></i></a>&nbsp;<span class="ml-3">{{ $qualification->qualification }}</span>
+                                            </button>
+                                        </h2>
+                                        <div id="collapse{{ $qualification->id }}" class="accordion-collapse collapse @if($key == 0) show active @endif" aria-labelledby="heading{{ $qualification->id }}"
+                                            data-bs-parent="#qualification">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-3 border">Institute</div>
+                                                    <div class="col-md-8 border">{{ $qualification->institute ?? 'No Information' }}</div>
+                                                    <div class="col-md-3 border">Qualification</div>
+                                                    <div class="col-md-8 border">{{ $qualification->qualification ?? 'No Information' }}</div>
+                                                    <div class="col-md-3 border">Date</div>
+                                                    <div class="col-md-8 border">{{ $qualification->start_date ?? 'No Information' }} <b>-</b>
+                                                        {{ $qualification->start_date ?? 'Present' }}</div>
+                                                    <div class="col-md-3 border">GPA</div>
+                                                    <div class="col-md-8 border">{{ $qualification->gpa ?? 0 }}</div>
+                                                    <div class="col-md-3 border">Percentage</div>
+                                                    <div class="col-md-8 border">{{ $qualification->percentage ?? 0 }}%</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @empty
+                                    <div class="accordion-item border-0">
+                                        <button class="accordion-button bg-white mt-4 btn-primary" disabled type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            No Qualification Information Available
+                                        </button>
+                                    </div>
+                                    @endforelse
+                                </div>
                             </div>
-                            </div>
-                            {{-- Experience --}}
+
+                            <hr>
+
                             <div class="d-flex justify-content-between mt-3">
-                                <b  style="border-bottom:3px solid rgb(134, 11, 216)"><h4><i class="fe fe-briefcase text-primary ml-3"></i>  Job Experience</h4></b> &nbsp; <a href="@if(!empty($employee->experience->attachment )){{ asset('images/emp_experience_attachment/' . $employee->experience->attachment ) }}@else # @endif" class="btn btn-primary"><div class="fa fa-print">  </div></a>
+                                <b style="border-bottom:3px solid rgb(134, 11, 216)">
+                                    <h4><i class="fe fe-briefcase text-primary ml-3"></i> Job Experience</h4>
+                                </b>
                             </div>
+
+                            {{-- Experience --}}
                             <div class="me-4 mt-4" style="position:relative;">
-                                <div class="row">
-
-                                    <div class="col-md-3  border">Company Name</div>
-                                    <div class="col-md-8 border"> {{ $employee->experience->job_title ?? "No Information" }}</div>
-
-                                    <div class="col-md-3 border">Designation</div>
-                                    <div class="col-md-8 border"> {{ $employee->experience->designation ?? "No Information" }}</div>
-                                    <div class="col-md-3 border">From</div>
-                                    <div class="col-md-8  border"> {{ $employee->experience->start_date ?? "No Information" }}</div>
-                                    <div class="col-md-3  border">To</div>
-                                    <div class="col-md-8  border"> {{ $employee->experience->end_date ?? "Present" }}</div>
-
-                                    <div class="col-md-3  border">Previous Salary</div>
-                                    <div class="col-md-8  border"> PKR,{{ $employee->experience->salary ?? "Present" }}</div>
-
-
+                                <div class="accordion accordion-flush" id="experience">
+                                    @forelse ($employee->experiences as $key => $experience)
+                                    <div class="accordion-item border-0">
+                                        <h2 class="accordion-header" id="experienceHeading{{ $experience->id }}">
+                                            <button class="accordion-button border-0 bg-white mt-1 p-1 pe-2 btn-primary" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseExperience{{ $experience->id }}" aria-expanded="true"
+                                                aria-controls="collapse{{ $experience->id }}">
+                                                <a href="" class="btn btn-primary"><i class="fe fe-printer  text-white"></i></a>&nbsp;<span class="ml-3">{{ $experience->designation }}</span>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseExperience{{ $experience->id }}" class="accordion-collapse collapse @if($key == 0) show active @endif" aria-labelledby="experienceHeading{{ $experience->id }}"
+                                            data-bs-parent="#experience">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-md-3  border">Company Name</div>
+                                                    <div class="col-md-8 border">{{ $experience->job_title ?? 'No Information' }}</div>
+                                                    <div class="col-md-3 border">Designation</div>
+                                                    <div class="col-md-8 border">{{ $experience->designation ?? 'No Information' }}</div>
+                                                    <div class="col-md-3 border">From</div>
+                                                    <div class="col-md-8  border">{{ $experience->start_date ?? 'No Information' }}</div>
+                                                    <div class="col-md-3  border">To</div>
+                                                    <div class="col-md-8  border">{{ $experience->end_date ?? 'Present' }}</div>
+                                                    <div class="col-md-3  border">Previous Salary</div>
+                                                    <div class="col-md-8  border"> PKR,{{ $experience->salary ?? 'Present' }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @empty
+                                    <div class="accordion-item border-0">
+                                        <button class="accordion-button bg-white mt-4 btn-primary" disabled type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            No Experience Information Available
+                                        </button>
+                                    </div>
+                                    @endforelse
                                 </div>
-                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                {{-- Personal Information --}}
-                <div class="col-md-8">
+            </div>
 
-                </div>
-            </div><hr>
+            <hr>
             <center><small class="text-secondary"></small></center>
         </div>
     </div>
-
-
-
 @endsection

@@ -6,68 +6,76 @@ $(document).ready(function () {
     let save2Button = $(".step_2_next");
     let emp_id = $("input[name='emp_id']");
     let csrfToken = $('input[name="csrf_token"]');
+    var totalAdded = 0 ;
     $(document).on('click', '#addMoreQualification', function (e) {
         e.preventDefault();
-        let qualificationAppend = `<div class="row p-2">
-        <hr><div class="col-md-12 d-flex justify-content-end ">
+        if(totalAdded < 3){
+            let qualificationAppend = `<div class="row p-2">
+            <hr><div class="col-md-12 d-flex justify-content-end ">
 
-                <div class="form-group ">
-                 <button class="btn btn-danger mt-3 removeBtn" ><i class="fe fe-trash"></i></button>
+                    <div class="form-group ">
+                     <button class="btn btn-danger mt-3 removeBtn" ><i class="fe fe-trash"></i></button>
+                    </div>
+
+            </div>
+            <div class="col-md-3 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">Institute Name <span class="text-danger">( Required )</span></label>
+                   <input type="text" class="form-control" name="institute[]" placeholder="Institute name">
                 </div>
-
-        </div>
-        <div class="col-md-3 mt-2 mb-3">
-            <div class="form-group">
-                <label for="">Institute Name <span class="text-danger">( Required )</span></label>
-               <input type="text" class="form-control" name="institute[]" placeholder="Institute name">
             </div>
-        </div>
-        <div class="col-md-3 mt-2 mb-3">
-            <div class="form-group">
-                <label for="">Qualification <small class="text-danger" >( Required )</small></label>
-                <input type="text" name="qualification[]" class="form-control" placeholder="Qualification">
+            <div class="col-md-3 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">Qualification <small class="text-danger" >( Required )</small></label>
+                    <input type="text" name="qualification[]" class="form-control" placeholder="Qualification">
+                </div>
             </div>
-        </div>
-        <div class="col-md-3 mt-2 mb-3">
-            <div class="form-group">
-                <label for="">Start Date <span class="text-danger">( Required )</span></label>
-               <input type="date" class="form-control" name="start_date[]" placeholder="Start Date">
+            <div class="col-md-3 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">Start Date <span class="text-danger">( Required )</span></label>
+                   <input type="date" class="form-control" name="start_date[]" placeholder="Start Date">
+                </div>
             </div>
-        </div>
-        <div class="col-md-3 mt-2 mb-3">
-            <div class="form-group">
-                <label for="">End Date <span class="text-danger">( Required )</span></label>
-               <input type="date" class="form-control" name="end_date[]" placeholder="End Date">
+            <div class="col-md-3 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">End Date <span class="text-danger">( Required )</span></label>
+                   <input type="date" class="form-control" name="end_date[]" placeholder="End Date">
+                </div>
             </div>
-        </div>
-        <div class="col-md-3 mt-2 mb-3">
-            <div class="form-group">
-                <label for="">GPA <span class="text-secondary">( Optional )</span></label>
-               <input type="number" class="form-control" name="gpa[]" placeholder="GPA">
+            <div class="col-md-3 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">GPA <span class="text-secondary">( Optional )</span></label>
+                   <input type="number" class="form-control" name="gpa[]" placeholder="GPA">
+                </div>
             </div>
-        </div>
-        <div class="col-md-3 mt-2 mb-3">
-            <div class="form-group">
-                <label for="">Percentage <span class="text-secondary">( Optional )</span></label>
-               <input type="number" class="form-control" name="percentage[]" placeholder="Percentage">
+            <div class="col-md-3 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">Percentage <span class="text-secondary">( Optional )</span></label>
+                   <input type="number" class="form-control" name="percentage[]" placeholder="Percentage">
+                </div>
             </div>
-        </div>
 
 
-        <div class="col-md-3 mt-2 mb-3">
-            <div class="form-group">
-                <label for="">Documents <small class="text-secondary">( Optional )</small></label>
-                <input type="file" name="document[]" class="form-control documentFile" >
+            <div class="col-md-3 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">Documents <small class="text-secondary">( Optional )</small></label>
+                    <input type="file" name="document[]" class="form-control documentFile" >
+                </div>
             </div>
-        </div>
-</div>
-   `;
-        $(".step_2_formContainer").append(qualificationAppend);
+            </div>
+            `;
+            $(".step_2_formContainer").append(qualificationAppend);
+            totalAdded ++ ;
+
+        }
+
     });
     // Removing the Row
     $(document).on('click', '.removeBtn', function (e) {
         e.preventDefault();
         $(this).closest('.row').remove();
+        totalAdded -- ;
+
         let id = $(this).data('id');
         if (id != undefined || id == '') {
             let confirm = window.confirm("Do you want to remove this?");
@@ -77,6 +85,7 @@ $(document).ready(function () {
                     type: "GET",
                     success: function (res) {
                         if (res.success) {
+
                             toastr['success']("Qualification deleted successfully");
                             return false;
                         }

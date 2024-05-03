@@ -1,77 +1,82 @@
 $(document).ready(function () {
     let expContainer = $(document).find("#experienceContainer");
+    var totalAdded = 0;
     $(document).on("click", "#addMoreExperience", function (e) {
         e.preventDefault();
-        let appenddata = `  <div class="row">
-        <div class="col-md-12 d-flex justify-content-end ">
+        if(totalAdded < 3){
+            let appenddata = `  <div class="row">
+            <div class="col-md-12 d-flex justify-content-end ">
 
-                <div class="form-group ">
-                 <button class="btn btn-danger removeExp mt-3" ><i class="fe fe-trash"></i></button>
+                    <div class="form-group ">
+                     <button class="btn btn-danger removeExp mt-3" ><i class="fe fe-trash"></i></button>
+                    </div>
+                    <input  type="hidden" value="" name="exp_id[]" />
+
+            </div>
+            <div class="col-md-4 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">Company Name / Job Title <span class="text-danger">( Required )</span></label>
+                   <input type="text" class="form-control" name="job_title[]" placeholder="Company Name / Title">
                 </div>
-                <input  type="hidden" value="" name="exp_id[]" />
+            </div>
 
+            <div class="col-md-4 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">Start Date <span class="text-danger">( Required )</span></label>
+                   <input type="date" class="form-control" name="exp_start_date[]" placeholder="Start Date">
+                </div>
+            </div>
+            <div class="col-md-4 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">End Date <span class="text-danger">( Required )</span></label>
+                   <input type="date" class="form-control" name="exp_end_date[]" placeholder="End Date">
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-2 mb-3">
+            <div class="form-group">
+                <label for="">Designation / Position <small class="text-secondary" >( Optional )</small></label>
+                <input type="text" name="designation[]" class="form-control" placeholder="Designation">
+
+            </div>
         </div>
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Company Name / Job Title <span class="text-danger">( Required )</span></label>
-               <input type="text" class="form-control" name="job_title[]" placeholder="Company Name / Title">
-            </div>
-        </div>
-
-        <div class="col-md-4 mt-2 mb-3">
-            <div class="form-group">
-                <label for="">Start Date <span class="text-danger">( Required )</span></label>
-               <input type="date" class="form-control" name="exp_start_date[]" placeholder="Start Date">
+                <label for="">Salary  <small class="text-secondary">( Optional ) last salary from the previous job</small></label>
+                <input type="number" value="0" placeholder="Last Salary from the previous Job" name="salary[]" class="form-control documentFile" >
             </div>
         </div>
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
-                <label for="">End Date <span class="text-danger">( Required )</span></label>
-               <input type="date" class="form-control" name="exp_end_date[]" placeholder="End Date">
+                <label for="">Attachment  <small class="text-secondary">( Optional )</small></label>
+                <input type="file" name="attachment[]" class="form-control documentFile" >
             </div>
         </div>
 
-        <div class="col-md-4 mt-2 mb-3">
-        <div class="form-group">
-            <label for="">Designation / Position <small class="text-secondary" >( Optional )</small></label>
-            <input type="text" name="designation[]" class="form-control" placeholder="Designation">
-
-        </div>
-    </div>
-    <div class="col-md-4 mt-2 mb-3">
-        <div class="form-group">
-            <label for="">Salary  <small class="text-secondary">( Optional ) last salary from the previous job</small></label>
-            <input type="number" value="0" placeholder="Last Salary from the previous Job" name="salary[]" class="form-control documentFile" >
-        </div>
-    </div>
-    <div class="col-md-4 mt-2 mb-3">
-        <div class="form-group">
-            <label for="">Attachment  <small class="text-secondary">( Optional )</small></label>
-            <input type="file" name="attachment[]" class="form-control documentFile" >
-        </div>
-    </div>
-
-        <div class="col-md-12 mt-2 mb-3">
-            <div class="form-group">
-                <label for="">Reason of Leaving <span class="text-secondary">( Optional )</span></label>
-               <textarea  cols="40"  rows="5" class="form-control" name="reason_for_leaving[]" placeholder="Reason for leaving previous job."></textarea>
+            <div class="col-md-12 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">Reason of Leaving <span class="text-secondary">( Optional )</span></label>
+                   <textarea  cols="40"  rows="5" class="form-control" name="reason_for_leaving[]" placeholder="Reason for leaving previous job."></textarea>
+                </div>
             </div>
-        </div>
-        <div class="col-md-12 mt-2 mb-3">
-            <div class="form-group">
-                <label for="">Job Description <span class="text-secondary">( Optional )</span></label>
-               <textarea  cols="40"  rows="5" class="form-control" name="description[]" placeholder="Brief description or information about previous job."></textarea>
+            <div class="col-md-12 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">Job Description <span class="text-secondary">( Optional )</span></label>
+                   <textarea  cols="40"  rows="5" class="form-control" name="description[]" placeholder="Brief description or information about previous job."></textarea>
+                </div>
             </div>
-        </div>
 
 
-    </div>`;
-        $(expContainer).append(appenddata)
+        </div>`;
+            $(expContainer).append(appenddata)
+            totalAdded++;
+        }
 
     });
     $(document).on('click', '.removeExp', function (e) {
         e.preventDefault();
         $(this).closest('.row').remove();
+        totalAdded --;
         let id = $(this).data('id');
         if (id != undefined || id == '') {
             let confirm = window.confirm("Do you want to remove this?");
