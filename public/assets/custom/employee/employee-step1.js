@@ -17,6 +17,7 @@ $(document).ready(function () {
     let cnic = $("input[name='cnic_number']");
     let personalNumber = $('input[name="personal_contact"]');
     let emergency_number = $('input[name="emergency_contact"]');
+    let contact_person = $('input[name="emergency_contact_person"]');
     let permanent_address = $('textarea[name="permanent_address"]');
     let present_address = $('textarea[name="present_address"]');
     let check_permanent = $(".same_permanent");
@@ -292,6 +293,18 @@ $(document).ready(function () {
         if ($(personalNumber).val() == "") {
             e.preventDefault();
             toastr["error"]("Enter Employee's Personal Number");
+            isValid = false;
+            return false;
+        }
+        if ($(contact_person).val() == "") {
+            e.preventDefault();
+            toastr["error"]("Enter Employee's Emergency Contact Person name");
+            isValid = false;
+            return false;
+        }
+        if ($(emergency_number).val() == "") {
+            e.preventDefault();
+            toastr["error"]("Enter Employee's Emergency Contact Number");
             isValid = false;
             return false;
         }

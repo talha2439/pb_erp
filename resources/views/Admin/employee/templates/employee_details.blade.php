@@ -58,10 +58,25 @@
                                     <div class="col-md-10 mt-2"><small>{{ $employee->permanent_address }}</small></div>
                                 </div>
                             </div>
-                        </div>
+                            @if(!empty($employee->emergency_contact))
+                            <div class="ml-3">
+                                <h4 class="fw-bold mt-3">Emergency Contact</h4>
+                                <hr>
+                                <div class="row rounded p-2 border me-2" style="min-height:100px">
+                                    <div class="col-md-2 text-primary"><i class="fe fe-user" style="border-right: 2px solid rgb(122, 93, 204); padding-right:5px"></i></div>
+                                    <div class="col-md-10">{{ $employee->emergency_contact_person }}</div>
+                                    <div class="col-md-2 text-primary"><i class="fe fe-phone" style="border-right: 2px solid rgb(122, 93, 204); padding-right:5px"></i></div>
+                                    <div class="col-md-10">{{ @$employee->emergency_contact }}</div>
+
+                                    <div class="col-md-2 text-primary"><i class="fe fe-users" style="border-right: 2px solid rgb(122, 93, 204); padding-right:5px"></i></div>
+                                    <div class="col-md-10"> <small>{{ $employee->emergency_contact_relation != null ? $employee->emergency_contact_relation : "No Defined" }}</small></div>
+                                </div>
+                            </div>
+                            @endif
+                        </div><br>
 
                         {{-- Qualifications and Experiences --}}
-                        <div class="col-md-8 experienceContainer" >
+                        <div class="col-md-8 experienceContainer " >
                             <hr>
                             <div class="d-flex justify-content-between mt-3">
                                 <b style="border-bottom:3px solid rgb(134, 11, 216)">

@@ -231,14 +231,14 @@
             <h3 class="text-primary">Contact Information</h3>
         </div>
 
-        <div class="col-md-4 mt-2 mb-3">
+        <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
                 <label for="">CNIC Number <span class="text-secondary unrequired">( Optional )</span><span
                         class="text-danger requiredCnic" style="display: none">( Required )</span></label>
                 <input type="text" name="cnic_number" class="form-control" placeholder="00000-0000000-0">
             </div>
         </div>
-        <div class="col-md-4 mt-2 mb-3">
+        <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
                 <label for="">Personal Contact <span class="text-danger">( Required )</span></label>
                 <input type="text" name="personal_contact" class="form-control" placeholder="( +92 ) 0000000000">
@@ -247,9 +247,23 @@
 
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Emergency Contact <small class="text-secondary">( Optional )</small></label>
+                <label for="">Emergency Contact Person <small class="text-danger">( Required )</small></label>
+                <input type="text" name="emergency_contact_person" class="form-control"
+                    placeholder="Emergency Contact person name">
+            </div>
+        </div>
+        <div class="col-md-4 mt-2 mb-3">
+            <div class="form-group">
+                <label for="">Emergency Contact Number <small class="text-danger">( Required )</small></label>
                 <input type="text" name="emergency_contact" class="form-control"
                     placeholder="( +92 ) 0000000000">
+            </div>
+        </div>
+        <div class="col-md-4 mt-2 mb-3">
+            <div class="form-group">
+                <label for="">Relation <small class="text-secondary">( Optional )</small></label>
+                <input type="text" name="emergency_contact_relation" class="form-control"
+                    placeholder="eg.Father etc..">
             </div>
         </div>
 

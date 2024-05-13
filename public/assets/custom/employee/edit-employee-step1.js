@@ -47,6 +47,8 @@ $(document).ready(function () {
         $('input[name="cnic_number"]').val(employeeData.cnic_number);
         $('input[name="personal_contact"]').val(employeeData.personal_contact);
         $('input[name="emergency_contact"]').val(employeeData.emergency_contact);
+        $('input[name="emergency_contact_person"]').val(employeeData.emergency_contact_person);
+        $('input[name="emergency_contact_relation"]').val(employeeData.emergency_contact_relation);
         $('textarea[name="permanent_address"]').val(employeeData.permanent_address);
         $('textarea[name="present_address"]').val(employeeData.present_address);
         if (employeeData.permanent_address == employeeData.present_address) {
@@ -59,7 +61,7 @@ $(document).ready(function () {
             $('input[name="end_date"]').val(employeeData.end_date);
         }
         else{
-            
+
 
         }
 

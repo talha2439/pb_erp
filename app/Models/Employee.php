@@ -21,6 +21,8 @@ class Employee extends Model
             'personal_email',
             'personal_contact',
             'emergency_contact',
+            'emergency_contact_person',
+            'emergency_contact_relation',
             'permanent_address',
             'present_address',
             'country',
@@ -42,12 +44,16 @@ class Employee extends Model
             'gender',
             'start_date',
             'end_date',
+
     ];
     public function users(){
         return $this->hasOne(User::class, 'id', 'user_id');
     }
     public function qualifications(){
         return $this->hasMany(EmployeeQualification::class , 'employee_id' , 'id');
+    }
+    public function shifts(){
+        return $this->hasOne(Shift::class , 'id' , 'shift');
     }
     public function experiences(){
         return $this->hasMany(EmployeeExperience::class , 'employee_id' , 'id');

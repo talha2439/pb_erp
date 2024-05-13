@@ -126,6 +126,7 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
     });
     Route::prefix('employees/attendance')->group(function(){
         Route::post('/checkin' , [AttendanceController::class ,'checkin'])->name('attendance.checkin');
+        Route::post('/checkout' , [AttendanceController::class ,'checkout'])->name('attendance.checkout');
         Route::Get('/edit/{id?}' , [AttendanceController::class ,'edit'])->name('attendance.edit');
         Route::Get('/delete/{id?}' , [AttendanceController::class ,'delete'])->name('attendance.delete');
         Route::Get('/get_experience/{id?}' , [AttendanceController::class ,'get_experience'])->name('attendance.get');
