@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{AttendanceController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, MenuAccessController, MenuSettingController, ShiftController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, MenuAccessController, MenuSettingController, ShiftController, UserAccessController, UserController};
 use App\Http\Controllers\AuthController;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Route;
@@ -125,10 +125,16 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
         Route::Get('/get_experience/{id?}' , [EmployeeExperienceController::class ,'get_experience'])->name('employees.get.experience');
     });
     Route::prefix('employees/attendance')->group(function(){
+
         Route::post('/checkin' , [AttendanceController::class ,'checkin'])->name('attendance.checkin');
         Route::post('/checkout' , [AttendanceController::class ,'checkout'])->name('attendance.checkout');
         Route::Get('/edit/{id?}' , [AttendanceController::class ,'edit'])->name('attendance.edit');
         Route::Get('/delete/{id?}' , [AttendanceController::class ,'delete'])->name('attendance.delete');
         Route::Get('/get_experience/{id?}' , [AttendanceController::class ,'get_experience'])->name('attendance.get');
+    });
+    Route::prefix('attendance/reports')->group(function(){
+        Route::get('/' , [AttendanceReportController::class ,'index'])->name('attendance.reports.all');
+        Route::get('/monthly' , [AttendanceReportController::class ,'index'])->name('attendance.reports.monthly');
+        Route::get('/yearly' , [AttendanceReportController::class ,'index'])->name('attendance.reports.yearly');
     });
 });
