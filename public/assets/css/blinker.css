@@ -1,0 +1,69 @@
+.blink{
+    padding: 5px 20px;
+    text-align: center;
+    border-radius: 5px;
+    text-transform: uppercase
+
+}
+.blink.blink-success{
+    background: rgba(142, 235, 80, 0.808);
+    animation: blinker-success 1s linear infinite;
+    color: white;
+
+}
+@keyframes blinker-success {
+    50% {
+
+        background: rgba(11, 235, 11, 0.76);
+        box-shadow: 0 0  10px rgb(10, 218, 10);
+
+    }
+}
+.blink.blink-danger{
+    background: rgba(235, 80, 80, 0.808);
+    animation: blinker-danger 1s linear infinite;
+    color: white;
+}
+@keyframes blinker-danger {
+    50% {
+
+        background: rgba(235, 11, 11, 0.76);
+        box-shadow: 0 0  10px rgb(218, 10, 10);
+    }
+}
+.blink.blink-warning{
+    background: rgba(235, 225, 80, 0.808);
+    animation: blinker-warning 1s linear infinite;
+    color: white;
+}
+@keyframes blinker-warning {
+    50% {
+
+        background: rgba(235, 213, 11, 0.76);
+        box-shadow: 0 0  10px rgb(218, 180, 10);
+    }
+}
+.blink.blink-secondary{
+    background: rgba(104, 104, 103, 0.808);
+    animation: blinker-secondary 1s linear infinite;
+    color: white;
+}
+@keyframes blinker-secondary {
+    50% {
+
+        background: rgba(107, 107, 107, 0.76);
+        box-shadow: 0 0  10px rgb(150, 149, 149);
+    }
+}
+.blink.blink-info{
+    background: rgba(48, 160, 224, 0.808);
+    animation: blinker-info 1s linear infinite;
+    color: white;
+}
+@keyframes blinker-info {
+    50% {
+
+        background: rgba(17, 180, 255, 0.76);
+        box-shadow: 0 0  10px rgb(91, 195, 255);
+    }
+}

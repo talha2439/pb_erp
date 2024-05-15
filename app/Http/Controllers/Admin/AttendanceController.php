@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Models\SubMenu;
 use App\Models\User;
+use App\Models\UserAccess;
 use Carbon\Carbon;
 use Auth;
 
@@ -46,11 +48,13 @@ class AttendanceController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
+
     }
 
     public function checkout(Request $request)
     {
         try {
+
             $emp_id         =  Auth::user()->id;
             $date           =  Carbon::now()->format('Y-m-d');
             $ShiftHours     =  9 * 60 * 60 * 1000;
@@ -62,22 +66,45 @@ class AttendanceController extends Controller
             $data['timeElapsed']  =  $checkout->diffInMilliseconds($checkIn);
 
             if ($attendanceData->count() > 0) {
-                // checking Total Hours
-                $data['working_hours']  = round($data['timeElapsed'] / (1000 * 60 * 60), 1); // to get the total hours
-                $data['working_status'] = $ShiftHours == $data['timeElapsed'] && !$ShiftHours < $data['timeElapsed'] ? 'on-time' : 'late'; //  If ShiftHours is the same as Employee's Working hours
-                if ($data['working_hours'] < $ShiftHours) {
-                    // Check the Time of shift and checkin Both
-                    $shiftData        = Employee::where('user_id', $emp_id)->with('shifts')->first();
-                    $shiftIn          = Carbon::parse($shiftData->shifts->start_time);
-                    $shiftOut         = Carbon::parse($shiftData->shifts->start_out);
-                    $timedifference   = $checkIn->diffInMinutes($shiftIn) > 30  ? 'late' : 'early-out';
-                    $data['working_status'] = $timedifference;
-                }
+                $data['working_hours']  = round($data['timeElapsed'] / (1000 * 60 * 60), 2);
+                $data['working_status'] = $ShiftHours == $data['timeElapsed'] && !$ShiftHours < $data['timeElapsed'] ? 'on-time' : 'late';
                 if ($data['working_hours'] > 9) {
-                    $data['working_status'] = 'overtime'; //  If shift hours is the same as Employee's Working hours
+                    $data['working_status'] = 'late-setting';
                     $data['extra_hours']    = round($data['working_hours'] - 9, 1);
                     $data['extra_hours']    = $data['extra_hours'] < 1 ? $data['extra_hours'] * 60 . " minutes" : $data['extra_hours'] . " hours";
                 }
+                else if ($data['working_hours'] < $ShiftHours) {
+                    $shiftData = Employee::where('user_id', $emp_id)->with('shifts')->first();
+                    $shiftIn = Carbon::parse($shiftData->shifts->start_time);
+                    $shiftOut = Carbon::parse($shiftData->shifts->end_time);
+                    if($checkIn >= $shiftIn){
+                        $shiftIntimedifference = $checkIn->diffInMinutes($shiftIn);
+                        if($shiftIntimedifference > 30 && $checkout < $shiftOut){
+                            $data['working_status'] = 'late and early-out';
+                        }
+                        else if($shiftIntimedifference > 30){
+                            $data['working_status'] = 'late';
+                        }
+                        else if($checkout < $shiftOut){
+                            $data['working_status'] = 'early-out';
+                        }
+                        else{
+                            $data['working_status'] = 'on-time';
+                        }
+                    }
+                    else if($checkIn < $shiftIn && $checkout < $shiftOut ){
+                            $data['working_status'] = 'early-in and early-out';
+                    }
+
+                    else {
+                        $data['working_status'] = 'early-out';
+                    }
+
+                }
+                else{
+                    $data['working_status'] = 'on-time';
+                }
+
                 $data['working_hours']  = $data['working_hours'] < 1 ? $data['working_hours'] * 60 . ' minutes' : $data['working_hours'] . " hours";
                 $data['total_hours']    = $data['working_hours'];
                 unset($data['timeElapsed']);
@@ -92,6 +119,8 @@ class AttendanceController extends Controller
             }
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
-        }
-    }
+        }}
+
+
+
 }

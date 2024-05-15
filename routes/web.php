@@ -134,7 +134,9 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
     });
     Route::prefix('attendance/reports')->group(function(){
         Route::get('/' , [AttendanceReportController::class ,'index'])->name('attendance.reports.all');
+        Route::get('/data' , [AttendanceReportController::class ,'reports'])->name('attendance.reports.data');
         Route::get('/monthly' , [AttendanceReportController::class ,'index'])->name('attendance.reports.monthly');
         Route::get('/yearly' , [AttendanceReportController::class ,'index'])->name('attendance.reports.yearly');
+        Route::get('/edit/{id?}' , [AttendanceReportController::class ,'edit'])->name('attendance.reports.edit');
     });
 });

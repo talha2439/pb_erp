@@ -10,7 +10,7 @@ class Attendance extends Model
 {
     use HasFactory ,SoftDeletes;
     protected $fillable = ['employee_id', 'date', 'check_in', 'check_out', 'working_hours','extra_hours','total_hours','working_status' ,'deleted_at' , 'attendance_status'];
-    public function employees(){
-        return $this->hasOne(Employee::class , 'id' , 'employee_id');
+    public function users(){
+        return $this->hasOne(User::class , 'id' , 'employee_id');
     }
 }

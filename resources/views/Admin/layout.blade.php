@@ -36,7 +36,8 @@
     <link rel="shortcut icon" href="{{ asset('assets/img/favicon.png') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/blinker.css') }}">
     <style type="text/css">
          /* Loader */
          .loader-container{
