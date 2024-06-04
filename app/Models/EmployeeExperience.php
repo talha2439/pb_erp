@@ -2,12 +2,20 @@
 
 namespace App\Models;
 
+use App\Trait\Crud;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EmployeeExperience extends Model
 {
-    use HasFactory , SoftDeletes;
-    protected $fillable = ['employee_id', 'job_title', 'designation', 'start_date', 'end_date', 'description' , 'salary','reason_for_leaving' ,'attachment'];
+    use HasFactory , SoftDeletes , Crud;
+    public $table = 'employee_experiences';
+    protected $fillable = [];
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->fillable = Crud::columns($this->table);
+    }
+
 }

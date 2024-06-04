@@ -55,7 +55,7 @@ class UserAccessController extends Controller
 
         try{
             $data = $request->all();
-            $changeAccess = $this->childModel::updateOrCreate(['sub_menu_id' => $id] , $data);
+            $changeAccess = $this->childModel::updateOrCreate(['sub_menu_id' => $id ,'user_id' => $data['user_id']] , $data);
             if($changeAccess){
                 return response()->json(['success' => true]);
             }
@@ -84,5 +84,5 @@ class UserAccessController extends Controller
             return false;
         }
     }
-    
+
 }

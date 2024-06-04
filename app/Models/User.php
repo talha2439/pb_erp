@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Trait\Crud;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,17 +19,16 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'username',
-        'password_txt',
-        'role',
-        'image',
-        'email_verified_at',
-    ];
 
+
+    use HasFactory , Crud;
+    public $table = 'users';
+    protected $fillable = [];
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->fillable = Crud::columns($this->table);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

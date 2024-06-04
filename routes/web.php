@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, MenuAccessController, MenuSettingController, ShiftController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, LeaveController, MenuAccessController, MenuSettingController, ShiftController, UserAccessController, UserController};
 use App\Http\Controllers\AuthController;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Route;
@@ -46,7 +46,7 @@ Route::post('authenticate', [AuthController::class,'authenticate'])->name('auth.
 
 // Admin Panel Routes
 
-Route::prefix('/panel')->middleware('auth')->group(function(){
+Route::prefix('/')->middleware('auth')->group(function(){
     Route::get('/', [Dashboardcontroller::class,'index'])->name('dashboard');
     Route::get('profile/setting/{id?}' , [AuthController::class,'profile_settings'])->name('profile_settings');
     // Users Settings
@@ -138,5 +138,15 @@ Route::prefix('/panel')->middleware('auth')->group(function(){
         Route::get('/monthly' , [AttendanceReportController::class ,'index'])->name('attendance.reports.monthly');
         Route::get('/yearly' , [AttendanceReportController::class ,'index'])->name('attendance.reports.yearly');
         Route::get('/edit/{id?}' , [AttendanceReportController::class ,'edit'])->name('attendance.reports.edit');
+    });
+    Route::prefix('leave/application')->group(function(){
+        Route::get('/' , [LeaveController::class ,'index'])->name('leave.application.index');
+        Route::get('/create' , [LeaveController::class ,'create'])->name('leave.application.create');
+        Route::post('/store/{id?}' , [LeaveController::class ,'store'])->name('leave.application.store');
+        Route::get('/data' , [LeaveController::class ,'data'])->name('leave.application.data');
+        Route::get('/monthly' , [LeaveController::class ,'index'])->name('leave.application.monthly');
+        Route::get('/yearly' , [LeaveController::class ,'index'])->name('leave.application.yearly');
+        Route::get('/edit/{id?}' , [LeaveController::class ,'edit'])->name('leave.application.edit');
+        Route::get('/delete/{id?}' , [LeaveController::class ,'delete'])->name('leave.application.delete');
     });
 });

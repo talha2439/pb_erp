@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
+
     <title> HRM - Forget Password</title>
 
     <link rel="shortcut icon" href="assets/img/favicon.png">
@@ -605,9 +605,7 @@
 
     <h1 class="mb-2">Reset Password </h1>
     <p class="mb-4 text-center" >Enter Your New password for the mail : <br><span class="fw-bold">{{ $email }}</span></p>
-    <div class="mb-3 mt-4">
-        <h5 class="text-center reset-message p-4" style="display: none">Your request for a password reset link has been sent to your email. Please check your inbox.</h5>
-      </div>
+
     <form  id="resetPasswordForm">
         @csrf
     <input type="hidden" name="email" value="{{ $email }}">
@@ -625,7 +623,7 @@
 
 </div>
     <div class="input-block mb-0">
-    <button class="btn btn-lg btn-primary w-100" type="submit" id="submitBtn">Send Verification</button>
+    <button class="btn btn-lg btn-primary w-100" type="submit" id="submitBtn">Reset Password</button>
     </div>
     </form>
 

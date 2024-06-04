@@ -2,14 +2,22 @@
 
 namespace App\Models;
 
+use App\Trait\Crud;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SubMenu extends Model
 {
 
-    protected $fillable  = ['name', 'route' , 'menu_id'];
-    use HasFactory;
+
+    use HasFactory , Crud;
+    public $table = 'sub_menus';
+    protected $fillable = [];
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->fillable = Crud::columns($this->table);
+    }
     public function menu(){
         return $this->hasOne(Menu::class , 'id' , 'menu_id');
     }

@@ -93,11 +93,15 @@ class AttendanceReportController extends Controller
         })->addColumn('working_status' , function($item){
             $blinkclass = 'warning';
             $workingStatus = '';
-            if($item->working_status == strtolower('on-time') || $item->working_status == strtolower('early-in') &&  $item->working_status != strtolower('early-in and early-out')){
+            if(!empty($item->check_in) && empty($item->check_out) && $item->working_status == strtolower('on-time') || $item->working_status == strtolower('early-in') &&  $item->working_status != strtolower('early-in and early-out')){
                 $blinkclass = 'success';
+                $workingStatus = 'On-time';
+            }
+            else if(!empty($item->check_in) &&!empty($item->check_out) && $item->total_hours >= 9 && empty($item->extra_hours)){
+                $blinkclass ='success';
                 $workingStatus = 'Full-time';
             }
-           else if($item->working_status == strtolower('late and early-out') || $item->working_status == strtolower('early-in and early-out') || $item->working_status == strtolower('early-out')){
+            else if($item->working_status == strtolower('late and early-out') || $item->working_status == strtolower('early-in and early-out') || $item->working_status == strtolower('early-out')){
                 $blinkclass = 'danger';
                 $workingStatus = 'Half-time';
             }

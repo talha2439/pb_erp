@@ -115,7 +115,7 @@ class DesignationController extends Controller
             $checkAccess = $this->check_access($submenuId->id, 'delete_status');
             if ($checkAccess) {
                 $delete        = $this->childModel::onlyTrashed()->where('id', $id)->first();
-                
+
                 $employeeCheck = Employee::where('designation', $delete->id)->count();
                 // Check if Designation is assigned to employee
                 if ($employeeCheck > 0) {

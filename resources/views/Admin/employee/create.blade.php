@@ -79,7 +79,7 @@
     {{-- Edit Employee JS Links --}}
     <script src="{{ asset('assets/custom/employee/edit-employee-step1.js') }}"></script>
     <script src="{{ asset('assets/custom/employee/employee_update.js') }}"></script>
- 
+
     {{-- Back button JS --}}
     <script src="{{ asset("assets/custom/employee/backbutton.js") }}"></script>
     <script>
