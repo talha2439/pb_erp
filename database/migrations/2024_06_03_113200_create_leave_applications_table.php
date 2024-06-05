@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('from_date');
             $table->date('to_date');
             $table->longText('reason');
+            $table->longText('remarks')->nullable();
             $table->string('attachment')->nullable();
             $table->string('status')->default('pending');
             $table->integer('total_days')->default(0);
@@ -26,7 +27,6 @@ return new class extends Migration
             $table->integer('rejected_days')->default(0);
             $table->text('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }

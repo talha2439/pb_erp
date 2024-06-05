@@ -4,12 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Schema;
 use App\Trait\Crud;
 class LeaveApplication extends Model
 {
-    use HasFactory , SoftDeletes , Crud;
+    use HasFactory , Crud;
     public $table = 'leave_applications';
     protected $fillable = [];
     public function __construct(array $attributes = [])

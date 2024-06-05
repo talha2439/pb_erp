@@ -69,9 +69,9 @@ Employee's Attendance Report
 <script src="{{ asset('assets/js/daterangepicker.js') }}"></script>
 <script>
     $(document).ready(function() {
-    $(".datepicker").daterangepicker({
-        opens: 'left',
-    });
+        $(".datepicker").daterangepicker({
+            opens: 'left'
+        });
     let allReportsURL = "{{ route('attendance.reports.data') }}";
     let dataTable  = null ;
 

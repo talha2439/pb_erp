@@ -131,9 +131,11 @@ class LeaveController extends Controller
             return Carbon::parse($item->created_at)->format('y-m-d') ?? "" ;
         })->addColumn('action' , function($item){
             $editRoute = route($this->parentRoute. '.edit', $item->id);
-            $action =  '<a class="btn btn-danger text-white deleteDepart" data-id="'.$item->id.'"> <i
-            class="fe fe-trash"></i></a> |
-             <a class="btn btn-success text-white" href="'.$editRoute.'"> <i
+            $action =  '<a class="btn btn-primary text-white viewDetails"  title="View Application" data-id="'.$item->id.'"> <i
+            class="fe fe-eye"></i></a> | <a class="btn btn-warning text-white changeStatus"  data-bs-toggle="modal" data-bs-target="#experienceModal"
+             title="Change Status" data-id="'.$item->id.'"> <i
+            class="fe fe-edit-3"></i></a> |
+             <a class="btn btn-success text-white"  title="Edit Application" href="'.$editRoute.'"> <i
             class="fe fe-edit"></i></a>';
             return $action;
         })
@@ -166,7 +168,7 @@ class LeaveController extends Controller
             }
             $storeData = $this->parentModel::create($data);
             if($storeData){
-                return redirect()->back()->with('success', 'Leave Application has been successfully applied for '. ucfirst($checkLeaves->first_name) . " " . ucfirst($checkLeaves->last_name));
+                return redirect()->route($this->parentRoute.'.index')->with('success', 'Leave Application has been successfully applied for '. ucfirst($checkLeaves->first_name) . " " . ucfirst($checkLeaves->last_name));
             }
             else{
                 return redirect()->back()->with('error', 'Something went wrong');
@@ -175,6 +177,9 @@ class LeaveController extends Controller
         catch(\Exception $e){
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+    public function destroy($id){
+
     }
     public function check_access($subMenuId , $status)
     {

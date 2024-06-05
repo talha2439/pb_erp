@@ -64,11 +64,14 @@ Employee's Leave Applications
     </div>
 
 </div>
+@include('Admin.attendance.leave_application.partial.popup')
 @push('js')
 <link rel="stylesheet" href="{{ asset('assets/plugins/datatables/datatables.min.css') }}">
 <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.js"></script>
+<script src="{{ asset('assets/js/moment.js') }}"></script>
+<script src="{{ asset('assets/js/daterangepicker.js') }}"></script>
 <script>
     $(document).ready(function() {
 
@@ -159,8 +162,37 @@ Employee's Leave Applications
     });
     $(document).ready(function(){
         $('.select2').select2({});
+        $(document).find(".datepicker").daterangepicker({
+            opens: 'left',
+        });
     })
+    // Change Status
+    $(document).on('change' , "#status" , function(e){
+        let status = $(this);
+        if(status.val() == 'approve'){
+            $(document).find('.date_range_container').show();
+            $(document).find('.status_container').toggleClass('col-md-6 col-md-12');
+            $(document).find('.remarks_container').hide();
 
+        }
+        else if(status.val() == 'reject'){
+            $(document).find('.date_range_container').hide();
+            $(document).find('.status_container').toggleClass('col-md-6 col-md-12');
+
+            $(document).find('.remarks_container').show();
+        }
+        else{
+            $(document).find('.remarks_container').hide();
+            $(document).find('.date_range_container').hide();
+            $(document).find('.status_container').removeClass('col-md-6');
+
+        }
+    })
+    $(document).on('click', '.changeStatus' , function(e){
+        e.preventDefault();
+        let id = $(this).attr('data-id');
+        $(document).find('input[name="id"]').val(id);
+    })
 </script>
 @endpush
 @endsection
