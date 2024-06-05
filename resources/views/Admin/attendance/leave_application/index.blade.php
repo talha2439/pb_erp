@@ -26,7 +26,7 @@ Employee's Leave Applications
                       </h2>
                       <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                         @include('Admin.attendance.reports.filter')
+                         @include('Admin.attendance.leave_application.partial.filter')
                         </div>
                       </div>
                     </div>
@@ -69,40 +69,38 @@ Employee's Leave Applications
 <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.full.js"></script>
-<script src="{{ asset('assets/js/moment.js') }}"></script>
-<script src="{{ asset('assets/js/daterangepicker.js') }}"></script>
 <script>
     $(document).ready(function() {
-    $(".datepicker").daterangepicker({
-        opens: 'left',
-    });
+
     let allReportsURL = "{{ route('leave.application.data') }}";
     let dataTable  = null ;
 
     getAllReports();
     // Filters
-    let date       = $(document).find('.datepicker');
+    let date       = $(document).find('#date');
+    let leave_types       = $(document).find('#leave_types');
     let department = $(document).find('#department');
     let employee   = $(document).find('#employee');
     let month      = $(document).find('#month');
     let year       = $(document).find('#year');
+    let status       = $(document).find('#status');
     let searchBtn  = $("#searchBtn")
     $(searchBtn).on('click' , function(e) {
         e.preventDefault();
         if(dataTable !== null){
             dataTable.fnDestroy();
         }
-        getAllReports($(department).val(), $(employee).val(), $(date).val(), $(month).val(), $(year).val());
+        getAllReports($(department).val(), $(employee).val(), $(date).val(), $(month).val(), $(year).val() , $(status).val() , $(leave_types).val());
     })
 
-    function getAllReports(department=null, employee=null,daterange = null , month=null, year=null){
+    function getAllReports(department=null, employee=null,date = null , month=null, year=null ,  status=null , leave_types = null){
         dataTable = $('.datatables-basic').dataTable({
         serverSide : true,
         processing : true,
         ajax:{
             url: allReportsURL ,
             type:'Get',
-            data:{department: department, employee: employee, daterange: daterange , month: month , year: year}
+            data:{department: department, employee: employee, date: date , month: month , year: year, status:status  , leave_types : leave_types}
         }
         , "columns": [
                 // Define your columns here

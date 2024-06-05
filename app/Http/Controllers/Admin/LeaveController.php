@@ -56,6 +56,29 @@ class LeaveController extends Controller
     public function data(Request $request){
 
         $data = $this->parentModel::latest();
+        if(!empty($request->date)){
+            $data->whereDate('created_at' ,$request->date);
+        }
+        if(!empty($request->employee)){
+          $data->where('employee_id', $request->employee);
+        }
+        if(!empty($request->department)){
+           $data->whereHas('employees.departments', function($query) use ($request){
+                $query->where('department', $request->department);
+           });
+        }
+        if(!empty($request->month)){
+            $data->whereMonth('created_at', $request->month);
+        }
+        if(!empty($request->year)){
+            $data->whereYear('created_at', $request->year);
+        }
+        if(!empty($request->status)){
+            $data->where('status', $request->status);
+        }
+        if(!empty($request->leave_types)){
+            $data->where('leave_type', $request->leave_types);
+        }
         $results = $data->get();
         return DataTables::of($results)->addColumn('row_index' , function($item) use(&$index){
             $index ++ ;
