@@ -131,9 +131,13 @@ class LeaveController extends Controller
             return Carbon::parse($item->created_at)->format('y-m-d') ?? "" ;
         })->addColumn('action' , function($item){
             $editRoute = route($this->parentRoute. '.edit', $item->id);
+            $status    = $item->status == 'approved' || $item->status == 'rejected' ? 'disabled' : ''; // to disable status change
+            if($item->status == 'approved' && Auth::user()->role == 3){
+                $status = ''; // to enable if user is a HR
+            }
             $action =  '<a class="btn btn-primary text-white viewDetails"  title="View Application" data-id="'.$item->id.'"> <i
-            class="fe fe-eye"></i></a> | <a class="btn btn-warning text-white changeStatus"  data-bs-toggle="modal" data-bs-target="#experienceModal"
-             title="Change Status" data-id="'.$item->id.'"> <i
+            class="fe fe-eye"></i></a> | <a class="btn btn-warning text-white  '.$status.' changeStatus"  data-to="'.Carbon::parse($item->to_date)->format('m/d/Y').'" data-from="'.Carbon::parse($item->from_date)->format('m/d/Y').'" data-bs-toggle="modal" data-bs-target="#experienceModal"
+             title="Change Status"  data-id="'.$item->id.'"> <i
             class="fe fe-edit-3"></i></a> |
              <a class="btn btn-success text-white"  title="Edit Application" href="'.$editRoute.'"> <i
             class="fe fe-edit"></i></a>';
@@ -177,6 +181,40 @@ class LeaveController extends Controller
         catch(\Exception $e){
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+    public function status(Request $request){
+       try{
+        $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+        $checkAccess = $this->check_access($submenuId->id, 'update_status');
+        if ($checkAccess) {
+        $data = $request->except(['token']);
+        $employeedata = $this->parentModel::where('id' , $data['id'])->first();
+        $date_range = explode('-', $data['date_range']);
+        $data['from_date']  = carbon::parse($date_range[0])->format('Y-m-d');
+        $data['to_date']    = carbon::parse($date_range[1])->format('Y-m-d');
+        $data['approved_days'] = Carbon::parse($data['from_date'])->diffInDays(Carbon::parse($data['to_date']));
+        $data['rejected_days'] = $employeedata->total_days - $data['approved_days'];
+        $data['approved_by']   = $data['status'] == 'approve' ? Auth::user()->name : null;
+        $data['approved_at']   = $data['status'] == 'approve' ? Carbon::now() : null;
+        unset($data['date_range']);
+
+        $updateData  = $employeedata->update($data);
+        if($updateData){
+            return response()->json(['success' => true]);
+        }
+        else{
+              return response()->json(['error' => true]);
+        }
+        }
+        else{
+              return response()->json(['unauthorized' => true]);
+        }
+       }
+       catch(\Exception $e){
+           return response()->json(['error' =>  $e->getMessage()]);
+       }
+
+
     }
     public function destroy($id){
 

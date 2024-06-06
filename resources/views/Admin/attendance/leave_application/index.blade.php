@@ -128,6 +128,7 @@ Employee's Leave Applications
     })
 
     let deleteUrl = "{{ route('leave.application.delete') }}";
+    let changeStatusURL = "{{ Route('leave.application.status') }}";
     $(document).on('click', '.deleteDepart', function(e) {
         let id = $(this).data('id');
         let confirm = window.confirm('Are you sure you want to delete');
@@ -162,22 +163,29 @@ Employee's Leave Applications
     });
     $(document).ready(function(){
         $('.select2').select2({});
-        $(document).find(".datepicker").daterangepicker({
-            opens: 'left',
-        });
+
     })
     // Change Status
     $(document).on('change' , "#status" , function(e){
         let status = $(this);
-        if(status.val() == 'approve'){
+        if(status.val() == 'approved'){
             $(document).find('.date_range_container').show();
             $(document).find('.status_container').toggleClass('col-md-6 col-md-12');
             $(document).find('.remarks_container').hide();
+            $(document).find("#date_range").attr('data-type' , 'required');
+            $(document).find('#remarks').attr('data-type' , '');
 
+            $(".datepicker").daterangepicker({
+            opens: 'left',
+            startDate:$(document).find("#from_date").val(),
+            endDate:$(document).find("#to_date").val(),
+             });
         }
-        else if(status.val() == 'reject'){
+        else if(status.val() == 'rejected'){
             $(document).find('.date_range_container').hide();
             $(document).find('.status_container').toggleClass('col-md-6 col-md-12');
+            $(document).find('#remarks').attr('data-type' , 'required');
+            $(document).find('#date_range').attr('data-type' , '');
 
             $(document).find('.remarks_container').show();
         }
@@ -185,6 +193,8 @@ Employee's Leave Applications
             $(document).find('.remarks_container').hide();
             $(document).find('.date_range_container').hide();
             $(document).find('.status_container').removeClass('col-md-6');
+            $(document).find('#remarks').attr('data-type' , '');
+            $(document).find('#date_range').attr('data-type' , '');
 
         }
     })
@@ -192,6 +202,58 @@ Employee's Leave Applications
         e.preventDefault();
         let id = $(this).attr('data-id');
         $(document).find('input[name="id"]').val(id);
+        $(document).find('#from_date').val($(this).attr('data-from'))
+        $(document).find('#to_date').val($(this).attr('data-to'));
+
+    });
+    // Submitting Form
+
+    $("#changeStatus").submit(function(e){
+        e.preventDefault();
+        isValid = true;
+        let inputs = $(document).find("#changeStatus").find('.form-control[data-type="required"]');
+        $(inputs).each(function(){
+            if($(this).val() == "" || $(this).val() == null ){
+                e.preventDefault(); //
+                toastr['error']($(this).attr('data-name')+"\n is required..!");
+                isValid = false; //
+                return false;
+
+            }
+        });
+        if(isValid){
+            let data = $(this).serialize();
+
+            $.ajax({
+                url: changeStatusURL,
+                type: 'POST',
+                data: $("#changeStatus").serialize(),
+                success: function(res) {
+                    if (res.unauthorized) {
+                        e.preventDefault();
+                        $("#experienceModal").modal('hide');
+                        toastr['error']('You are not authorized to change status..!');
+                        return false;
+                    }
+                    else if (res.success) {
+                        e.preventDefault();
+                        $("#experienceModal").modal('hide');
+                        toastr['success']('Application Status Changed successfully..!')
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        e.preventDefault();
+                        $("#experienceModal").modal('hide');
+                        toastr['error']('Something went wrong..!');
+                    }
+                },
+                error:function(res) {
+                    e.preventDefault();
+                    toastr['error'](res.error);
+                }
+            })
+        }
     })
 </script>
 @endpush
