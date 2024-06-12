@@ -11,6 +11,20 @@
     color: white;
 
 }
+.blink.blink-purple{
+    background: rgba(77, 9, 133, 0.808);
+    animation: blinker-purple 1s linear infinite;
+    color: white;
+
+}
+@keyframes blinker-purple {
+    50% {
+
+        background: rgba(85, 5, 122, 0.76);
+        box-shadow: 0 0  10px rgb(39, 2, 99);
+
+    }
+}
 @keyframes blinker-success {
     50% {
 

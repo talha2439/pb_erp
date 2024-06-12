@@ -950,10 +950,10 @@
         toastr.error('{{ Session::get('error') }}');
     </script>
 @endif
+@include('Admin.partial.notification_modal')
 <script>
     $(document).ready(function() {
-
-
+        $("#notificationModal").modal('show')
         setTimeout(() => {
             $('.loader-container').hide();
         }, 1000);
