@@ -5,32 +5,34 @@ $currentYear = $currentDate->year;
 <form action="" >
 
     <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="department">Department</label>
-                <select name="department" class="form-select select2" id="department">
-                    <option value="">-- Select Department --</option>
-                    @forelse ($departments as $dept )
-                    <option value="{{ $dept->id }}">{{ $dept->name }} </option>
-                    @empty
-                        <option value="">No Departments </option>
-                    @endforelse
-                </select>
-            </div>
+       @if(Auth::user()->role != 4)
+       <div class="col-md-6">
+        <div class="form-group">
+            <label for="department">Department</label>
+            <select name="department" class="form-select select2" id="department">
+                <option value="">-- Select Department --</option>
+                @forelse ($departments as $dept )
+                <option value="{{ $dept->id }}">{{ $dept->name }} </option>
+                @empty
+                    <option value="">No Departments </option>
+                @endforelse
+            </select>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="employee">Employee</label>
-                <select name="employee" class="form-select select2" id="employee">
-                    <option value="">-- Select Employee --</option>
-                    @forelse ($employees as $emp )
-                    <option value="{{ $emp->id }}">{{ $emp->first_name }} {{  $emp->last_name }}</option>
-                    @empty
-                        <option value="">No Employess </option>
-                    @endforelse
-                </select>
-            </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="employee">Employee</label>
+            <select name="employee" class="form-select select2" id="employee">
+                <option value="">-- Select Employee --</option>
+                @forelse ($employees as $emp )
+                <option value="{{ $emp->id }}">{{ $emp->first_name }} {{  $emp->last_name }}</option>
+                @empty
+                    <option value="">No Employess </option>
+                @endforelse
+            </select>
         </div>
+    </div>
+    @endif
         <div class="col-md-4 mt-3">
             <div class="form-group">
                 <label for="date">Applied Date</label>
@@ -73,7 +75,7 @@ $currentYear = $currentDate->year;
         <div class="col-md-6 mt-3">
             <div class="form-group">
                 <label for="status">Status</label>
-                <select name="status" class="form-select select2" id="status">
+                <select name="status" class="form-select select2" >
                     <option value="">-- Select Status --</option>
                     <option value="pending">Pending</option>
                     <option value="approved">Approved</option>
@@ -81,6 +83,7 @@ $currentYear = $currentDate->year;
                 </select>
             </div>
         </div>
+
     </div>
     <div class="d-flex justify-content-end mt-3 mb-0">
         <button type="submit" class="btn btn-primary" id="searchBtn">Search</button>

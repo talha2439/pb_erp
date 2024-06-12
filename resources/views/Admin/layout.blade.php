@@ -899,8 +899,9 @@
                                 </ul>
                             </li>
 
-                            <li>
-                        @endif
+                            @endif
+                                <li>
+
                         <a href="{{ route('auth.logout') }}"><i class="fe fe-power"></i> <span>Logout</span></a>
                         </li>
                     </ul>

@@ -56,11 +56,15 @@ class LeaveController extends Controller
     public function data(Request $request){
 
         $data = $this->parentModel::latest();
+
+        if(Auth::user()->role == 4){
+         $data->where('employee_id', Auth::user()->employees->id);
+        } // To only show employees their leaves
         if(!empty($request->date)){
             $data->whereDate('created_at' ,$request->date);
         }
         if(!empty($request->employee)){
-          $data->where('employee_id', $request->employee);
+        $data->where('employee_id', $request->employee);
         }
         if(!empty($request->department)){
            $data->whereHas('employees.departments', function($query) use ($request){
@@ -95,7 +99,8 @@ class LeaveController extends Controller
         ->addColumn('leave_type' , function($item){
             return $item->leave_type ?? "";
         })->addColumn('duration',function($item){
-            return $item->from_date ." - " .$item->to_date;
+
+            return  Carbon::parse( $item->from_date)->format('F d, Y') ." - " . Carbon::parse( $item->to_date)->format('F d, Y');
         })
         ->addColumn('total_days' , function($item){
             return $item->total_days ?? "" ;
@@ -122,24 +127,26 @@ class LeaveController extends Controller
             return $item->approved_by ?? "" ;
         })
         ->addColumn('approved_at' , function($item){
-            return $item->approved_at ?? "" ;
+
+            return Carbon::parse($item->approved_at)->format('F d, Y') ?? "" ;
         })
         ->addColumn('applied_by' , function($item){
             return $item->applied->name ?? "" ;
         })
         ->addColumn('applied_at' , function($item){
-            return Carbon::parse($item->created_at)->format('y-m-d') ?? "" ;
+            return Carbon::parse($item->created_at)->format('F d, Y') ?? "" ;
         })->addColumn('action' , function($item){
             $editRoute = route($this->parentRoute. '.edit', $item->id);
+            $allowed   = Auth::user()->role == 4 ? 'disabled' : '';
             $status    = $item->status == 'approved' || $item->status == 'rejected' ? 'disabled' : ''; // to disable status change
             if($item->status == 'approved' && Auth::user()->role == 3){
                 $status = ''; // to enable if user is a HR
             }
-            $action =  '<a class="btn btn-primary text-white viewDetails"  title="View Application" data-id="'.$item->id.'"> <i
-            class="fe fe-eye"></i></a> | <a class="btn btn-warning text-white  '.$status.' changeStatus"  data-to="'.Carbon::parse($item->to_date)->format('m/d/Y').'" data-from="'.Carbon::parse($item->from_date)->format('m/d/Y').'" data-bs-toggle="modal" data-bs-target="#experienceModal"
+            $action =  '<a class="btn btn-primary text-white viewDetails"   title="View Application" data-id="'.$item->id.'" data-bs-toggle="modal" data-bs-target="#applicationModal"> <i
+            class="fe fe-eye"></i></a> | <a class="btn btn-warning text-white '.$allowed.' '.$status.' changeStatus"  data-to="'.Carbon::parse($item->to_date)->format('m/d/Y').'" data-from="'.Carbon::parse($item->from_date)->format('m/d/Y').'" data-bs-toggle="modal" data-bs-target="#experienceModal"
              title="Change Status"  data-id="'.$item->id.'"> <i
             class="fe fe-edit-3"></i></a> |
-             <a class="btn btn-success text-white"  title="Edit Application" href="'.$editRoute.'"> <i
+             <a class="btn btn-success text-white "  title="Edit Application" href="'.$editRoute.'" > <i
             class="fe fe-edit"></i></a>';
             return $action;
         })
@@ -152,7 +159,7 @@ class LeaveController extends Controller
             $to_date   = Carbon::parse($data['to_date']);
             $data['total_days']  = $from_date->diffInDays($to_date);
             $data['applied_by']  = Auth::user()->id;
-            $data['employee_id'] = isset($data['employee_id']) && !empty($data['employee_id']) ? $data['employee_id'] : Auth::user()->id;
+            $data['employee_id'] = isset($data['employee_id']) && !empty($data['employee_id']) ? $data['employee_id'] : Auth::user()->employees->id;
             $leave_type          = $data['leave_type'] == 1 ? 'annual_leaves' : 'sick_leaves';
             $data['leave_type']  = str_replace("_" , " " , ucfirst($leave_type));
             $checkLeaves         = $this->childModel::where('id' , $data['employee_id'])->first();
@@ -215,6 +222,15 @@ class LeaveController extends Controller
        }
 
 
+
+    }
+    public function details($id){
+        $data['application'] = $this->parentModel::where('id'   , $id)->with('employees')->first();
+        if(!empty($data['application'])){
+            $data['application']->from_date = Carbon::parse($data['application']->from_date)->format('F d , Y');
+            $data['application']->to_date = Carbon::parse($data['application']->to_date)->format('F d , Y');
+        }
+        return response()->json(['data' => $data]);
     }
     public function destroy($id){
 

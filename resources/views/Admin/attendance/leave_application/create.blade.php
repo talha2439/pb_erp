@@ -29,18 +29,19 @@
             @csrf
             <input type="hidden" value="{{ csrf_token() }}" id="csrf-token">
         <div class="row">
-           <div class="col-md-12 mb-3">
-        <div class="form-group">
-            <label for="profile">Employee (<small class="text-danger"> Required </small>)</label>
-            <select type="text" data-type="required"  data-name ="Employee name " name="employee_id" placeholder="Enter Select employee!" class="form-control mt-3 mb-3 select2">
-              <option value="">-- Select Employee --</option>
-              @foreach($employees as $item)
-              <option value="{{ $item->id }}">{{ $item->first_name }}</option>
-              @endforeach
-            </select>
+        @if(Auth::user()->role != 4)
+        <div class="col-md-12 mb-3">
+            <div class="form-group">
+                <label for="profile">Employee (<small class="text-danger"> Required </small>)</label>
+                <select type="text" data-type="required"  data-name ="Employee name " name="employee_id" placeholder="Enter Select employee!" class="form-control mt-3 mb-3 select2">
+                  <option value="">-- Select Employee --</option>
+                  @foreach($employees as $item)
+                  <option value="{{ $item->id }}">{{ $item->first_name }}</option>
+                  @endforeach
+                </select>
+            </div>
         </div>
-    </div>
-
+        @endif
     <div class="col-md-6 from_container">
         <div class="form-group">
             <label for="name">From (<small class="text-danger">Required</small>) </label>
@@ -94,6 +95,7 @@
 <script>
     let action          = "{{ $action }}";
     let userData        = <?php echo isset($leave) && $leave ? json_encode($leave) : 0 ;?>;
+    let role            = "{{ Auth::user()->role }}";
 </script>
 @endpush
 @endsection
