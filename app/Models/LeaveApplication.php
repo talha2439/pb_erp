@@ -20,6 +20,9 @@ class LeaveApplication extends Model
     public function employees(){
         return $this->hasOne(Employee::class, 'id', 'employee_id');
     }
+    public function approved(){
+        return $this->hasOne(User::class, 'id', 'approved_by');
+    }
     public function applied(){
         return $this->hasOne(User::class, 'id', 'applied_by');
     }

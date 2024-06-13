@@ -19,7 +19,6 @@
             ->orderBy('created_at', 'asc')
             ->get();
     }
-
 @endphp
 
 <!DOCTYPE html>
@@ -752,27 +751,7 @@
                         </div>
                         <div class="noti-content">
                             <ul class="notification-list">
-                                <li class="notification-message">
-                                    <a href="profile.html">
-                                        <div class="d-flex">
-                                            <span class="avatar avatar-md active">
-                                                <img class="avatar-img rounded-circle" alt="avatar-img"
-                                                    src="{{ asset('assets/img/profiles/avatar-02.jpg') }}">
-                                            </span>
-                                            <div class="media-body">
-                                                <p class="noti-details"><span class="noti-title">Lex Murphy</span>
-                                                    requested access to <span class="noti-title">UNIX directory tree
-                                                        hierarchy</span></p>
-                                                <div class="notification-btn">
-                                                    <span class="btn btn-primary">Accept</span>
-                                                    <span class="btn btn-outline-primary">Reject</span>
-                                                </div>
-                                                <p class="noti-time"><span class="notification-time">Today at 9:42
-                                                        AM</span></p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+
 
                             </ul>
                         </div>
@@ -950,12 +929,20 @@
         toastr.error('{{ Session::get('error') }}');
     </script>
 @endif
-@include('Admin.partial.notification_modal')
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script src="{{ asset('assets/custom/notification.js') }}"></script>
 <script>
+    // Pusher Code
+
+    // end of pusher code
+    let notificationURL = "{{ route('notifications') }}";
+    let markedURL = "{{ route('notifications.marked') }}";
+    let markedallURL = "{{ route('notifications.marked.all') }}";
+    let baseURL      = "{{ asset('') }}";
+    let auth            = "{{ Auth::user()->role }}";
     $(document).ready(function() {
-        $("#notificationModal").modal('show')
+        $('.loader-container').hide();
         setTimeout(() => {
-            $('.loader-container').hide();
         }, 1000);
         var currentroute = "{{ Route::currentRouteName('') }}";
         $(".dynamic_sub_menu").each(function() {

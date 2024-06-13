@@ -14,16 +14,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Yajra\DataTables\Facades\DataTables;
+use App\Events\Notifications;
+use App\Models\Notification;
 
 class LeaveController extends Controller
 {
 
-    public $parentModel =  LeaveApplication::class;
-    public $childModel  =  Employee::class;
-    public $parentView  = 'Admin.attendance.leave_application';
-    public $parentRoute = 'leave.application';
-    public $imagePath   = 'images/leave_application/';
-
+    public $parentModel       =   LeaveApplication::class;
+    public $childModel        =   Employee::class;
+    public $parentView        =  'Admin.attendance.leave_application';
+    public $parentRoute       =  'leave.application';
+    public $imagePath         =  'images/leave_application/';
     public function index()
     {
         $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
@@ -179,6 +180,19 @@ class LeaveController extends Controller
             }
             $storeData = $this->parentModel::create($data);
             if($storeData){
+                $storeNotification = [
+                    'id' => $storeData->id,
+                    'subject' => 'Leave Application Request',
+                    'for'=> 'Admin'
+                ];
+                Notification::create([
+                    'subject' => 'Leave Application Request' ,
+                    'user_id' => $storeData->employees->user_id,
+                    'created_at' => $storeData,
+                    'data' => $storeData->id,
+                    'type' => 'leave_request'
+                ]);
+                event(new Notifications($storeNotification));
                 return redirect()->route($this->parentRoute.'.index')->with('success', 'Leave Application has been successfully applied for '. ucfirst($checkLeaves->first_name) . " " . ucfirst($checkLeaves->last_name));
             }
             else{
@@ -196,16 +210,41 @@ class LeaveController extends Controller
         if ($checkAccess) {
         $data = $request->except(['token']);
         $employeedata = $this->parentModel::where('id' , $data['id'])->first();
-        $date_range = explode('-', $data['date_range']);
-        $data['from_date']  = carbon::parse($date_range[0])->format('Y-m-d');
-        $data['to_date']    = carbon::parse($date_range[1])->format('Y-m-d');
-        $data['approved_days'] = Carbon::parse($data['from_date'])->diffInDays(Carbon::parse($data['to_date']));
-        $data['rejected_days'] = $employeedata->total_days - $data['approved_days'];
-        $data['approved_by']   = $data['status'] == 'approve' ? Auth::user()->name : null;
-        $data['approved_at']   = $data['status'] == 'approve' ? Carbon::now() : null;
+        if($data['status'] == 'approved'){
+            $date_range = explode('-', $data['date_range']);
+            $data['from_date']     = carbon::parse($date_range[0])->format('Y-m-d');
+            $data['to_date']       = carbon::parse($date_range[1])->format('Y-m-d');
+            $data['approved_days'] = Carbon::parse($data['from_date'])->diffInDays(Carbon::parse($data['to_date']));
+            $data['rejected_days'] = $employeedata->total_days - $data['approved_days'];
+            $data['approved_by']   = $data['status'] == 'approved' ? Auth::user()->name : null;
+            $data['approved_at']   = $data['status'] == 'approved' ? Carbon::now() : null;
+        }
+        else{
+            unset($data['from_date']);
+            unset($data['to_date']);
+        }
         unset($data['date_range']);
-
         $updateData  = $employeedata->update($data);
+        $leaveData   = $this->parentModel::where('id' , $data['id'])->with('employees')->first();
+        $leaveData->from_date  = Carbon::parse($leaveData->from_date)->format('F d, Y');
+        $leaveData->to_date    = Carbon::parse($leaveData->to_date)->format('F d, Y');
+        $created_at   = Carbon::parse($leaveData->created_at)->format('F d, Y h:i:s A');
+        $storeNotification = [
+            'subject' => 'Leave Application ' . $data['status'],
+            'user_id' => $leaveData->employees->user_id,
+            'created_at' => $created_at,
+            'data' => json_encode($leaveData),
+            'type' => 'leave_status'
+        ];
+
+        Notification::create([
+            'subject' => 'Leave Application ' . $data['status'],
+            'user_id' => $leaveData->employees->user_id,
+            'created_at' => $created_at,
+            'data' => $leaveData->id,
+            'type' => 'leave_status'
+        ]);
+        event(new Notifications($storeNotification));
         if($updateData){
             return response()->json(['success' => true]);
         }

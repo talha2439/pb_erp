@@ -158,9 +158,9 @@ $("#changeStatus").submit(function(e){
                     e.preventDefault();
                     $("#experienceModal").modal('hide');
                     toastr['success']('Application Status Changed successfully..!')
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1500);
+                    // setTimeout(() => {
+                    //     window.location.reload();
+                    // }, 1500);
                 } else {
                     e.preventDefault();
                     $("#experienceModal").modal('hide');

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, LeaveController, MenuAccessController, MenuSettingController, ShiftController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, LeaveController, MenuAccessController, MenuSettingController, NotificationController, ShiftController, UserAccessController, UserController};
 use App\Http\Controllers\AuthController;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Route;
@@ -150,5 +150,10 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::get('/edit/{id?}' , [LeaveController::class ,'edit'])->name('leave.application.edit');
         Route::get('/details/{id?}' , [LeaveController::class ,'details'])->name('leave.application.details');
         Route::get('/delete/{id?}' , [LeaveController::class ,'delete'])->name('leave.application.delete');
+    });
+    Route::prefix('notifications')->group(function(){
+        Route::get('get_notifications' ,[NotificationController::class , 'notifications'])->name('notifications');
+        Route::get('mark/{id?}' ,[NotificationController::class , 'readed'])->name('notifications.marked');
+        Route::get('mark/all' ,[NotificationController::class , 'markall'])->name('notifications.marked.all');
     });
 });
