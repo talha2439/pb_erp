@@ -26,7 +26,7 @@ $(document).ready(function () {
     let image = $('input[name="image"]');
     let csrfToken = $('input[name="csrf_token"]');
     let empId = $('input[name="emp_id"]');
-    let cv_file = $('input[name="cv_file"]');
+    let documentFiles = $('.documentsFiles');
     $(joining_date).val(getfullDate())
     // Form Input Variables Ended here
 
@@ -105,7 +105,7 @@ $(document).ready(function () {
                 if (data.shift != null && data.shift != undefined) {
                     shiftData = '<option value="">-- Select Shift --</option>';
                     $(data.shift).each(function (index, value) {
-                        shiftData += `<option value="${value.id}">${value.name} | ${value.start_time} - ${value.end_time}</option>`;
+                        shiftData += `<option value="${value.id}">${value.start_time} - ${value.end_time}</option>`;
                     });
                 }
                 if (data.designation != null && data.designation != undefined) {
@@ -256,24 +256,32 @@ $(document).ready(function () {
                 isValid = false;
                 return false;
             }
+
         }
 
-        if (!cv_file.val() == "") {
+        if (!documentFiles.val() == "") {
             let allowedExtensions = ["jpg", "jpeg", "png", "pdf", "doc", "docx"];
-            let ext = cv_file.val().split('.').pop().toLowerCase();
-            if (!allowedExtensions.includes(ext)) {
-                e.preventDefault();
-                toastr["error"]("Only jpg, jpeg, png, pdf, doc, and docx files are allowed for employee resume / CV files");
-                isValid = false;
-                return false;
-            } // To Validate CV extension
-            // File Size validation
-            if (cv_file[0].files[0].size > 15 * (1024 * 1024)) {
-                e.preventDefault();
-                toastr["error"]("CV file size should be less than 15MB");
-                isValid = false;
-                return false;
-            }
+            if (documentFiles.length > 0) {
+                $(documentFiles).each(function (index, value) {
+                    let ext = $(this).val().split('.').pop().toLowerCase();
+                    if (!allowedExtensions.includes(ext)) {
+                        e.preventDefault();
+                        toastr["error"]("Only jpg, jpeg, png, pdf, doc, and docx files are allowed for employee documents files");
+                        isValid = false;
+                        return false;
+                    } // To Validate CV extension
+
+                    let subImageData = value.files;
+                    for (let i = 0; i < subImageData.length; i++) {
+                        if (subImageData[i].size > 15 * (1024 * 1024)) {
+                            e.preventDefault();
+                            toastr["error"]("Document file size should be less than 15MB");
+                            isValid = false;
+                            return false;
+                        }
+                    }
+                });
+             }
         }
         else if ($(salary).val() == "") {
             e.preventDefault();
@@ -322,10 +330,15 @@ $(document).ready(function () {
                 let imageData = image[0].files[0];
                 formData.append("image", imageData);
             }
-            if (cv_file.val() !== "") {
-                let cv_fileData = cv_file[0].files[0];
-                formData.append("cv_file", cv_fileData);
-            }
+            if (documentFiles.length > 0) {
+                    $(documentFiles).each(function (index, value) {
+                        let subImageData = value.files;
+                        for (let i = 0; i < subImageData.length; i++) {
+                            formData.append(`document[]`, subImageData[i]);
+                        }
+                    });
+             }
+
             formData.append('data', step1form.serialize());
             $.ajax({
                 url: employeeStore + '/' + empId.val(),
@@ -339,11 +352,12 @@ $(document).ready(function () {
                 success: function (response) {
                     if (response.success) {
                         e.preventDefault();
+                        $(empId).val(response.emp_id);
                         let message = action == "edit" && empId != "" ? "Updated" : "Saved";
                         toastr.success("Employee Personal Information has been " + message + " successfully");
+                        $('input[name="doc_ids[]"]').val(response.doc_ids);
                         editQualification();
                         if (button.attr('title') == 'Save and Next') {
-                            $(empId).val(response.emp_id);
                             $('.step_title').html(`<h3><strong class="text-primary ">Step 2 :</strong >  Qualification Information </h3><hr>`);
                             $(step1form).hide();
                             $("#step2Form").show();

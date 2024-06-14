@@ -10,6 +10,7 @@ use App\Models\Designation;
 use App\Models\SubMenu;
 use App\Models\User;
 use App\Models\Employee;
+use App\Models\EmployeeDocument;
 use App\Models\EmployeeExperience;
 use App\Models\EmployeeQualification;
 use App\Models\Nationality;
@@ -106,11 +107,18 @@ class EmployeeController extends Controller
             if ($checkAccess) {
                 $requestData = $request->data;
                 parse_str($requestData, $data);
+
                 unset($data['_token']);
                 if (empty($id)) {
-                    $validateEmailandCnic = $this->parentModel::where('personal_email', $data['personal_email'])->orWhere('cnic_number', $data['cnic_number'])->count();
-                    if ($validateEmailandCnic > 0) {
-                        return response()->json(['error' => "Personal email or cnic number already used"]);
+                    $validateEmail = $this->parentModel::where('personal_email', $data['personal_email'])->count();
+                    if(isset($data['cnic_number']) && !empty($data['cnic_number'])){
+                        $validateCnic = $this->parentModel::where('cnic_number', $data['cnic_number'])->count();
+                        if ($validateCnic > 0) {
+                            return response()->json(['error' => "Cnic number already used"]);
+                        }
+                    }
+                    if ($validateEmail> 0) {
+                        return response()->json(['error' => "Personal email already used"]);
                     }
                 }
                 $data['max_id']         = $this->parentModel::max('id') ?? 0;
@@ -124,6 +132,8 @@ class EmployeeController extends Controller
                 $data['shift']          = isset($data['shift']) && !empty($data['shift']) ? $data['shift'] : 0;
                 $data['no_of_child']    = isset($data['no_of_child']) && !empty($data['no_of_child']) ? $data['no_of_child'] : 0;
                 $data['start_date']     = !empty($data['start_date']) ? $data['start_date'] : null;
+                $data['cnic_number']    = !empty($data['cnic_number']) ? $data['cnic_number'] : null;
+                $data['end_date']       = !empty($data['end_date']) ? $data['end_date'] : null;
                 if (!empty($id)) {
                     $emp_data = $this->parentModel::where('id', $id)->first();
                     $data['emp_uniq_id'] = $emp_data->emp_uniq_id;
@@ -140,21 +150,23 @@ class EmployeeController extends Controller
                         }
                     }
                 }
-                if ($request->hasFile("cv_file")) {
-                    $cv_file = $data['emp_uniq_id'] . '.' . $request->file('cv_file')->getClientOriginalExtension();
-                    $request->file('cv_file')->move($this->childimagePath, $cv_file);
-                    $data['cv_file'] = $cv_file;
-                    if (!empty($id)) {
-                        $imageFile =  $this->parentModel::where('id', $id)->get('cv_file');
-                        $cvPath =  asset($this->childimagePath . $imageFile);
-                        if (file_exists($cvPath)) {
-                            unlink($cvPath);
-                        }
-                    }
-                }
                 $storeData = $this->parentModel::updateOrCreate(['id' => $id], $data);
                 if ($storeData) {
-                    return response()->json(['success' => true, 'emp_id' => $storeData->id]);
+                    $imageIds= [] ;
+                    if(request()->hasFile('document')){
+                        foreach($request->file('document') as $key => $value){
+                            $filename = $data['emp_uniq_id'] . '-'. $key. '.'. $value->getClientOriginalExtension();
+                            $value->move($this->childimagePath, $filename);
+                            $data['document'][$key] = url(asset('images/emp_documents/'. $filename));
+                            $ids = !empty($data['doc_ids'][$key]) ? $data['doc_ids'][$key] : null;
+                            $storeImage = EmployeeDocument::updateOrCreate(['id' => $ids],[
+                                'employee_id' => $storeData->id,
+                                'document' => $data['document'][$key]
+                            ]);
+                            $imageIds[] = $storeImage->id;
+                        }
+                    }
+                    return response()->json(['success' => true, 'emp_id' => $storeData->id , 'doc_ids' => $imageIds]);
                 } else {
                     return response()->json(['error' => true]);
                 }

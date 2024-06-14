@@ -38,610 +38,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/blinker.css') }}">
     <style type="text/css">
-         /* Loader */
-         .loader-container{
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            background-color: rgba(255, 255, 255, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-         }
-         /* End of Loader */
-        .select2-container--default .select2-selection--single {
-            background-color: #fff;
-            border: 1px solid #aaaaaa7d !important;
-            border-radius: 5px !important;
-            padding: 4px !important;
-            position: relative !important;
-            top: 2px !important;
-        }
 
-        .select2-container .select2-selection--single {
-            height: 38px !important;
-        }
-
-        .light-style .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 1.8rem !important;
-        }
-
-        .select2-container .select2-selection--single {
-
-            height: 38px !important;
-
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 100;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek-ext/wght/normal.woff2);
-            unicode-range: U+1F00-1FFF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 100;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek/wght/normal.woff2);
-            unicode-range: U+0370-03FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 100;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/vietnamese/wght/normal.woff2);
-            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 100;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic/wght/normal.woff2);
-            unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 100;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic-ext/wght/normal.woff2);
-            unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 100;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin/wght/normal.woff2);
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 100;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin-ext/wght/normal.woff2);
-            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 200;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic-ext/wght/normal.woff2);
-            unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 200;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek-ext/wght/normal.woff2);
-            unicode-range: U+1F00-1FFF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 200;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek/wght/normal.woff2);
-            unicode-range: U+0370-03FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 200;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin-ext/wght/normal.woff2);
-            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 200;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin/wght/normal.woff2);
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 200;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/vietnamese/wght/normal.woff2);
-            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 200;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic/wght/normal.woff2);
-            unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 300;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek/wght/normal.woff2);
-            unicode-range: U+0370-03FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 300;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic-ext/wght/normal.woff2);
-            unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 300;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin/wght/normal.woff2);
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 300;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin-ext/wght/normal.woff2);
-            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 300;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/vietnamese/wght/normal.woff2);
-            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 300;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic/wght/normal.woff2);
-            unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 300;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek-ext/wght/normal.woff2);
-            unicode-range: U+1F00-1FFF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 400;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek/wght/normal.woff2);
-            unicode-range: U+0370-03FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 400;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek-ext/wght/normal.woff2);
-            unicode-range: U+1F00-1FFF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 400;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin-ext/wght/normal.woff2);
-            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 400;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic/wght/normal.woff2);
-            unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 400;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/vietnamese/wght/normal.woff2);
-            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 400;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic-ext/wght/normal.woff2);
-            unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 400;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin/wght/normal.woff2);
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 500;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek/wght/normal.woff2);
-            unicode-range: U+0370-03FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 500;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin-ext/wght/normal.woff2);
-            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 500;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/vietnamese/wght/normal.woff2);
-            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 500;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek-ext/wght/normal.woff2);
-            unicode-range: U+1F00-1FFF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 500;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic/wght/normal.woff2);
-            unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 500;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin/wght/normal.woff2);
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 500;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic-ext/wght/normal.woff2);
-            unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 600;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin-ext/wght/normal.woff2);
-            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 600;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic/wght/normal.woff2);
-            unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 600;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic-ext/wght/normal.woff2);
-            unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 600;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek/wght/normal.woff2);
-            unicode-range: U+0370-03FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 600;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin/wght/normal.woff2);
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 600;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/vietnamese/wght/normal.woff2);
-            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 600;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek-ext/wght/normal.woff2);
-            unicode-range: U+1F00-1FFF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 700;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek-ext/wght/normal.woff2);
-            unicode-range: U+1F00-1FFF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 700;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin/wght/normal.woff2);
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 700;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin-ext/wght/normal.woff2);
-            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 700;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic-ext/wght/normal.woff2);
-            unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 700;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/vietnamese/wght/normal.woff2);
-            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 700;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic/wght/normal.woff2);
-            unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 700;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek/wght/normal.woff2);
-            unicode-range: U+0370-03FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 800;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/vietnamese/wght/normal.woff2);
-            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 800;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic-ext/wght/normal.woff2);
-            unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 800;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin/wght/normal.woff2);
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 800;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic/wght/normal.woff2);
-            unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 800;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek-ext/wght/normal.woff2);
-            unicode-range: U+1F00-1FFF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 800;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin-ext/wght/normal.woff2);
-            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 800;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek/wght/normal.woff2);
-            unicode-range: U+0370-03FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 900;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic/wght/normal.woff2);
-            unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 900;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek-ext/wght/normal.woff2);
-            unicode-range: U+1F00-1FFF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 900;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/greek/wght/normal.woff2);
-            unicode-range: U+0370-03FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 900;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin-ext/wght/normal.woff2);
-            unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 900;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/latin/wght/normal.woff2);
-            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 900;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/cyrillic-ext/wght/normal.woff2);
-            unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: Inter;
-            font-style: normal;
-            font-weight: 900;
-            src: url(https://kanakku.dreamstechnologies.com/cf-fonts/v/inter/5.0.16/vietnamese/wght/normal.woff2);
-            unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
-            font-display: swap;
-        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome/css/fontawesome.min.css') }}">
@@ -657,12 +54,60 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toatr.css') }}">
     <script src="{{ asset('assets/js/layout.js') }}" type="text/javascript"></script>
 </head>
+<style>
+    .badge-toastr{
+        display: none;
 
+        min-height: 80px;
+        position:relative;
+        border-radius: 3px;
+        width: 270px !important;
+        position: fixed;
+        right: 10px;
+        top: 10px;
+        z-index: 1000;
+        background: white;
+        border-right: 10px solid green !important;
+
+    }
+    .border-bottom{
+        height: 5px;
+        width: 0%;
+        background: rgba(4, 170, 4, 0.63) !important;
+        animation: width 1.7s  reverse linear ;
+    }
+    @keyframes width{
+        0%{
+            width: 0%;
+
+        }
+        100%{
+            width: 100%;
+        }
+    }
+</style>
 <body>
     <div class="loader-container" >
         <div class="spinner-grow text-primary"></div>
         <div class="text-center p-3"> Please wait... </div>
     </div>
+    {{-- Badge toastr --}}
+    <div class="badge-toastr shadow border">
+        <div class="row">
+            <div class="col-md-3 position-relative">
+                <div>
+                    <button class="rounded-circle btn bg-white text-purple border shadow-sm" style="position: absolute;top: 14px;left: 21px;height: 45px;"><i class="fe fe-bell"></i></button>
+                </div>
+            </div>
+            <div class="col-md-9 p-3">
+                <span class="h5">New Notification</span><br>
+                <small>June 29, 2024 1:54pm</small>
+            </div>
+
+        </div>
+        <div class="border-bottom"></div>
+    </div>
+    {{-- End of badge toastr --}}
     <div class="main-wrapper">
 
         <div class="header header-one">
@@ -942,8 +387,13 @@
     let auth            = "{{ Auth::user()->role }}";
     $(document).ready(function() {
         $('.loader-container').hide();
-        setTimeout(() => {
-        }, 1000);
+
+        // $('.badge-toastr').fadeIn();
+        // setTimeout(() => {
+        // $('.badge-toastr').fadeOut();
+        // }, 1700);
+
+
         var currentroute = "{{ Route::currentRouteName('') }}";
         $(".dynamic_sub_menu").each(function() {
             var subMenuRoute = $(this).data("route");

@@ -209,10 +209,11 @@
             </div>
         </div>
         <div class="col-md-6 mb-3">
-            <div class="form-group"><label for="">Employee Cv / Resume <small class="text-secondary">(
+            <div class="form-group"><label for="">Documents <small class="text-secondary">(
                         Optional ) Should be a valid .pdf , .jpeg , .jpg , .docx , .doc or .png file <div
                             class="text-danger">( max file size : 15mb) </div></small></label>
-                <input type="file" name="cv_file" class="form-control">
+                <input type="text" name="doc_ids[]" value="">
+                <input type="file" name="document[]" class="form-control documentsFiles" multiple>
             </div>
         </div>
         <hr>
