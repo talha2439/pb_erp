@@ -51,7 +51,7 @@
     <div class="col-md-6 menu_container">
         <div class="form-group">
             <label for="name">User Role (<small class="text-danger">Required</small>) | <small>( For Example: Admin , HR etc)</small></label>
-            <select type="text" name="role" placeholder="Enter Email for user..!" class="form-select mt-3 mb-3">
+            <select type="text" name="role" placeholder="Enter Email for user..!" class="form-select mt-3 mb-3 select2">
                 <option value="">Select User Role</option>
                 <option value="1">Admin</option>
                 <option value="2">Manager</option>

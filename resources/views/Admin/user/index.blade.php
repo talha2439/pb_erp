@@ -12,7 +12,7 @@
         <div class="card-header mb-2">
             <div class="d-flex justify-content-between">
                 <h3>All Users</h3>
-                <a href="{{ route('users.create') }}" class="btn btn-primary">Add Users</a>
+                <div><a href="{{ route('users.create') }}" class="btn btn-primary"><i class="fe fe-plus"></i></a></div>
             </div>
         </div>
 
@@ -122,9 +122,19 @@
             let userActiveUrl = "{{ route('users.status') }}";
             $(document).on('click', '.deleteUser', function(e) {
                 let id = $(this).data('id');
-                let confirm = window.confirm('Are you sure you want to delete');
-                if (confirm) {
-                    $.ajax({
+                let row = $(this).closest('tr');
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You sure you want to remove it ? ",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#6C05A8',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Yes'
+                }).then((res) => {
+                    if (res.isConfirmed) {
+                        $.ajax({
                         url: deleteUrl + "/" + id,
                         type: 'Get',
                         success: function(res) {
@@ -132,17 +142,23 @@
                                 toastr['error']('You are not authorized to delete user information..!');
                                 return false;
                             }
-                            if (res.success) {
+                            else if (res.exists) {
+                                toastr['error']('Failed to remove User an Employee has been assigned with the ID..!')
+                                return false;
+                            }
+                            else if (res.success) {
                                 toastr['success']('User Deleted successfully..!')
-                                setTimeout(() => {
-                                    window.location.reload();
-                                }, 1500);
+                                row.remove();
                             } else {
                                 toastr['error']('Something went wrong..!');
                             }
                         }
                     })
-                }
+                    }
+                });
+
+
+
             });
 
             $(document).on('change', 'input[name="active"]', function(e) {

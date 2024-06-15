@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{User , SubMenu , UserAccess};
+use App\Models\{Employee, User , SubMenu , UserAccess};
 use Auth;
 use Str;
 use Hash;
@@ -76,7 +76,7 @@ class UserController extends Controller
                 }
             }
             $data['email_verified_at']      = isset($data['active']) == "on" ? Carbon::now() : null ; // it will check that verified user is checked or unchecked
-           
+
             // To check user name and email
             if(empty($id)){
                 $checkusername       = $this->parentModel::where("username", $data['username'])->count();
@@ -160,6 +160,10 @@ class UserController extends Controller
         public function delete($id){
             $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.index')->first();
             $checkAccess = $this->check_access($submenuId->id , 'delete_status');
+            $checkEmployee = Employee::where('user_id' , $id)->count();
+            if($checkEmployee > 0){
+                return response()->json(['exists' => true]);
+            }
             if($checkAccess){
             $delete  =  $this->parentModel::where('id', $id)->delete();
             if($delete){

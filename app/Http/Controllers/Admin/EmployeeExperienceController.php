@@ -47,7 +47,7 @@ class EmployeeExperienceController extends Controller
                         $request->file('attachment')[$key]->move($this->imagePath, $fileNames);
                     }
 
-                    $storedata = $this->parentModel::updateOrCreate(['id' => $data['exp_id'][$key] ?? ""], [
+                    $storedata = $this->parentModel::updateOrCreate(['id' => $data['exp_id'][$key] ?? null], [
                         'employee_id' => $data['employee_id'],
                         'job_title' => $data['job_title'][$key],
                         'attachment' => $fileNames ?? "",
