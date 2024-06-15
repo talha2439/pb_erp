@@ -18,7 +18,9 @@ Employee's Leave Applications
             <button class=" btn btn-primary text-white" style="width: max-content" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                 <i class="fe fe-filter"></i>
                </button> |
-               <a href="{{ route('leave.application.create') }}" class="btn btn-info text-white"><i class="fe fe-plus"></i></a>
+             <div>
+                <a href="{{ route('leave.application.create') }}" class="btn btn-info text-white"><i class="fe fe-plus"></i></a>
+             </div>
            </div>
 
            </div>

@@ -11,6 +11,7 @@ class Designation extends Model
 {
     use HasFactory ,  SoftDeletes , Crud;
     protected $fillable = [];
+    public $table   ='designations';
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

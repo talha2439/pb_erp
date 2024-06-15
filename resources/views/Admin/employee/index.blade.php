@@ -12,7 +12,9 @@
         <div class="card-header mb-2">
             <div class="d-flex justify-content-between">
                 <h3>All Employees</h3>
-                <a href="{{ route('employees.create') }}" class="btn btn-primary">Add Employee</a>
+                <div>
+                    <a href="{{ route('employees.create') }}" class="btn btn-primary"><i class="fe fe-plus"></i></a>
+                </div>
             </div>
         </div>
         <div class="table-responsive pt-0">
