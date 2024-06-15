@@ -27,5 +27,9 @@ $(document).ready(function() {
 
         }
 
-    })
+    });
+
+    // Edit application
+    
+
 });

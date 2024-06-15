@@ -6,7 +6,7 @@
 
         <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Select Employee <span class="text-danger">( Required )</span></label>
+                <label for="">Select Employee <span class="text-danger">( * )</span></label>
                 <select type="text" name="user_id" class="form-select select2">
                     <option value="">-- Select Employee --</option>
                     @foreach ($users as $user)
@@ -19,7 +19,7 @@
 
         <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
-                <label for="">First Name <span class="text-danger">( Required )</span></label>
+                <label for="">First Name <span class="text-danger">( * )</span></label>
                 <input type="text" name="first_name" class="form-control" placeholder="First Name">
             </div>
         </div>
@@ -31,13 +31,13 @@
         </div>
         <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Personal Email <span class="text-danger"> ( Required )</span></label>
+                <label for="">Personal Email <span class="text-danger"> ( * )</span></label>
                 <input type="text" name="personal_email" class="form-control" placeholder="example@gmail.com">
             </div>
         </div>
         <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Employement Status <span class="text-danger">( Required )</span></label>
+                <label for="">Employement Status <span class="text-danger">( * )</span></label>
                 <select type="text" name="employment_status" class="form-select select2">
                     <option value="">-- Select Employment Status --</option>
                     <option value="prohibition">Prohibition</option>
@@ -52,28 +52,28 @@
 
         <div class="col-md-6 mt-2 mb-3 emp_dates" style="display: none">
             <div class="form-group">
-                <label for="">Start Date <small class="text-danger">( Required )</small></label>
+                <label for="">Start Date <small class="text-danger">( * )</small></label>
                 <input type="date" name="start_date" class="form-control ">
             </div>
         </div>
 
         <div class="col-md-6 mt-2 mb-3 emp_dates" style="display: none">
             <div class="form-group">
-                <label for="">End Date <small class="text-danger">( Required )</small></label>
+                <label for="">End Date <small class="text-danger">( * )</small></label>
                 <input type="date" name="end_date" class="form-control">
             </div>
         </div>
 
         <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Date of Birth <small class="text-danger">( Required )</small></label>
+                <label for="">Date of Birth <small class="text-danger">( * )</small></label>
                 <input type="date" name="date_of_birth" class="form-control">
             </div>
         </div>
 
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Department <small class="text-danger">( Required )</small></label>
+                <label for="">Department <small class="text-danger">( * )</small></label>
                 <select name="department" class="form-select select2">
                     <option value="">-- Select Department --</option>
                     @foreach ($department as $item)
@@ -84,7 +84,7 @@
         </div>
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Designation <small class="text-danger">( Required )</small></label>
+                <label for="">Designation <small class="text-danger">( * )</small></label>
                 <select name="designation" class="form-select select2">
                     <option value="">-- Select Department First --</option>
                 </select>
@@ -150,7 +150,7 @@
         </div>
         <div class="col-md-3 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Gender <small class="text-danger">( Required )</small></label>
+                <label for="">Gender <small class="text-danger">( * )</small></label>
                 <select name="gender" class="form-select select2">
                     <option value="">-- Select Gender --</option>
                     <option value="Male">Male</option>
@@ -178,7 +178,7 @@
         </div>
         <div class="col-md-3 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Joining Date <span class="text-danger">( Required )</span></label>
+                <label for="">Joining Date <span class="text-danger">( * )</span></label>
                 <input type="date" name="joining_date" class="form-control" placeholder="+92 123456789">
             </div>
         </div>
@@ -212,7 +212,6 @@
             <div class="form-group"><label for="">Documents <small class="text-secondary">(
                         Optional ) Should be a valid .pdf , .jpeg , .jpg , .docx , .doc or .png file <div
                             class="text-danger">( max file size : 15mb) </div></small></label>
-                <input type="text" name="doc_ids[]" value="">
                 <input type="file" name="document[]" class="form-control documentsFiles" multiple>
             </div>
         </div>
@@ -223,7 +222,7 @@
         <br>
         <div class="col-md-12 mb-3 mt-2">
             <div class="form-group">
-                <label for="">Monthly Salary <small class="text-danger">( Required )</small></label>
+                <label for="">Monthly Salary <small class="text-danger">( * )</small></label>
                 <input type="number" name="salary" placeholder="Employee Monthly Salary" class="form-control">
             </div>
         </div><br>
@@ -235,27 +234,27 @@
         <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
                 <label for="">CNIC Number <span class="text-secondary unrequired">( Optional )</span><span
-                        class="text-danger requiredCnic" style="display: none">( Required )</span></label>
+                        class="text-danger requiredCnic" style="display: none">( * )</span></label>
                 <input type="text" name="cnic_number" class="form-control" placeholder="00000-0000000-0">
             </div>
         </div>
         <div class="col-md-6 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Personal Contact <span class="text-danger">( Required )</span></label>
+                <label for="">Personal Contact <span class="text-danger">( * )</span></label>
                 <input type="text" name="personal_contact" class="form-control" placeholder="( +92 ) 0000000000">
             </div>
         </div>
 
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Emergency Contact Person <small class="text-danger">( Required )</small></label>
+                <label for="">Emergency Contact Person <small class="text-danger">( * )</small></label>
                 <input type="text" name="emergency_contact_person" class="form-control"
                     placeholder="Emergency Contact person name">
             </div>
         </div>
         <div class="col-md-4 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Emergency Contact Number <small class="text-danger">( Required )</small></label>
+                <label for="">Emergency Contact Number <small class="text-danger">( * )</small></label>
                 <input type="text" name="emergency_contact" class="form-control"
                     placeholder="( +92 ) 0000000000">
             </div>
@@ -270,7 +269,7 @@
 
         <div class="col-md-12 mt-2 mb-3">
             <div class="form-group">
-                <label for="">Permanent Address <span class="text-danger">( Required )</span></label>
+                <label for="">Permanent Address <span class="text-danger">( * )</span></label>
                 <textarea type="text" cols="4" rows="4" name="permanent_address" class="form-control"
                     placeholder="Parment address"></textarea>
             </div>

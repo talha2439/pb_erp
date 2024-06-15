@@ -61,7 +61,7 @@
         min-height: 80px;
         position:relative;
         border-radius: 3px;
-        width: 270px !important;
+        width: 320px !important;
         position: fixed;
         right: 10px;
         top: 10px;
@@ -74,7 +74,7 @@
         height: 5px;
         width: 0%;
         background: rgba(4, 170, 4, 0.63) !important;
-        animation: width 1.7s  reverse linear ;
+        animation: width 2.3s  reverse linear ;
     }
     @keyframes width{
         0%{
@@ -100,8 +100,8 @@
                 </div>
             </div>
             <div class="col-md-9 p-3">
-                <span class="h5">New Notification</span><br>
-                <small>June 29, 2024 1:54pm</small>
+                <span class="h5 toastMessage" style="font-size: 20px ; color:black">New Notification</span><br>
+                <small class="toastDate">June 29, 2024 1:54pm</small>
             </div>
 
         </div>
@@ -362,11 +362,14 @@
     <script src="{{ asset('assets/js/script.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/sweetalert/sweetalert2.all.min.js') }}"></script>
-
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script src="{{ asset('assets/custom/badgetoastr.js') }}"></script>
+    <script src="{{ asset('assets/custom/notification.js') }}"></script>
 </body>
 @if (Session::has('success'))
     <script>
         toastr.success('{{ Session::get('success') }}');
+        pushNotification();
     </script>
 @endif
 @if (Session::has('error'))
@@ -374,8 +377,7 @@
         toastr.error('{{ Session::get('error') }}');
     </script>
 @endif
-<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-<script src="{{ asset('assets/custom/notification.js') }}"></script>
+
 <script>
     // Pusher Code
 
@@ -387,13 +389,6 @@
     let auth            = "{{ Auth::user()->role }}";
     $(document).ready(function() {
         $('.loader-container').hide();
-
-        // $('.badge-toastr').fadeIn();
-        // setTimeout(() => {
-        // $('.badge-toastr').fadeOut();
-        // }, 1700);
-
-
         var currentroute = "{{ Route::currentRouteName('') }}";
         $(".dynamic_sub_menu").each(function() {
             var subMenuRoute = $(this).data("route");

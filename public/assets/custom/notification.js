@@ -1,6 +1,6 @@
 $(document).ready(function() {
-    checkNotifications();
-
+    // checkNotifications();
+    pushNotification();
     function checkNotifications(){
         $.ajax({
             type: 'GET',
@@ -10,7 +10,7 @@ $(document).ready(function() {
                 if(response.leave){
                     // Notification For Leaves
                     $(response.leave).each(function(index , value){
-                       let image = "../../images/UsersImages/"+value.leave_application.employees.users.image
+                       let image = "../../images/UsersImages/"+value.leave_application.employees.users.image;
                        leaveData +=  `<li class="notification-message">
                         <a href="profile.html">
                         <div class="d-flex">
@@ -93,36 +93,38 @@ $(document).ready(function() {
 })
 
 
-var pusher = new Pusher('0676cddee652caa7a948', {
-    cluster: 'ap2'
-  });
+function pushNotification(){
+    var pusher = new Pusher('0676cddee652caa7a948', {
+        cluster: 'ap2'
+      });
 
-  var channel = pusher.subscribe('my-channel');
-  channel.bind('notification', function(response) {
-    console.log(response.post.data);
-     let responseData = JSON.parse(response.post.data);
-    let notificationData = "" ;
-    if(response.post.type == "leaveApplication"){
-        notificationData  +=` <li class="notification-message">
-        <a href="profile.html">
-            <div class="d-flex">
-                <span class="avatar avatar-md active">
-                    <img class="avatar-img rounded-circle" alt="avatar-img"
-                        src="../../assets/img/profiles/avatar-02.jpg">
-                </span>
-                <div class="media-body">
-                    <p class="noti-details"><span class="noti-title">${responseData.employees.first_name} ${responseData.employees.last_name} </span><br>
-                    <span class="noti-title">${response.post.subject}</span></p>
-                    <div class="notification-btn">
-                        <span class="btn btn-primary">Accept</span>
-                        <span class="btn btn-outline-primary">Reject</span>
+      var channel = pusher.subscribe('my-channel');
+      channel.bind('notification', function(response) {
+        console.log(response.post.data);
+         let responseData = JSON.parse(response.post.data);
+        let notificationData = "" ;
+        if(response.post.type == "leaveApplication"){
+            notificationData  +=` <li class="notification-message">
+            <a href="profile.html">
+                <div class="d-flex">
+                    <span class="avatar avatar-md active">
+                        <img class="avatar-img rounded-circle" alt="avatar-img"
+                            src="../../assets/img/profiles/avatar-02.jpg">
+                    </span>
+                    <div class="media-body">
+                        <p class="noti-details"><span class="noti-title">${responseData.employees.first_name} ${responseData.employees.last_name} </span><br>
+                        <span class="noti-title">${response.post.subject}</span></p>
+                        <div class="notification-btn">
+                            <span class="btn btn-primary">Accept</span>
+                            <span class="btn btn-outline-primary">Reject</span>
+                        </div>
+                        <p class="noti-time"><span class="notification-time">${response.post.created_at}</span></p>
                     </div>
-                    <p class="noti-time"><span class="notification-time">${response.post.created_at}</span></p>
                 </div>
-            </div>
-        </a>
-    </li>`;
-    }
-     $(document).find('.notification-list').append(notificationData)
-
-  });
+            </a>
+        </li>`;
+        }
+         $(document).find('.notification-list').append(notificationData)
+         toastMessage(response.post.subject , response.post.created_at);
+      });
+}

@@ -128,9 +128,11 @@ $(document).on('click', '.changeStatus' , function(e){
 // Submitting Form
 
 $("#changeStatus").submit(function(e){
+
     e.preventDefault();
     isValid = true;
     let inputs = $(document).find("#changeStatus").find('.form-control[data-type="required"]');
+
     $(inputs).each(function(){
         if($(this).val() == "" || $(this).val() == null ){
             e.preventDefault(); //
@@ -157,10 +159,10 @@ $("#changeStatus").submit(function(e){
                 else if (res.success) {
                     e.preventDefault();
                     $("#experienceModal").modal('hide');
-                    toastr['success']('Application Status Changed successfully..!')
-                    // setTimeout(() => {
-                    //     window.location.reload();
-                    // }, 1500);
+                    toastr['success']('Application Status Changed successfully..!');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
                 } else {
                     e.preventDefault();
                     $("#experienceModal").modal('hide');

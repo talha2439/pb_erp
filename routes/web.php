@@ -141,13 +141,12 @@ Route::prefix('/')->middleware('auth')->group(function(){
     });
     Route::prefix('leave/application')->group(function(){
         Route::get('/' , [LeaveController::class ,'index'])->name('leave.application.index');
-        Route::get('/create' , [LeaveController::class ,'create'])->name('leave.application.create');
+        Route::get('/create/{id?}' , [LeaveController::class ,'create'])->name('leave.application.create');
         Route::post('/store/{id?}' , [LeaveController::class ,'store'])->name('leave.application.store');
         Route::post('/status' , [LeaveController::class ,'status'])->name('leave.application.status');
         Route::get('/data' , [LeaveController::class ,'data'])->name('leave.application.data');
         Route::get('/monthly' , [LeaveController::class ,'index'])->name('leave.application.monthly');
         Route::get('/yearly' , [LeaveController::class ,'index'])->name('leave.application.yearly');
-        Route::get('/edit/{id?}' , [LeaveController::class ,'edit'])->name('leave.application.edit');
         Route::get('/details/{id?}' , [LeaveController::class ,'details'])->name('leave.application.details');
         Route::get('/delete/{id?}' , [LeaveController::class ,'delete'])->name('leave.application.delete');
     });

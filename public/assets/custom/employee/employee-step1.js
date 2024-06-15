@@ -355,7 +355,7 @@ $(document).ready(function () {
                         $(empId).val(response.emp_id);
                         let message = action == "edit" && empId != "" ? "Updated" : "Saved";
                         toastr.success("Employee Personal Information has been " + message + " successfully");
-                        $('input[name="doc_ids[]"]').val(response.doc_ids);
+                       
                         editQualification();
                         if (button.attr('title') == 'Save and Next') {
                             $('.step_title').html(`<h3><strong class="text-primary ">Step 2 :</strong >  Qualification Information </h3><hr>`);

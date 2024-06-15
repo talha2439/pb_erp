@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\Notifications;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Country;
@@ -14,6 +15,7 @@ use App\Models\EmployeeDocument;
 use App\Models\EmployeeExperience;
 use App\Models\EmployeeQualification;
 use App\Models\Nationality;
+use App\Models\Notification;
 use App\Models\Shift;
 use App\Models\State;
 use App\Models\UserAccess;
@@ -30,8 +32,8 @@ class EmployeeController extends Controller
     public $menuModel   = SubMenu::class;
     public $parentView  = 'Admin.employee';
     public $parentRoute = "employees";
-    public $imagePath  = 'images/EmployeesImages/';
-    public $childimagePath  = 'images/EmployeesImages/cv_files/';
+    public $imagePath  = 'images/Employees/profile/';
+    public $childimagePath  = 'images/Employees/documents/';
     public function index(Request $request)
     {
         $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
@@ -82,8 +84,9 @@ class EmployeeController extends Controller
         if ($checkAccess) {
             $data['action']      = $id == null ? 'create' : 'edit';
             $data['employee']    = $this->parentModel::where('id', $id)->first();
-            $data['country']     = Country::all();
-            $data['nationality'] = Nationality::all();
+            $data['country']     = Country::select('name' , 'id')->get();
+
+            $data['nationality'] = Nationality::select('name' , 'id')->get();
             $data['users']       = $this->userModel::whereNot('role', 1)->whereNotIn('id', Employee::pluck('user_id')->toArray())
                 ->get();
             if ($data['action'] == 'edit') {
@@ -152,21 +155,22 @@ class EmployeeController extends Controller
                 }
                 $storeData = $this->parentModel::updateOrCreate(['id' => $id], $data);
                 if ($storeData) {
-                    $imageIds= [] ;
                     if(request()->hasFile('document')){
                         foreach($request->file('document') as $key => $value){
                             $filename = $data['emp_uniq_id'] . '-'. $key. '.'. $value->getClientOriginalExtension();
                             $value->move($this->childimagePath, $filename);
-                            $data['document'][$key] = url(asset('images/emp_documents/'. $filename));
-                            $ids = !empty($data['doc_ids'][$key]) ? $data['doc_ids'][$key] : null;
-                            $storeImage = EmployeeDocument::updateOrCreate(['id' => $ids],[
+                            $data['document'][$key] = url(asset($this->childimagePath. $filename));
+                            $storeImage = EmployeeDocument::create([
                                 'employee_id' => $storeData->id,
                                 'document' => $data['document'][$key]
                             ]);
-                            $imageIds[] = $storeImage->id;
                         }
                     }
-                    return response()->json(['success' => true, 'emp_id' => $storeData->id , 'doc_ids' => $imageIds]);
+                    $employeeType = !empty($id) ? 'employee_update' : 'employee_create';
+                    $subject = !empty($id) ? 'Employee Information Updated' : 'Employee Information Created';
+                    $storeNotification =  $this->parentModel::notification($subject , $storeData  , $employeeType , 'users');
+                    event(new Notifications($storeNotification));
+                    return response()->json(['success' => true, 'emp_id' => $storeData->id]);
                 } else {
                     return response()->json(['error' => true]);
                 }
@@ -192,7 +196,7 @@ class EmployeeController extends Controller
     }
     public function state($id)
     {
-        $data = State::where('country_id', $id)->get();
+        $data = State::select('name', 'id')->where('country_id', $id)->get();
         if ($data) {
             return response()->json($data);
         } else {
@@ -201,7 +205,7 @@ class EmployeeController extends Controller
     }
     public function city($id)
     {
-        $data = City::where('state_id', $id)->get();
+        $data = City::select('name' , 'id')->where('state_id', $id)->get();
         if ($data) {
             return response()->json($data);
         } else {
