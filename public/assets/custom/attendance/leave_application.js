@@ -30,6 +30,15 @@ $(document).ready(function() {
     });
 
     // Edit application
-    
+    if(action == 'edit'){
+        $('select[name="employee_id"').val(leaveData.employee_id);
+        $('select[name="employee_id"').trigger('change');
+        let leaveType  = leaveData.leave_type == 'Annual leaves' ? 1 : 0;
+        $('select[name="leave_type"').val(leaveType);
+        $('select[name="leave_type"').trigger('change');
+        $('input[name="from_date"]').val(leaveData.from_date);
+        $('input[name="to_date"]').val(leaveData.to_date);
+        $('textarea[name="reason"]').val(leaveData.reason);
+    }
 
 });

@@ -94,7 +94,7 @@
 <script src="{{ asset('assets/custom/attendance/leave_application.js') }}"></script>
 <script>
     let action          = "{{ $action }}";
-    let userData        = <?php echo isset($leave) && $leave ? json_encode($leave) : 0 ;?>;
+    let leaveData       = <?php echo isset($leave) && $leave ? json_encode($leave) : 0 ;?>;
     let role            = "{{ Auth::user()->role }}";
 </script>
 @endpush

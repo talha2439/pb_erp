@@ -1,3 +1,26 @@
+
+<div class="loader-container" >
+    <div class="spinner-grow text-primary"></div>
+    <div class="text-center p-3"> Please wait... </div>
+</div>
+{{-- Badge toastr --}}
+<div class="badge-toastr shadow border">
+    <div class="row">
+        <div class="col-md-3 position-relative">
+            <div>
+                <button class="rounded-circle btn bg-white text-purple border shadow-sm" style="position: absolute;top: 14px;left: 21px;height: 45px;"><i class="fe fe-bell"></i></button>
+            </div>
+        </div>
+        <div class="col-md-9 p-3">
+            <span class="h5 toastMessage" style="font-size: 12px !important; color:black">New Notification</span><br>
+            <small class="toastDate">June 29, 2024 1:54pm</small>
+        </div>
+
+    </div>
+    <div class="border-bottom"></div>
+</div>
+
+
 <div class="settings-icon">
     <span data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas"
         aria-controls="theme-settings-offcanvas"><img src="{{ asset('assets/img/icons/siderbar-icon2.svg') }}"

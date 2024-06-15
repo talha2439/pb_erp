@@ -29,87 +29,22 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>HRM System - @yield('title')</title>
-
     <link rel="shortcut icon" href="{{ asset('assets/img/favicon.png') }}">
-
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/blinker.css') }}">
-    <style type="text/css">
-
-    </style>
-
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome/css/all.min.css') }}">
-
     <link rel="stylesheet" href="{{ asset('assets/plugins/feather/feather.css') }}">
-
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css') }}">
-
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables/datatables.min.css') }}">
-
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toatr.css') }}">
     <script src="{{ asset('assets/js/layout.js') }}" type="text/javascript"></script>
 </head>
-<style>
-    .badge-toastr{
-        display: none;
-
-        min-height: 80px;
-        position:relative;
-        border-radius: 3px;
-        width: 320px !important;
-        position: fixed;
-        right: 10px;
-        top: 10px;
-        z-index: 1000;
-        background: white;
-        border-right: 10px solid green !important;
-
-    }
-    .border-bottom{
-        height: 5px;
-        width: 0%;
-        background: rgba(4, 170, 4, 0.63) !important;
-        animation: width 2.3s  reverse linear ;
-    }
-    @keyframes width{
-        0%{
-            width: 0%;
-
-        }
-        100%{
-            width: 100%;
-        }
-    }
-</style>
 <body>
-    <div class="loader-container" >
-        <div class="spinner-grow text-primary"></div>
-        <div class="text-center p-3"> Please wait... </div>
-    </div>
-    {{-- Badge toastr --}}
-    <div class="badge-toastr shadow border">
-        <div class="row">
-            <div class="col-md-3 position-relative">
-                <div>
-                    <button class="rounded-circle btn bg-white text-purple border shadow-sm" style="position: absolute;top: 14px;left: 21px;height: 45px;"><i class="fe fe-bell"></i></button>
-                </div>
-            </div>
-            <div class="col-md-9 p-3">
-                <span class="h5 toastMessage" style="font-size: 20px ; color:black">New Notification</span><br>
-                <small class="toastDate">June 29, 2024 1:54pm</small>
-            </div>
-
-        </div>
-        <div class="border-bottom"></div>
-    </div>
-    {{-- End of badge toastr --}}
     <div class="main-wrapper">
-
         <div class="header header-one">
             <a href="index.html"
                 class="d-inline-flex d-sm-inline-flex align-items-center d-md-inline-flex d-lg-none align-items-center device-logo">
@@ -255,80 +190,7 @@
         <div class="sidebar" id="sidebar">
             <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
-
-
-                    <ul class="sidebar-vertical">
-                        {{-- Menu Settings --}}
-                        @forelse ($data['menu'] as $menu )
-                            @if ($menu->has_sub == 0)
-                                @if (!empty($menu->menu_title))
-                                    <li class="menu-title"><span>{{ $menu->menu_title }}</span></li>
-                                @endif
-                                <li><a href="{{ route($menu->route) }}"
-                                        @if (Route::is($menu->route)) class=" active " @else @endif><i
-                                            class="{{ $menu->icon }}"></i> <span> {{ $menu->name }}</a></li>
-                            @else
-                                @if (!empty($menu->menu_title))
-                                    <li class="menu-title"><span>{{ $menu->menu_title }}</span></li>
-                                @endif
-                                <li class="submenu dynamic_menu">
-                                    <a href="#" class="active_link"><i class="{{ $menu->icon }}"></i> <span>
-                                            {{ $menu->name }} </span> <span class="menu-arrow"></span></a>
-                                    <ul style="display: none;">
-
-                                        @foreach ($menu->submenu as $submenu)
-                                            <li data-route="{{ $submenu->route }}"
-                                                class="menu-link  dynamic_sub_menu d-flex ">
-                                                <a class="d-flex @if (Route::is($submenu->route)) active @endif"
-                                                    href="{{ route(@$submenu->route) }}">
-                                                    <i class="fe fe-plus"></i>&nbsp;
-                                                    <div>{{ @$submenu->name }}</div>
-                                                </a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
-
-                                <li>
-                            @endif
-                        @empty
-
-                        @endforelse
-
-
-
-
-
-
-
-                        @if (Auth::user()->role == 1)
-                            <li class="menu-title"><span>Settings</span></li>
-
-                            <li class="submenu">
-                                <a href="#"><i class="fe fe-settings"></i> <span> Settings </span> <span
-                                        class="menu-arrow"></span></a>
-                                <ul style="display: none;">
-                                    <li class="submenu">
-                                        <a href="#"><i class="fe fe-sidebar"></i> <span> Side Bar menus </span>
-                                            <span class="menu-arrow"></span></a>
-                                        <ul style="display: none;">
-                                            <li><a href="{{ route('menusettings.create') }}">Create</a></li>
-                                            <li><a href="{{ route('menusettings.index') }}">All</a></li>
-
-                                        </ul>
-                                    </li>
-
-                                    <li>
-
-                                </ul>
-                            </li>
-
-                            @endif
-                                <li>
-
-                        <a href="{{ route('auth.logout') }}"><i class="fe fe-power"></i> <span>Logout</span></a>
-                        </li>
-                    </ul>
+                    @include('Admin.partial.sidebar')
                 </div>
             </div>
         </div>
@@ -343,28 +205,22 @@
         {{-- Main Wrapper ends --}}
 
     </div>
-
-
+    {{-- Settings --}}
     @include('Admin.partial.settings')
-
-
+    {{-- Settings --}}
     <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}" type="text/javascript"></script>
-
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" type="text/javascript"></script>
-
     <script src="{{ asset('assets/js/feather.min.js') }}" type="text/javascript"></script>
-
     <script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
-
     <script src="{{ asset('assets/js/theme-settings.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/greedynav.js') }}" type="text/javascript"></script>
-
     <script src="{{ asset('assets/js/script.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/sweetalert/sweetalert2.all.min.js') }}"></script>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script src="{{ asset('assets/custom/badgetoastr.js') }}"></script>
     <script src="{{ asset('assets/custom/notification.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
 </body>
 @if (Session::has('success'))
     <script>
@@ -377,10 +233,7 @@
         toastr.error('{{ Session::get('error') }}');
     </script>
 @endif
-
 <script>
-    // Pusher Code
-
     // end of pusher code
     let notificationURL = "{{ route('notifications') }}";
     let markedURL = "{{ route('notifications.marked') }}";

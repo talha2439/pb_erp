@@ -34,7 +34,7 @@ $currentYear = $currentDate->year;
         <div class="col-md-4">
             <div class="form-group">
                 <label for="">Date</label>
-                <input type="text" name="date" class="form-control datepicker" id="" >
+                <input type="text" name="date" class="form-control datepicker" placeholder="-- Select Date Range --" >
             </div>
         </div>
         <div class="col-md-4 mt-3">

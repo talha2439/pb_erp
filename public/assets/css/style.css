@@ -3356,6 +3356,35 @@ div.dataTables_wrapper div.dataTables_filter label i {
     }
 }
 
+.badge-toastr{
+    display: none;
+    min-height: 80px;
+    position:relative;
+    border-radius: 3px;
+    width: 320px !important;
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    z-index: 1000;
+    background: white;
+    border-right: 10px solid green !important;
+
+}
+.border-bottom{
+    height: 5px;
+    width: 0%;
+    background: rgba(4, 170, 4, 0.63) !important;
+    animation: width 2.3s  reverse linear ;
+}
+@keyframes width{
+    0%{
+        width: 0%;
+
+    }
+    100%{
+        width: 100%;
+    }
+}
 .settings-icon span {
     width: 45px;
     height: 45px;

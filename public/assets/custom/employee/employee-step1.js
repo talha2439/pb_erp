@@ -105,7 +105,7 @@ $(document).ready(function () {
                 if (data.shift != null && data.shift != undefined) {
                     shiftData = '<option value="">-- Select Shift --</option>';
                     $(data.shift).each(function (index, value) {
-                        shiftData += `<option value="${value.id}">${value.start_time} - ${value.end_time}</option>`;
+                        shiftData += `<option value="${value.id}"> ${value.name} | ${value.start_time} - ${value.end_time}</option>`;
                     });
                 }
                 if (data.designation != null && data.designation != undefined) {
@@ -355,7 +355,7 @@ $(document).ready(function () {
                         $(empId).val(response.emp_id);
                         let message = action == "edit" && empId != "" ? "Updated" : "Saved";
                         toastr.success("Employee Personal Information has been " + message + " successfully");
-                       
+
                         editQualification();
                         if (button.attr('title') == 'Save and Next') {
                             $('.step_title').html(`<h3><strong class="text-primary ">Step 2 :</strong >  Qualification Information </h3><hr>`);

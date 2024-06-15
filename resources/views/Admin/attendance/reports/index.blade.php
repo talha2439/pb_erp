@@ -70,7 +70,12 @@ Employee's Attendance Report
 <script>
     $(document).ready(function() {
         $(".datepicker").daterangepicker({
-            opens: 'left'
+            autoUpdateInput: false,
+            label:"Please Select Date",
+            locale: {
+                cancelLabel: 'Clear'
+            }
+
         });
     let allReportsURL = "{{ route('attendance.reports.data') }}";
     let dataTable  = null ;

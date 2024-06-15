@@ -140,14 +140,15 @@ class LeaveController extends Controller
             $editRoute = route($this->parentRoute. '.create', $item->id);
             $allowed   = Auth::user()->role == 4 ? 'disabled' : '';
             $status    = $item->status == 'approved' || $item->status == 'rejected' ? 'disabled' : ''; // to disable status change
-            if($item->status == 'approved' && $item->status != 'pending' && Auth::user()->role == 3){
+            $editstatus    = $item->status != 'pending' ? 'disabled' : ''; // to disable status change
+            if($item->status == 'approved'&&  $item->status != 'pending'  && Auth::user()->role != 4  ){
                 $status = ''; // to enable if user is a HR
             }
             $action =  '<a class="btn btn-primary text-white viewDetails"   title="View Application" data-id="'.$item->id.'" data-bs-toggle="modal" data-bs-target="#applicationModal"> <i
             class="fe fe-eye"></i></a> | <a class="btn btn-warning text-white '.$allowed.' '.$status.' changeStatus"  data-to="'.Carbon::parse($item->to_date)->format('m/d/Y').'" data-from="'.Carbon::parse($item->from_date)->format('m/d/Y').'" data-bs-toggle="modal" data-bs-target="#experienceModal"
              title="Change Status"  data-id="'.$item->id.'"> <i
             class="fe fe-edit-3"></i></a> |
-             <a class="btn btn-success text-white  '.$status.' "  title="Edit Application"  href="'.$editRoute.'" > <i
+             <a class="btn btn-success text-white  '.$editstatus.' "  title="Edit Application"  href="'.$editRoute.'" > <i
             class="fe fe-edit"></i></a>';
             return $action;
         })
@@ -170,8 +171,8 @@ class LeaveController extends Controller
                 return redirect()->back()->with('error', 'You have not enough leaves for ' . str_replace("_" , " " , ucfirst($leave_type)));
             }
             // Return back if there is another leave already exists in table leaves application
-            $leaveApplication  = $this->parentModel::whereNot('status', 'rejected')->where(['employee_id'=> $data['employee_id'] ,'leave_type' => $data['leave_type']])->count();
-            if($leaveApplication > 0){
+            $leaveApplication  = $this->parentModel::whereNot('status', 'rejected')->whereNot('status' , 'pending')->where(['employee_id'=> $data['employee_id'] ,'leave_type' => $data['leave_type']])->count();
+            if($leaveApplication > 0 ){
                 return redirect()->back()->with('error', 'Application For  '. str_replace("_" , " " , ucfirst($leave_type)).' already been applied for '.  ucfirst($checkLeaves->first_name) . " " . ucfirst($checkLeaves->last_name));
             }
             if($request->hasFile('attachment')){
@@ -183,7 +184,7 @@ class LeaveController extends Controller
             if($storeData){
                 $created_at   = Carbon::parse($storeData->created_at)->format('F d, Y h:i:s A');
                 $type = !empty($id)? 'leave_approved' : 'leave_rejected';
-                $subject = !empty($id) ? 'Leave Application Updated' : 'Leave Application Applied';
+                $subject = !empty($id) ? 'Leave Application Updated for ' . ucfirst($checkLeaves->first_name) . " " . ucfirst($checkLeaves->last_name) : 'Leave Application Applied'  . ucfirst($checkLeaves->first_name) . " " . ucfirst($checkLeaves->last_name) ;
                 $storeNotification =  $this->parentModel::notification($subject , $storeData  , $type , 'employees');
                 Notification::create([
                     'subject' => $subject ,
@@ -193,7 +194,7 @@ class LeaveController extends Controller
                     'type' => $type,
                 ]);
                 event(new Notifications($storeNotification));
-                return redirect()->route($this->parentRoute.'.index')->with(['success'=> 'Leave Application has been successfully applied for '. ucfirst($checkLeaves->first_name) . " " . ucfirst($checkLeaves->last_name)]);
+                return redirect()->route($this->parentRoute.'.index')->with(['success'=> $subject]);
             }
             else{
                 return redirect()->back()->with('error', 'Something went wrong');
@@ -229,9 +230,8 @@ class LeaveController extends Controller
         $leaveData->from_date  = Carbon::parse($leaveData->from_date)->format('F d, Y');
         $leaveData->to_date    = Carbon::parse($leaveData->to_date)->format('F d, Y');
         $created_at   = Carbon::parse($leaveData->updated_at)->format('F d, Y h:i:s A');
-
         $type = !empty($data['status']) && $data['status'] == 'approved' ? 'leave_approved' : 'leave_rejected';
-        $subject = !empty($data['status']) && $data['status'] == 'approved' ? 'Leave Application Approved' : 'Leave Application rejected';
+        $subject = !empty($data['status']) && $data['status'] == 'approved' ? 'Leave Application Approved for '. ucfirst($leaveData->employees->first_name) . " " . ucfirst($leaveData->employees->last_name)  : 'Leave Application rejected for' . ucfirst($leaveData->employees->first_name) . " " . ucfirst($leaveData->employees->last_name);
         $storeNotification =  $this->parentModel::notification($subject , $leaveData  , $type , 'employees');
         Notification::create([
             'subject' => $subject ,

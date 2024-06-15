@@ -33,12 +33,16 @@ class AttendanceReportController extends Controller
     }
     public function reports(Request $request){
 
-        $data = $this->parentModel::where('date',  Carbon::now()->format('Y-m-d'));
+        $data = $this->parentModel::latest();
         if(!empty($request->daterange)){
         $date = explode('-', $request->daterange);
         $startDate = Carbon::parse($date[0])->format('Y-m-d');
         $endDate = Carbon::parse($date[1])->format('Y-m-d');
         $data = $this->parentModel::whereBetween('date', [$startDate , $endDate]);
+        }
+        if(empty($request->month) && empty($request->year) && empty($request->daterange))
+        {
+            $data = $data->where('date',  Carbon::now()->format('Y-m-d'));
         }
         if(!empty($request->employee)){
             $data = $data->where('employee_id', $request->employee);
@@ -91,8 +95,8 @@ class AttendanceReportController extends Controller
             $workinghours = $item->working_hours ?? '0 hours' ;
             return $workinghours;
         })->addColumn('working_status' , function($item){
-            $blinkclass = 'warning';
-            $workingStatus = '';
+            $blinkclass = '';
+            $workingStatus = "";
             if(!empty($item->check_in) && empty($item->check_out) && $item->working_status == strtolower('on-time') || $item->working_status == strtolower('early-in') &&  $item->working_status != strtolower('early-in and early-out')){
                 $blinkclass = 'success';
                 $workingStatus = 'On-time';
@@ -112,6 +116,11 @@ class AttendanceReportController extends Controller
             }
             else if($item->working_status == strtolower('off')){
                 $blinkclass = 'secondary';
+                $workingStatus = "Off";
+            }
+            else if($item->working_status == strtolower('late')){
+                $blinkclass = 'danger';
+                $workingStatus = "Late";
             }
             return '<span class="blink blink-'.$blinkclass.'">'.$workingStatus.'</span>';
 

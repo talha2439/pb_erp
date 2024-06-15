@@ -12,7 +12,9 @@
         <div class="card-header mb-2">
             <div class="d-flex justify-content-between">
                 <h3>All Designations</h3>
-                <a href="{{ route('designations.create') }}" class="btn btn-primary">Add Designation</a>
+                <div>
+                    <a href="{{ route('designations.create') }}" class="btn btn-primary"><i class="fe fe-plus"></i></a>
+                </div>
             </div>
         </div>
 
@@ -20,12 +22,9 @@
             <table class="datatables-basic table table-bordered">
                 <thead>
                     <tr>
-
                         <th>#</th>
-
                         <th>Department</th>
                         <th>Name</th>
-
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -59,13 +58,22 @@
         <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
         <script>
             $('.datatables-basic').dataTable({});
-
             let deleteUrl = "{{ route('designations.delete') }}";
             $(document).on('click', '.deleteDesignation', function(e) {
                 let id = $(this).data('id');
-                let confirm = window.confirm('Are you sure you want to delete');
-                if (confirm) {
-                    $.ajax({
+                let row = $(this).closest('tr');
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You sure you want to remove it ? ",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#6C05A8',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Yes'
+                }).then((res) => {
+                    if (res.isConfirmed) {
+                        $.ajax({
                         url: deleteUrl + "/" + id,
                         type: 'Get',
                         success: function(res) {
@@ -83,15 +91,14 @@
                             }
                           else  if (res.success) {
                                 toastr['success']('Designation Deleted successfully..!')
-                                setTimeout(() => {
-                                    window.location.reload();
-                                }, 1500);
+                                row.remove();
                             } else {
                                 toastr['error']('Something went wrong..!');
                             }
                         }
                     })
-                }
+                        }
+                     });
             });
 
 
