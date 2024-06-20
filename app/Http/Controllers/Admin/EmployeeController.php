@@ -84,8 +84,8 @@ class EmployeeController extends Controller
         if ($checkAccess) {
             $data['action']      = $id == null ? 'create' : 'edit';
             $data['employee']    = $this->parentModel::where('id', $id)->first();
-            $data['country']     = Country::select('name' , 'id')->get();
-            $data['nationality'] = Nationality::select('name' , 'id')->get();
+            $data['country'] = Country::orderBy('name', 'asc')->pluck('name', 'id');
+            $data['nationality'] = Nationality::orderBy('name', 'asc')->pluck('name', 'id');
             $data['users']       = $this->userModel::whereNot('role', 1)->whereNotIn('id', Employee::pluck('user_id')->toArray())
                 ->get();
             if ($data['action'] == 'edit') {

@@ -115,9 +115,9 @@
                 <label for="">Country <small class="text-secondary">( Optional )</small></label>
                 <select name="country" class="form-select select2">
                     <option value="">-- Select Country --</option>
-                    @foreach ($country as $items)
-                    <option value="{{ $items->id }}" @if($action == 'edit' && $employee->countries->id == $items->id) selected @endif>
-                        {{ $items->name }}
+                    @foreach ($country as $key => $items)
+                    <option value="{{ $key }}" @if($action == 'edit' && $employee->countries->id == $key) selected @endif>
+                        {{ $items }}
                       </option>
                     @endforeach
                 </select>
@@ -155,8 +155,8 @@
                 <label for="">Nationality <small class="text-secondary">( Optional )</small></label>
                 <select name="nationality" class="form-select select2">
                     <option value="">-- Select Nationality --</option>
-                    @foreach ($nationality as $item)
-                        <option value="{{ $item->name }}" @if($action == 'edit' && $employee->nationalties->name == $item->name) selected @endif>{{ $item->name }}</option>
+                    @foreach ($nationality as $key => $item)
+                        <option value="{{ $item }}" @if($action == 'edit' && $employee->nationalties->name == $item) selected @endif>{{ $item }}</option>
                     @endforeach
                 </select>
             </div>
