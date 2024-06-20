@@ -254,6 +254,7 @@ class EmployeeController extends Controller
                 $delete        = $this->parentModel::where('id', $id)->forceDelete();
                 $forceDeleteQualification = EmployeeQualification::where('employee_id', $id)->forceDelete();
                 $forceDeleteExp           = EmployeeExperience::where('employee_id', $id)->forceDelete();
+                $forceDeleteDoc           = EmployeeDocument::where('employee_id', $id)->forceDelete();
                 if ($delete) {
                     return response()->json(['success' => true]);
                 } else {
@@ -265,6 +266,39 @@ class EmployeeController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
+    }
+    public function delete_document($id)
+    {
+        try {
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
+
+            if ($checkAccess) {
+                $delete        = EmployeeDocument::where('id', $id)->forceDelete();
+                if ($delete) {
+                    return response()->json(['success' => true]);
+                } else {
+                    return response()->json(['error' => true]);
+                }
+            } else {
+                return response()->json(['unauthorized' => true]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+    public function documents($id){
+       try{
+        $data['document'] = EmployeeDocument::where('employee_id', $id)->get();
+        if ($data) {
+            return view($this->parentView.'.documents' , $data);
+        } else {
+         return redirect()->back()->with('error', 'There is no employee document');
+        }
+       }
+       catch(\Exception $e){
+        return redirect()->back()->with('error', $e->getMessage());
+       }
     }
     public function restore($id)
     {

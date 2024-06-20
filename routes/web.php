@@ -105,7 +105,9 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::get('/trash' , [EmployeeController::class,'trash'])->name('employees.trash');
         Route::get('/create/{id?}' , [EmployeeController::class,'create'])->name('employees.create');
         Route::get('/delete/{id?}' , [EmployeeController::class,'delete'])->name('employees.delete');
+        Route::get('/delete_document/{id?}' , [EmployeeController::class,'delete_document'])->name('employees.document.delete');
         Route::get('/destroy/{id?}' , [EmployeeController::class,'destroy'])->name('employees.destroy');
+        Route::get('/documents/{id?}' , [EmployeeController::class,'documents'])->name('employees.documents');
         Route::get('/restore/{id?}' , [EmployeeController::class,'restore'])->name('employees.restore');
         Route::GET('/state/{id?}' , [EmployeeController::class,'state'])->name('state.get');
         Route::GET('/city/{id?}' , [EmployeeController::class,'city'])->name('city.get');

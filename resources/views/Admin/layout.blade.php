@@ -43,6 +43,7 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toatr.css') }}">
     <script src="{{ asset('assets/js/layout.js') }}" type="text/javascript"></script>
 </head>
+
 <body>
     <div class="main-wrapper">
         <div class="header header-one">
@@ -208,7 +209,10 @@
     {{-- Settings --}}
     @include('Admin.partial.settings')
     {{-- Settings --}}
+
     <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}" type="text/javascript"></script>
+    <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
+    <script src="{{ asset('assets/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/feather.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
@@ -237,14 +241,13 @@
     let notificationURL = "{{ route('notifications') }}";
     let markedURL = "{{ route('notifications.marked') }}";
     let markedallURL = "{{ route('notifications.marked.all') }}";
-    let baseURL      = "{{ asset('') }}";
-    let auth            = "{{ Auth::user()->role }}";
+    let baseURL = "{{ asset('') }}";
+    let auth = "{{ Auth::user()->role }}";
     $(document).ready(function() {
         $('.loader-container').hide();
         var currentroute = "{{ Route::currentRouteName('') }}";
         $(".dynamic_sub_menu").each(function() {
             var subMenuRoute = $(this).data("route");
-
             if (subMenuRoute == currentroute) {
                 $(this).closest('.dynamic_menu').find('ul').show();
                 $(this).closest('.dynamic_menu').find('.active_link').addClass('subdrop active');

@@ -1,6 +1,6 @@
 @extends('Admin.layout')
 @section('title')
-    All Employees
+Trashed Employees
 @endsection
 @section('content')
     <div class="page-header">
@@ -11,7 +11,7 @@
     <div class="card p-3">
         <div class="card-header mb-2">
             <div class="d-flex justify-content-between">
-                <h3>All Employees</h3>
+                <h3>Trashed Employees</h3>
                 <div>
                     <a href="{{ route('employees.index') }}" class="btn btn-primary"><i class="fe fe-menu"></i></a>
                 </div>
@@ -155,6 +155,7 @@
 
             $(document).on('click', '.deleteEmployee', function(e) {
                 let id = $(this).data('id');
+                let row = $(this).closest('tr');
                 Swal.fire({
                     title: "Are you sure?",
                     text: "You sure you want to remove it ? ",
@@ -172,9 +173,7 @@
                         success: function(res) {
                             if (res.success) {
                                 toastr['success']('Employee information has been  Deleted successfully..!')
-                                setTimeout(() => {
-                                    window.location.reload();
-                                }, 1500);
+                                $(row).remove()
                             } else {
                                 toastr['error']('Something went wrong..!');
                             }

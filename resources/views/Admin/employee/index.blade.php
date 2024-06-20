@@ -29,6 +29,7 @@
                         <th>Email</th>
                         <th>Employeement-Status</th>
                         <th>Salary</th>
+                        <th>Documents</th>
                         <th>Qualification</th>
                         <th>Experience</th>
                         <th>All Details</th>
@@ -79,6 +80,7 @@
                                     </center>
                                 @endif
                             </td>
+
                             <td>
                                 <div class="d-flex justify-content-between g-3  p-2">
                                     <input style="border:none; width:60px" class="salary" readonly type="password"
@@ -87,6 +89,9 @@
                                         style="background: none;border:none; position:relative;bottom:2px"
                                         data-type="show"></button>
                                 </div>
+                            </td>
+                            <td>
+                               <center> <a href="{{ route('employees.documents' ,  $item->id) }}" class="btn btn-primary shadow text-white"> <div class="fa fa-file-invoice"></div></a></center>
                             </td>
                             <td>
                                 <center>
@@ -156,6 +161,7 @@
 
             $(document).on('click', '.deleteEmployee', function(e) {
                 let id = $(this).data('id');
+                let row = $(this).closest('tr');
                 Swal.fire({
                     title: "Are you sure?",
                     text: "You sure you want to remove it ? ",
@@ -175,9 +181,7 @@
                                     toastr['success'](
                                         'Employee information has been  Deleted successfully..!'
                                         )
-                                    setTimeout(() => {
-                                        window.location.reload();
-                                    }, 1500);
+                                        $(row).remove()
                                 } else {
                                     toastr['error']('Something went wrong..!');
                                 }
