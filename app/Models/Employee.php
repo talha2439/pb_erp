@@ -22,8 +22,24 @@ class Employee extends Model
     public function users(){
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+    public function countries(){
+        return $this->hasOne(Country::class, 'id', 'country');
+    }
+    public function nationalties(){
+        return $this->hasOne(Nationality::class, 'name', 'nationality');
+    }
+    public function cities(){
+        return $this->hasOne(City::class, 'id', 'city');
+    }
+    public function states(){
+        return $this->hasOne(State::class, 'id', 'state');
+    }
+
     public function departments(){
         return $this->hasOne(Department::class, 'id', 'department');
+    }
+    public function designations(){
+        return $this->hasOne(Designation::class, 'id', 'designation');
     }
     public function qualifications(){
         return $this->hasMany(EmployeeQualification::class , 'employee_id' , 'id');

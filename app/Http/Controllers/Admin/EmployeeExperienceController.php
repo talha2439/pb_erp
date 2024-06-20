@@ -18,7 +18,7 @@ class EmployeeExperienceController extends Controller
     public $imagePath = 'images/emp_experience_attachment/';
     public $parentRoute = "employees";
     public $menuModel = SubMenu::class;
-    public function edit($id)
+    public function edit($id = null)
     {
         $experience = $this->parentModel::where('employee_id', $id)->get();
         return response()->json(['experience' => $experience]);

@@ -28,7 +28,6 @@ $(document).ready(function () {
     let empId = $('input[name="emp_id"]');
     let documentFiles = $('.documentsFiles');
     $(joining_date).val(getfullDate())
-    // Form Input Variables Ended here
 
     var isrequiredcnic = false;
     $(date_of_birth).on("change", function (e) {
@@ -126,39 +125,40 @@ $(document).ready(function () {
         e.preventDefault();
         let id = $(this).val();
         $.ajax({
-            url: stateURL + "/" + id,
-            type: "Get",
-            success: function (data) {
-                let stateData = '<option value="">-- Select State --</option>';
-                if (data.length > 0) {
-                    $(data).each(function (index, val) {
-                        stateData += `<option value="${val.id}">${val.name}</option>`;
-                    });
-                } else {
-                    stateData = '<option value="">-- Select State --</option>';
-                }
-                $(state).html(stateData);
-            },
-        });
+                    url: stateURL +"/"+id,
+                    type: "GET",
+
+                    success: function (data) {
+                        let stateData = '<option value="">-- Select State --</option>';
+                        if (data.length > 0) {
+                            $(data).each(function (index, val) {
+                                stateData += `<option value="${val.id}">${val.name}</option>`;
+                            });
+                        } else {
+                            stateData = '<option value="">-- Select State --</option>';
+                        }
+                        $(state).html(stateData);
+                    },
+                });
     });
     // City Select
     $(state).on("change", function (e) {
         e.preventDefault();
         let id = $(this).val();
         $.ajax({
-            url: cityURL + "/" + id,
-            type: "Get",
-            success: function (data) {
-                let cityData = '<option value="">-- Select City --</option>';
-                if (data.length > 0) {
-                    $(data).each(function (index, val) {
-                        cityData += `<option value="${val.id}">${val.name}</option>`;
-                    });
-                } else {
-                    cityData = '<option value="">-- Select State --</option>';
-                }
-                $(city).html(cityData);
-            },
+                    url: cityURL + "/" + id,
+                    type: "GET",
+                    success: function (data) {
+                        let cityData = '<option value="">-- Select City --</option>';
+                        if (data.length > 0) {
+                            $(data).each(function (index, val) {
+                                cityData += `<option value="${val.id}">${val.name}</option>`;
+                            });
+                        } else {
+                            cityData = '<option value="">-- Select State --</option>';
+                        }
+                        $(city).html(cityData);
+                    },
         });
     });
     // CNIC MASKING and PHONE
@@ -388,5 +388,6 @@ $(document).ready(function () {
         date = date.getFullYear()+'-'+("0" + (date.getMonth() + 1)).slice(-2)+'-'+("0" + date.getDate()).slice(-2);
         return date;
     }
+
 
 });

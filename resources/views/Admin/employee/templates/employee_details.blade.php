@@ -36,7 +36,7 @@
                             <h1 class="fw-bold text-uppercase fs-1 fs-md-2 fs-lg-3 fs-xl-4">
                                 {{ $employee->first_name }} {{ $employee->last_name }}
                             </h1>
-                            <h5>Full-stack Developer</h5>
+                            <h5>{{ ucfirst($employee->designations->name) }}</h5>
                         </div>
                     </div>
 

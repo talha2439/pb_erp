@@ -213,11 +213,10 @@
     <script src="{{ asset('assets/js/feather.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/theme-settings.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/js/greedynav.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/script.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/sweetalert/sweetalert2.all.min.js') }}"></script>
-    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script src="{{ asset('assets/js/pusher.js') }}"></script>
     <script src="{{ asset('assets/custom/badgetoastr.js') }}"></script>
     <script src="{{ asset('assets/custom/notification.js') }}"></script>
     <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>

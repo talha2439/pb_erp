@@ -85,7 +85,6 @@ class EmployeeController extends Controller
             $data['action']      = $id == null ? 'create' : 'edit';
             $data['employee']    = $this->parentModel::where('id', $id)->first();
             $data['country']     = Country::select('name' , 'id')->get();
-
             $data['nationality'] = Nationality::select('name' , 'id')->get();
             $data['users']       = $this->userModel::whereNot('role', 1)->whereNotIn('id', Employee::pluck('user_id')->toArray())
                 ->get();
@@ -196,6 +195,7 @@ class EmployeeController extends Controller
     }
     public function state($id)
     {
+
         $data = State::select('name', 'id')->where('country_id', $id)->get();
         if ($data) {
             return response()->json($data);

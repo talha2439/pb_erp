@@ -8,28 +8,6 @@ $(document).ready(function () {
         $('select[name="employment_status"]').val(employeeData.employment_status);
         $('select[name="employment_status"]').trigger("change");
         $("input[name='date_of_birth']").val(employeeData.date_of_birth);
-        $('select[name="department"]').val(employeeData.department);
-        $('select[name="department"]').trigger("change");
-        setTimeout(() => {
-            $('select[name="designation"]').val(employeeData.designation);
-            $('select[name="designation"]').trigger("change");
-        }, 1000)
-        setTimeout(() => {
-            $('select[name="shift"]').val(employeeData.shift);
-            $('select[name="shift"]').trigger("change");
-        }, 1000)
-        $('select[name="country"]').val(employeeData.country);
-        $('select[name="country"]').trigger("change")
-        setTimeout(() => {
-            $('select[name="state"]').val(employeeData.state);
-            $('select[name="state"]').trigger("change");
-        }, 1000)
-        setTimeout(() => {
-            $('select[name="city"]').val(employeeData.city);
-            $('select[name="city"]').trigger("change");
-        }, 1600);
-        $('select[name="nationality"]').val(employeeData.nationality);
-        $('select[name="nationality"]').trigger("change")
         $('select[name="religion"]').val(employeeData.religion);
         $('select[name="religion"]').trigger("change")
         $('select[name="gender"]').val(employeeData.gender);
@@ -60,9 +38,8 @@ $(document).ready(function () {
             $('input[name="start_date"]').val(employeeData.start_date);
             $('input[name="end_date"]').val(employeeData.end_date);
         }
-        else{
-
-
+        else if(employeeData.employment_status == "parmanent"){
+            $('.emp_dates').hide();
         }
 
     }

@@ -36,7 +36,7 @@ class AttendanceController extends Controller
                 if ($checkInTime->lessThan($shiftIn)) {
                     $data['working_status'] = 'early-in';
                 }
-                $storeAttendance = $this->parentModel::create($data);
+                $storeAttendance = $this->parentModel::updateOrCreate(['employee_id' => $data['employee_id'] , 'created_at' => Carbon::now()],$data);
                 if ($storeAttendance) {
                     return response()->json(['success' => true, 'attendance_id' => $storeAttendance->id]);
                 } else {

@@ -18,7 +18,7 @@ class EmployeeQualificationController extends Controller
     public $imagePath = 'images/employee_qualification/';
     public $parentRoute = "employees";
     public $menuModel = SubMenu::class;
-    public function edit($id)
+    public function edit($id = null)
     {
         $emp_qualification = $this->parentModel::where('employee_id', $id)->get();
         return response()->json(['qualification' => $emp_qualification]);

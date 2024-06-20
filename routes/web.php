@@ -107,8 +107,8 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::get('/delete/{id?}' , [EmployeeController::class,'delete'])->name('employees.delete');
         Route::get('/destroy/{id?}' , [EmployeeController::class,'destroy'])->name('employees.destroy');
         Route::get('/restore/{id?}' , [EmployeeController::class,'restore'])->name('employees.restore');
-        Route::get('/state/{id?}' , [EmployeeController::class,'state'])->name('state.get');
-        Route::get('/city/{id?}' , [EmployeeController::class,'city'])->name('city.get');
+        Route::GET('/state/{id?}' , [EmployeeController::class,'state'])->name('state.get');
+        Route::GET('/city/{id?}' , [EmployeeController::class,'city'])->name('city.get');
         Route::post('/store/{id?}' , [EmployeeController::class ,'store'])->name('employees.store');
         Route::get('shift/designations/{id?}' , [EmployeeController::class,'designation_and_shift'])->name('shift.designations');
     });

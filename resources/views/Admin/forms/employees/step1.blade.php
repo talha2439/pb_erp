@@ -77,7 +77,9 @@
                 <select name="department" class="form-select select2">
                     <option value="">-- Select Department --</option>
                     @foreach ($department as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    <option value="{{ $item->id }}" @if($action == 'edit' && $employee->departments->id == $item->id) selected @endif>
+                        {{ $item->name }}
+                      </option>
                     @endforeach
                 </select>
             </div>
@@ -87,6 +89,11 @@
                 <label for="">Designation <small class="text-danger">( * )</small></label>
                 <select name="designation" class="form-select select2">
                     <option value="">-- Select Department First --</option>
+                    @if($action == 'edit')
+                    <option  value="{{ $employee->designations->id }}" selected >
+                       {{ $employee->designations->name }}
+                    </option>
+                    @endif
                 </select>
             </div>
         </div>
@@ -95,6 +102,11 @@
                 <label for="">Shift and Timing <small class="text-secondary">( Optional )</small></label>
                 <select name="shift" class="form-select select2">
                     <option value="">-- Select Designation First --</option>
+                    @if($action == 'edit')
+                    <option  value="{{ $employee->shifts->id }}" selected >
+                       {{ $employee->shifts->name }} | {{ $employee->shifts->start_time }} - {{ $employee->shifts->end_time }}
+                    </option>
+                    @endif
                 </select>
             </div>
         </div>
@@ -104,7 +116,9 @@
                 <select name="country" class="form-select select2">
                     <option value="">-- Select Country --</option>
                     @foreach ($country as $items)
-                        <option value="{{ $items->id }}">{{ $items->name }}</option>
+                    <option value="{{ $items->id }}" @if($action == 'edit' && $employee->countries->id == $items->id) selected @endif>
+                        {{ $items->name }}
+                      </option>
                     @endforeach
                 </select>
             </div>
@@ -113,7 +127,12 @@
             <div class="form-group">
                 <label for="">State <small class="text-secondary">( Optional )</small></label>
                 <select name="state" class="form-select  select2">
-                    <option value="">-- Select Country First --</option>
+                    <option value="">-- Select State --</option>
+                    @if($action == 'edit')
+                    <option  value="{{ $employee->states->id }}" selected >
+                       {{ $employee->states->name }}
+                    </option>
+                    @endif
                 </select>
             </div>
         </div>
@@ -121,7 +140,12 @@
             <div class="form-group">
                 <label for="">City <small class="text-secondary">( Optional )</small></label>
                 <select name="city" class="form-select select2">
-                    <option value="">-- Select State First --</option>
+                    <option value="">-- Select City --</option>
+                    @if($action == 'edit')
+                    <option  value="{{ $employee->cities->id }}" selected >
+                       {{ $employee->cities->name }}
+                    </option>
+                    @endif
                 </select>
             </div>
         </div>
@@ -131,8 +155,8 @@
                 <label for="">Nationality <small class="text-secondary">( Optional )</small></label>
                 <select name="nationality" class="form-select select2">
                     <option value="">-- Select Nationality --</option>
-                    @foreach ($nationality as $items)
-                        <option value="{{ $items->name }}">{{ $items->name }}</option>
+                    @foreach ($nationality as $item)
+                        <option value="{{ $item->name }}" @if($action == 'edit' && $employee->nationalties->name == $item->name) selected @endif>{{ $item->name }}</option>
                     @endforeach
                 </select>
             </div>
