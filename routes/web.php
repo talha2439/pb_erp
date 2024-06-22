@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, LeaveController, MenuAccessController, MenuSettingController, NotificationController, ShiftController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, LeaveController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
 use App\Http\Controllers\AuthController;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Route;
@@ -156,5 +156,9 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::get('get_notifications' ,[NotificationController::class , 'notifications'])->name('notifications');
         Route::get('mark/{id?}' ,[NotificationController::class , 'readed'])->name('notifications.marked');
         Route::get('mark/all' ,[NotificationController::class , 'markall'])->name('notifications.marked.all');
+    });
+    // Generating PDF
+    Route::prefix('/pdf')->group(function(){
+        Route::get('employee_cv/{id}' , [PDFController::class , 'employee_cv'])->name('employee.cv.pdf');
     });
 });

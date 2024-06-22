@@ -12,8 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('app:attendance_checkin')->at('09:00');
-        $schedule->command('app:attendance_checkout')->at('21:00');
+        $schedule->command('app:attendance_checkin')->at('23:00');
     }
 
     /**

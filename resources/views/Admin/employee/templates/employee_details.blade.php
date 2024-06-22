@@ -15,7 +15,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <a href="{{ route('employees.index') }}" class="btn btn-secondary"><i class="fe fe-corner-down-left"></i></a> | <a href="" class="btn btn-primary"><i class="fe fe-printer"></i></a>
+                    <a href="{{ route('employees.index') }}" class="btn btn-secondary"><i class="fe fe-corner-down-left"></i></a> | <a href="{{ route('employee.cv.pdf' , encrypt($employee->id)) }}" class="btn btn-primary"><i class="fe fe-printer"></i></a>
                 </div>
             </div>
 
@@ -24,12 +24,12 @@
                     {{-- Profile Image and Name --}}
                     <div class="ml-3 row mt-3 mb-2">
                         @php
-                            $imagePath = $employee->image ? 'images/EmployeesImages/' . $employee->image : 'assets/img/no-image.png';
+                            $imagePath = file_exists(url(asset('images/Employees/profile/' . $employee->image))) ? asset('images/Employees/profile/' . $employee->image) : asset('assets/img/no-image.png') ;
                         @endphp
-                        <div class="col-md-4 ">
+                        <div class="col-md-4 " style="min-height:250px;">
                             <img src="{{ asset( $imagePath ) }}" alt=""
                             class="border rounded shadow-sm p-2"
-                            style="height:250px; width:auto; max-width:250px; object-fit:cover">
+                            style="min-height:250px; min-width:250px; max-width:250px; object-fit:cover">
                         </div>
 
                         <div class="text col-md-8  col-12">
