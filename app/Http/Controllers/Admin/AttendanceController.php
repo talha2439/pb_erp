@@ -26,7 +26,7 @@ class AttendanceController extends Controller
             $data['check_in']    = Carbon::parse($data['check_in'])->format('h:i A');
             $data['attendance_status']  = "present";
             $employee        = $this->childModel::where('user_id', $data['employee_id'])->with('shifts')->first();
-            $checkAttendance = $this->parentModel::where(['employee_id' => $data['employee_id'], 'date' => $data['date']])->first();
+            $checkAttendance = $this->parentModel::where(['employee_id' => $data['employee_id'], 'date' => $data['date']])->whereNot('check_in', null )->first();
             if (empty($employee)) {
                 return response()->json(['empty' => true]);
             }
@@ -36,14 +36,15 @@ class AttendanceController extends Controller
                 if ($checkInTime->lessThan($shiftIn)) {
                     $data['working_status'] = 'early-in';
                 }
-                $storeAttendance = $this->parentModel::updateOrCreate(['employee_id' => $data['employee_id'] , 'created_at' => Carbon::now()],$data);
+                else{
+                    $data['working_status'] = 'on-time';
+                }
+                $storeAttendance = $this->parentModel::updateOrCreate(['employee_id' => $data['employee_id'] , 'date' => Carbon::now()->format('y-m-d')],$data);
                 if ($storeAttendance) {
                     return response()->json(['success' => true, 'attendance_id' => $storeAttendance->id]);
                 } else {
                     return response()->json(['error' => true]);
                 }
-            } else {
-                return response()->json(['marked' => true]);
             }
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);

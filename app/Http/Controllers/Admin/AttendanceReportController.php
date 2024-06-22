@@ -90,6 +90,12 @@ class AttendanceReportController extends Controller
             return '<span class="blink blink-'.$blinkclass.'">'.$item->attendance_status.'</span>';
         })->addColumn('checkin_checkout', function($item){
             $checkin  =  $item->check_in .' - '.$item->check_out ?? 'Empty' ;
+            if($item->attendance_status == strtolower('Leave')){
+                $checkin ='On-leave';
+            }
+            if($item->attendance_status == strtolower('off')){
+                $checkin ='Off-Day';
+            }
             return $checkin;
         })->addColumn('working_hours', function($item){
             $workinghours = $item->working_hours ?? '0 hours' ;
@@ -109,9 +115,14 @@ class AttendanceReportController extends Controller
                 $blinkclass = 'danger';
                 $workingStatus = 'Half-time';
             }
-            else if($item->working_status == strtolower('late-setting') ){
+            else if($item->working_status == strtolower('late-setting')){
                 $blinkclass = 'info';
                 $workingStatus = 'Over-time';
+
+            }
+            else if($item->working_status == strtolower('Leave')){
+                $blinkclass = 'info';
+                $workingStatus = 'on-leave';
 
             }
             else if($item->working_status == strtolower('off')){
