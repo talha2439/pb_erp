@@ -1,7 +1,4 @@
-@php
-$currentDate = \Carbon\Carbon::now();
-$currentYear = $currentDate->year;
-@endphp
+
 <form action="" >
 
     <div class="row">
@@ -40,7 +37,7 @@ $currentYear = $currentDate->year;
         <div class="col-md-4 mt-3">
             <div class="form-group">
                 <label for="">Month</label>
-                <select name="month" class="form-select select2" id="month">
+                <select name="month" class="form-control select2" id="month">
                     <option value="">-- Select Month --</option>
                     @for ($i = 0 ; $i < 12 ; $i++)
                     <option value="{{ $i + 1 }}">{{ $currentDate->firstOfMonth()->month($i + 1)->format('F') }}</option>
@@ -51,7 +48,7 @@ $currentYear = $currentDate->year;
         <div class="col-md-4 mt-3">
             <div class="form-group">
                 <label for="">Year</label>
-                <select name="year" class="form-select select2" id="year">
+                <select name="year" class="form-control select2" id="year">
                     <option value="">-- Select Year --</option>
                     @for ($i = 0 ; $i < 3 ; $i++)
                     <option value="{{ $currentYear + $i }}">{{ $currentYear + $i }}</option>

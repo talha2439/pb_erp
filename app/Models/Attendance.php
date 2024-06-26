@@ -21,4 +21,5 @@ class Attendance extends Model
     public function users(){
         return $this->hasOne(User::class , 'id' , 'employee_id');
     }
+   
 }

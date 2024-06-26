@@ -76,7 +76,7 @@ class AttendanceController extends Controller
                 }
                 else if ($data['working_hours'] < $ShiftHours) {
                     $shiftData = Employee::where('user_id', $emp_id)->with('shifts')->first();
-                    $shiftIn = Carbon::parse($shiftData->shifts->start_time);
+                    $shiftIn  = Carbon::parse($shiftData->shifts->start_time);
                     $shiftOut = Carbon::parse($shiftData->shifts->end_time);
                     if($checkIn >= $shiftIn){
                         $shiftIntimedifference = $checkIn->diffInMinutes($shiftIn);

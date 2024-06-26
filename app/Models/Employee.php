@@ -44,6 +44,9 @@ class Employee extends Model
     public function qualifications(){
         return $this->hasMany(EmployeeQualification::class , 'employee_id' , 'id');
     }
+    public function attendance(){
+        return $this->hasMany(Attendance::class ,'employee_id' , 'user_id');
+    }
     public function shifts(){
         return $this->hasOne(Shift::class , 'id' , 'shift');
     }

@@ -2,6 +2,10 @@
 @section('title')
 Employee's Attendance Report
 @endsection
+@php
+$currentDate = \Carbon\Carbon::now();
+$currentYear = $currentDate->year;
+@endphp
 @section('content')
 
 <div class="page-header">
@@ -14,9 +18,14 @@ Employee's Attendance Report
         <div class="row">
            <div class="col-md-12 d-flex justify-content-between">
             <h3>Employee's Attendance Report</h3>
-            <button class=" btn btn-primary text-white" style="width: max-content" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                <i class="fe fe-filter"></i>
-               </button>
+            <div>
+                <a href="#" class="btn btn-info text-white" data-bs-toggle="collapse" data-bs-target="#collapseReport" aria-expanded="false" aria-controls="collapseReport">
+                    <i class="fe fe-printer"></i>
+                </a>
+                <button class=" btn btn-primary text-white" style="width: max-content" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <i class="fe fe-filter"></i>
+                   </button>
+            </div>
            </div>
 
             <div class="col-md-12">
@@ -26,7 +35,20 @@ Employee's Attendance Report
                       </h2>
                       <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                         @include('Admin.attendance.reports.filter')
+                         @include('Admin.attendance.reports.partial.filter')
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-12">
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item border-0">
+                      <h2 class="accordion-header" id="reportHeading">
+                      </h2>
+                      <div id="collapseReport" class="accordion-collapse collapse" aria-labelledby="reportHeading" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                         @include('Admin.attendance.reports.partial.report')
                         </div>
                       </div>
                     </div>
@@ -67,6 +89,19 @@ Employee's Attendance Report
 <script src="{{ asset('assets/js/daterangepicker.js') }}"></script>
 <script>
     $(document).ready(function() {
+
+      $("#reportForm").submit(function(e){
+        if($("#report_emp").val() == ""){
+            e.preventDefault();
+            toastr['error']("Please Select Employee!");
+            return false;
+        }
+        if($("#report_month").val() == "" && $("#report_year").val() == "" ){
+            e.preventDefault();
+            toastr['error']("Please Select Month or Year!");
+            return false;
+        }
+      })
         $(".datepicker").daterangepicker({
             autoUpdateInput: false,
             label:"Please Select Date",
@@ -154,10 +189,9 @@ Employee's Attendance Report
             })
         }
     });
-    $(document).ready(function(){
-        $('.select2').select2({});
-    })
+
 
 </script>
+
 @endpush
 @endsection

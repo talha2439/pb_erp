@@ -259,8 +259,9 @@
                 $(this).closest('.dynamic_menu').find('.active_link').addClass('subdrop active');
             }
         });
-        $('.select2').select2();
+        $('.select2').select2({});
     });
+   
 </script>
 @stack('js')
 
