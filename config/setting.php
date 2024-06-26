@@ -2,9 +2,10 @@
 return  [
     'site_name' => '',
     'site_url' => '',
-    'favicon_url' => '',
-    'logo_url' => '',
-    'light_logo_url' =>'',
-    'site_email' =>'',
-    'time_zone' => '',
+    'favicon' => '',
+    'logo' => '',
+    'light_logo' =>'',
+    'meta_title' => '',
+    'meta_description' => '',
+    'meta_keywords' => '',
 ];

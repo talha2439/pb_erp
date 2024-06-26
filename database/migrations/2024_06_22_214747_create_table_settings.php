@@ -13,6 +13,18 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->string('site_name');
+            $table->string('site_url');
+            $table->longText('favicon');
+            $table->longText('logo');
+            $table->longText('light_logo')->nullable();
+            $table->string('meta_title');
+            $table->longText('meta_description');
+            $table->longText('meta_keywords')->nullable();
+            $table->string('timezone')->default('Asia/karachi');
+            $table->integer('email_send')->default(0);
+            $table->string('created_by');
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

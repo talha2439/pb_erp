@@ -52,7 +52,10 @@
                 </li>
 
                 <li>
-
+                    <li
+                    class="menu-link  dynamic_sub_menu d-flex ">
+                    <a href="{{ route('settings.create') }}"><i class="fe fe-settings"></i> <span> Panel Settings</span>
+                </li>
             </ul>
         </li>
 

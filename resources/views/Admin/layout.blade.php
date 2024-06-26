@@ -29,8 +29,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HRM System - @yield('title')</title>
-    <link rel="shortcut icon" href="{{ asset('assets/img/favicon.png') }}">
+    <title>{{ config('setting.site_name') }} - @yield('title')</title>
+    <link rel="shortcut icon" href="{{ config('setting.favicon') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/blinker.css') }}">
@@ -49,12 +49,12 @@
         <div class="header header-one">
             <a href="index.html"
                 class="d-inline-flex d-sm-inline-flex align-items-center d-md-inline-flex d-lg-none align-items-center device-logo">
-                <img src="{{ asset('assets/img/logo.png') }}" class="img-fluid logo2" alt="Logo">
+                <img src="{{ config('setting.favicon') }}" class="img-fluid logo2" alt="Logo">
             </a>
             <div class="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none">
                 <div class="logo-white">
                     <a href="index.html">
-                        <img src="{{ asset('assets/img/logo-full-white.png') }}" class="img-fluid logo-blue"
+                        <img src="{{ config('setting.light_logo') }}" class="img-fluid logo-blue"
                             alt="Logo">
                     </a>
                     <a href="index.html">
@@ -64,10 +64,10 @@
                 </div>
                 <div class="logo-color">
                     <a href="index.html">
-                        <img src="{{ asset('assets/img/logo.png') }}" class="img-fluid logo-blue" alt="Logo">
+                        <img src="{{ config('setting.logo') }}" class="img-fluid logo-blue" alt="Logo">
                     </a>
                     <a href="index.html">
-                        <img src="{{ asset('assets/img/logo-small.png') }}" class="img-fluid logo-small"
+                        <img src="{{ config('setting.favicon')}}" class="img-fluid logo-small"
                             alt="Logo">
                     </a>
                 </div>
@@ -170,6 +170,12 @@
                                             href="{{ route('profile_settings', encrypt(Auth::user()->id)) }}">Profile
                                             Settings</a>
                                     </li>
+                                    @if(Auth::user()->role==1)
+                                    <li>
+                                        <a class="dropdown-item"
+                                            href="{{ route('profile_settings', encrypt(Auth::user()->id)) }}">
+                                            Settings</a>
+                                    </li>@endif
                                 </ul>
                             </div>
                             <div class="subscription-logout">
@@ -253,6 +259,7 @@
                 $(this).closest('.dynamic_menu').find('.active_link').addClass('subdrop active');
             }
         });
+        $('.select2').select2();
     });
 </script>
 @stack('js')

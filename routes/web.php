@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, LeaveController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{ SettingController , AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, LeaveController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
 use App\Http\Controllers\AuthController;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Route;
@@ -160,5 +160,11 @@ Route::prefix('/')->middleware('auth')->group(function(){
     // Generating PDF
     Route::prefix('/pdf')->group(function(){
         Route::get('employee_cv/{id}' , [PDFController::class , 'employee_cv'])->name('employee.cv.pdf');
+    });
+
+    // Settings Route
+    Route::prefix('settings/')->group(function(){
+        Route::get('create' , [SettingController::class,'create'])->name('settings.create');
+        Route::post('store/{id?}' , [SettingController::class,'store'])->name('settings.store');
     });
 });
