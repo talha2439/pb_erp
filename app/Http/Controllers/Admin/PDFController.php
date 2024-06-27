@@ -7,30 +7,31 @@ use App\Models\Attendance;
 use App\Models\Employee;
 use Barryvdh\Snappy\PdfWrapper;
 use Illuminate\Http\Request;
-use Elibyy\TCPDF\Facades\TCPDF as PDF;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\View;
+
 class PDFController extends Controller
 {
+    public $parentModel  = Employee::class ;
     public function attendance_report(Request $request){
-        $data = Employee::where('id' , $request->employee_id)->with(['attendance' => function($query) use ($request) {
+        $data = $this->parentModel::where('id' , $request->employee_id)->with(['attendance' => function($query) use ($request) {
             if (!empty($request->month)) {
-                $query->whereMonth('date', $request->month);
-
-            }
+                $query->whereMonth('date', $request->month);}
             if (!empty($request->year)) {
-                $query->whereYear('date', $request->year);
-            }
+                $query->whereYear('date', $request->year); }
         }])->first();
-        $type =  empty($request->month) && !empty($request->year) ? 'Yearly' : 'Monthly';
-        $html = view()->make('Pdf.attendanceReport', ['data' =>$data ,'type' => $type ])->render();
-        $pdf  = new PDF;
-        $pdf::setTitle(str_replace(" " , "-" ,strtolower($data->first_name) ).'-attendanceReport');
-        $pdf::SetPageOrientation('landscape');
-        $pdf::AddPage();
-        $pdf::writeHTML($html , true , false, true, false, '');
-        $pdf::Footer("All rights Reserved by " . config('setting.site_name'));
-        $pdf::Header("Generated Date:" . Carbon::now()->format(' F d , Y '));
-        return $pdf::Output(str_replace(" " , "-" ,strtolower($data->first_name) ).'-attendance.pdf' , 'I');
-
+        $data['type'] =  empty($request->month) && !empty($request->year) ? 'Yearly' : 'Monthly';
+        $view = 'Pdf.attendanceReport';
+        $filename = str_replace(" " , "-" ,strtolower($data->first_name) ).'-attendanceReport';
+        $generate  = $this->parentModel::PDFgenerate($filename , $view , $data , 'landscape');
+        return $generate;
+    }
+    public function employee_cv($id){
+        $id = decrypt($id);
+        $data = $this->parentModel::where('id' , $id)->first();
+        $view = 'Pdf.employee_cv';
+        $filename = str_replace(" " , "-" ,strtolower($data->first_name) ).'-cv';
+        $generate  = $this->parentModel::PDFgenerate($filename , $view ,$data ,'portrait');
+        return $generate;
     }
 }

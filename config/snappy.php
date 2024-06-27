@@ -2,8 +2,7 @@
 
 return [
     'pdf' => [
-        'binary'  => "C:\wkhtmltopdf\bin\wkhtmltopdf.exe",
-        'options' => [],
+        'binary'  => 'C:\wkhtmltopdf\bin\wkhtmltopdf.exe',
     ],
 ];
 

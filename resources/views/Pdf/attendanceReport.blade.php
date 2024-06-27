@@ -7,11 +7,19 @@
     <title>Document</title>
 </head>
 <style>
+    *{
+        font-family: sans-serif;
+
+    }
+    table{
+        width: 100%;
+    }
     th{
         border:1px solid rgb(95, 95, 95);
         white-space: nowrap!important;
         background-color: rgb(102, 4, 102);
         color: white;
+        padding: 10px;
     }
     td{
         border:1px solid purple!important;
@@ -19,61 +27,75 @@
         padding: 10px;
 
     }
+    .container{
+        border: 1px solid rgba(0, 0, 0, 0.329)!important;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    .table-data{
+        min-height: 500px
+    }
+    .generatedDate{
+        padding: 10px;
+
+    }
+
 </style>
 <body>
     @php
         $totalWorkingHoursAllEmployees  = 0 ;
     @endphp
         <div>
-        <h1 style="text-align:center"> Attendance {{ ucfirst($type) }} Report</h1>
-        <small style="padding:10px ; text-align:center">This is the {{ ucfirst($type) }} report for employee :  <b>{{ ucfirst($data->first_name) ?? '' }}</b></small>
-        </div> <br>
-        <table>
+        <h1 style="text-align:center"> Attendance {{ ucfirst($data['type']) }} Report</h1>
+        <p style="text-align:center">This is the {{ ucfirst($data['type']) }} report for employee :  <b>{{ ucfirst($data->first_name) ?? '' }}</b></p>
+        </div> <br><div class="generatedDate"><b>Generated Date: </b> {{ \Carbon\Carbon::now()->format('F d , Y') }}</div>
+    <div class="container">
+        <table class="table-data">
             <tr>
-                <th style="background-color:black ;color:white; height: 30px!important; line-height:22px;">
+                <th >
                    EMP#ID
                 </th>
-                <th style="height: 30px!important; line-height:22px;">
+                <th >
                     NAME
                 </th>
-                <th style="height: 30px!important; line-height:22px;">
+                <th >
                    DEPARTMENT
                 </th>
-                <th style="height: 30px!important; line-height:22px;">
+                <th >
                    DATE & DAY
                 </th>
-                <th style="height: 30px!important; line-height:22px;">
+                <th >
                    IN-OUT
                 </th>
-                <th style="height: 30px!important; line-height:22px;">
+                <th >
                     WORK STATUS
                 </th>
-                <th style="height: 30px!important; line-height:22px;">
+                <th >
                    WORK HOURS
                 </th>
             </tr>
             <tbody>
                 @foreach ($data->attendance as $key => $item)
                 <tr>
-                    <td style="height: 30px!important; line-height:29px!important; font-size:8px">
+                    <td >
                         {{ $item->users->employees->emp_uniq_id ?? ""}}
                     </td>
-                    <td style="height: 30px!important; line-height:29px!important; font-size:10px">
+                    <td >
                         {{ $item->users->employees->first_name ?? ""}}
                     </td>
-                    <td style="height: 30px!important; line-height:29px!important; font-size:10px">
+                    <td >
                         {{ $item->users->employees->departments->name ?? ""}}
                     </td>
-                    <td style="height: 30px!important; line-height:29px!important; font-size:8px">
+                    <td >
                         {{ $item->date . ' / ' . \Carbon\Carbon::parse($item->date ?? "")->format("l") ?? ""}}
                     </td>
-                    <td style="height: 30px!important; line-height:29px!important; font-size:10px">
+                    <td >
                         {{ $item->check_in . ' - ' . $item->check_out ?? ""}}
                     </td>
-                    <td style="height: 30px!important; line-height:29px!important; font-size:10px">
+                    <td >
                         @if(\Carbon\Carbon::parse($item->date)->format('l') == 'Sunday') Off-Day @else {{ $item->working_status ?? ""}} @endif
                     </td>
-                    <td style="height: 30px!important; line-height:29px!important; font-size:10px">
+                    <td >
                         @php
                         $totalWorkingHours = 0;
 
@@ -109,5 +131,7 @@
 
         </tr>
        </table>
+    </div>
+
 </body>
 </html>
