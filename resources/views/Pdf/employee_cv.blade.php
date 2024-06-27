@@ -172,7 +172,6 @@
 
                 <td class="left-data">
                     @php
-
                         $imagePath = file_exists(public_path('images/Employees/profile/' . $data->image))
                             ? url(asset('images/Employees/profile/' . $data->image))
                             : url(asset('assets/img/no-image.png'));

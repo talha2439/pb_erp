@@ -34,7 +34,6 @@ trait Crud {
         $render = view($view , ['data' => $data] ); // Render the view to HTML
         $pdfWrapper->setOptions(['javascript-delay' => 1000,'page-size' => 'A4','title' => $filename , 'orientation' => $orientation]);
         $pdfWrapper->loadHTML($render); // Load the HTML content into the PDF wrapper
-        
-        return  $pdfWrapper->inline();
+        return  $pdfWrapper->inline($filename);
     }
 }

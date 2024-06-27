@@ -15,7 +15,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <a href="{{ route('employees.index') }}" class="btn btn-secondary"><i class="fe fe-corner-down-left"></i></a> | <a href="{{ route('employee.cv.pdf' , encrypt($employee->id)) }}" class="btn btn-primary"><i class="fe fe-printer"></i></a>
+                    <a href="{{ route('employees.index') }}" class="btn btn-secondary"><i class="fe fe-corner-down-left"></i></a> | <a href="{{ route('employee.cv.pdf' , encrypt($employee->id)) }}" target="_blank" class="btn btn-primary"><i class="fe fe-printer"></i></a>
                 </div>
             </div>
 
