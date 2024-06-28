@@ -20,15 +20,20 @@ class AttendanceReportController extends Controller
     public $parentRoute  = 'attendance.reports';
 
     public function index(){
-        $submenuId   = SubMenu::where('route', $this->parentRoute . '.all')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'view_status');
-        if ($checkAccess) {
-            $data['attendance']  = $this->parentModel::withoutTrashed()->where('date' , Carbon::now()->format('Y-m-d'))->get();
-            $data['employees']   = Employee::all();
-            $data['departments'] = Department::withoutTrashed()->get();
-            return view($this->parentView . '.index', $data);
-        } else {
-            abort(405);
+        try{
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.all')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'view_status');
+            if ($checkAccess) {
+                $data['attendance']  = $this->parentModel::withoutTrashed()->where('date' , Carbon::now()->format('Y-m-d'))->get();
+                $data['employees']   = Employee::all();
+                $data['departments'] = Department::withoutTrashed()->get();
+                return view($this->parentView . '.index', $data);
+            } else {
+                abort(405);
+            }
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
     public function reports(Request $request){

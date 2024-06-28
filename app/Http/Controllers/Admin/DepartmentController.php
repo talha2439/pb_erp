@@ -20,6 +20,7 @@ class DepartmentController extends Controller
 
     public function index()
     {
+        try{
         $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
         $checkAccess = $this->check_access($submenuId->id, 'view_status');
         if ($checkAccess) {
@@ -28,20 +29,30 @@ class DepartmentController extends Controller
         } else {
             abort(405);
         }
+        }
+        catch(\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
     public function trash()
     {
-        $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'view_status');
-        if ($checkAccess) {
-            $data['department'] = $this->parentModel::onlyTrashed()->get();
-            return view($this->parentView . '.trash', $data);
-        } else {
-            abort(405);
+        try{
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'view_status');
+            if ($checkAccess) {
+                $data['department'] = $this->parentModel::onlyTrashed()->get();
+                return view($this->parentView . '.trash', $data);
+            } else {
+                abort(405);
+            }
+        }
+        catch(\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
     public function create($id = null)
     {
+       try{
         $submenuId   = SubMenu::where('route', $this->parentRoute . '.create')->first();
         $checkAccess = $this->check_access($submenuId->id, 'create_status');
         if (!empty($id)) {
@@ -54,6 +65,10 @@ class DepartmentController extends Controller
         } else {
             abort(405);
         }
+       }
+       catch(\Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
+       }
     }
     public function store(Request $request, $id = null)
     {

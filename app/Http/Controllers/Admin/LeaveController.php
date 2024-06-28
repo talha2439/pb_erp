@@ -27,7 +27,8 @@ class LeaveController extends Controller
     public $imagePath         =  'images/leave_application/';
     public function index()
     {
-        $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+        try{
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
         $checkAccess = $this->check_access($submenuId->id, 'view_status');
         if ($checkAccess) {
             $data['departments'] = Department::withoutTrashed()->get();
@@ -36,10 +37,15 @@ class LeaveController extends Controller
         } else {
             abort(405);
         }
+        }
+        catch(\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     public function create($id = null)
     {
+      try{
         $submenuId   = SubMenu::where('route', $this->parentRoute . '.create')->first();
         $checkAccess = $this->check_access($submenuId->id, 'create_status');
         if (!empty($id)) {
@@ -53,6 +59,10 @@ class LeaveController extends Controller
         } else {
             abort(405);
         }
+      }
+      catch(\Exception $e){
+        return  redirect()->back()->with('error', $e->getMessage());
+      }
     }
     public function data(Request $request){
 
@@ -141,10 +151,12 @@ class LeaveController extends Controller
             $allowed   = Auth::user()->role == 4 ? 'disabled' : '';
             $status    = $item->status == 'approved' || $item->status == 'rejected' ? 'disabled' : ''; // to disable status change
             $editstatus    = $item->status != 'pending' ? 'disabled' : ''; // to disable status change
+            $printRoute    = route('leave.application.pdf' , $item->id);
             if($item->status == 'approved'&&  $item->status != 'pending'  && Auth::user()->role != 4  ){
                 $status = ''; // to enable if user is a HR
             }
-            $action =  '<a class="btn btn-primary text-white viewDetails"   title="View Application" data-id="'.$item->id.'" data-bs-toggle="modal" data-bs-target="#applicationModal"> <i
+            $action =  '<a class="btn btn-info text-white" target="_blank"  href="'.$printRoute.'" title="Print Application"> <i
+            class="fe fe-printer"></i></a> | <a class="btn btn-primary text-white viewDetails"   title="View Application" data-id="'.$item->id.'" data-bs-toggle="modal" data-bs-target="#applicationModal"> <i
             class="fe fe-eye"></i></a> | <a class="btn btn-warning text-white '.$allowed.' '.$status.' changeStatus"  data-to="'.Carbon::parse($item->to_date)->format('m/d/Y').'" data-from="'.Carbon::parse($item->from_date)->format('m/d/Y').'" data-bs-toggle="modal" data-bs-target="#experienceModal"
              title="Change Status"  data-id="'.$item->id.'"> <i
             class="fe fe-edit-3"></i></a> |
@@ -260,15 +272,35 @@ class LeaveController extends Controller
 
     }
     public function details($id){
-        $data['application'] = $this->parentModel::where('id'   , $id)->with('employees')->first();
+        try{
+            $data['application'] = $this->parentModel::where('id'   , $id)->with('employees')->first();
         if(!empty($data['application'])){
             $data['application']->from_date = Carbon::parse($data['application']->from_date)->format('F d , Y');
             $data['application']->to_date = Carbon::parse($data['application']->to_date)->format('F d , Y');
         }
         return response()->json(['data' => $data]);
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
     public function destroy($id){
-
+        try {
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
+            if ($checkAccess) {
+                $delete        = $this->parentModel::where('id', $id)->forceDelete();
+                if ($delete) {
+                    return response()->json(['success' => true]);
+                } else {
+                    return response()->json(['error' => true]);
+                }
+            } else {
+                return response()->json(['unauthorized' => true]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
     public function check_access($subMenuId , $status)
     {

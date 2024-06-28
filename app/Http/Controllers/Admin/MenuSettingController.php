@@ -16,13 +16,23 @@ class MenuSettingController extends Controller
     public $parentRoute= 'menusettings';
 
     public function index(){
-        $data['menu'] = $this->parentModel::with('submenu')->paginate(20);
-        return view($this->parentView.'.index', $data);
+        try{
+            $data['menu'] = $this->parentModel::with('submenu')->paginate(20);
+            return view($this->parentView.'.index', $data);
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
     public function create($id = null){
-        $data['action'] = $id == null? 'create': 'edit';
-        $data['menu']   = $this->parentModel::where('id', $id)->with('submenu')->first();
-        return view($this->parentView.'.create', $data);
+        try{
+            $data['action'] = $id == null? 'create': 'edit';
+            $data['menu']   = $this->parentModel::where('id', $id)->with('submenu')->first();
+            return view($this->parentView.'.create', $data);
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     public function store(Request $request, $id = null){
@@ -95,6 +105,7 @@ class MenuSettingController extends Controller
     }
 
     public function delete($id){
+       try{
         $delete  =  $this->parentModel::where('id', $id)->delete();
         $deleteSubmenu  = $this->childModel::where('menu_id', $id)->delete();
 
@@ -104,6 +115,10 @@ class MenuSettingController extends Controller
         else{
             return response()->json(['error' => true]);
         }
+       }
+       catch(\Exception $e){
+        return response()->json(['error' => $e->getMessage()]);
+       }
     }
 
 }

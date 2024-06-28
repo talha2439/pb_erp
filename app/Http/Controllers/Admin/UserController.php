@@ -19,6 +19,7 @@ class UserController extends Controller
         public $parentRoute = "users";
         public $imagePath  = 'images/UsersImages/';
         public function index(Request $request){
+          try{
             $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.index')->first();
             $checkAccess = $this->check_access($submenuId->id , 'view_status');
             if($checkAccess){
@@ -31,8 +32,13 @@ class UserController extends Controller
             else{
                 abort(405);
             }
+          }
+          catch(\Exception $e){
+            return redirect()->back()->with('error', "internal error: ". $e->getMessage());
+          }
         }
         public function create($id = null){
+           try{
             $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.create')->first();
             $checkAccess = $this->check_access($submenuId->id , 'create_status');
             if(!empty($id)){
@@ -46,6 +52,10 @@ class UserController extends Controller
             else{
                 abort(405);
             }
+           }
+           catch(\Exception $e){
+            return redirect()->back()->with('error', "internal error: ". $e->getMessage());
+           }
         }
 
         public function store(Request $request, $id = null){
@@ -137,6 +147,7 @@ class UserController extends Controller
 
         }
         public function status(Request $request , $id){
+            try{
 
             $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.index')->first();
             $checkAccess = $this->check_access($submenuId->id , 'update_status');
@@ -156,26 +167,35 @@ class UserController extends Controller
             } else{
                 return response()->json(['unauthorized'=> true]);
             }
+            }
+            catch(\Exception $e){
+                return response()->json(['error' =>$e->getMessage()]);
+            }
         }
         public function delete($id){
-            $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.index')->first();
-            $checkAccess = $this->check_access($submenuId->id , 'delete_status');
-            $checkEmployee = Employee::where('user_id' , $id)->count();
-            if($checkEmployee > 0){
-                return response()->json(['exists' => true]);
-            }
-            if($checkAccess){
-            $delete  =  $this->parentModel::where('id', $id)->delete();
-            if($delete){
-                return response()->json(['success' => true]);
-            }
-            else{
-                return response()->json(['error' => true]);
-            }
-            }
-            else{
-                return response()->json(['unauthorized'=> true]);
-            }
+       try{
+        $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.index')->first();
+        $checkAccess = $this->check_access($submenuId->id , 'delete_status');
+        $checkEmployee = Employee::where('user_id' , $id)->count();
+        if($checkEmployee > 0){
+            return response()->json(['exists' => true]);
+        }
+        if($checkAccess){
+        $delete  =  $this->parentModel::where('id', $id)->delete();
+        if($delete){
+            return response()->json(['success' => true]);
+        }
+        else{
+            return response()->json(['error' => true]);
+        }
+        }
+        else{
+            return response()->json(['unauthorized'=> true]);
+        }}
+        catch(\Exception $e){
+            return response()->json(['error' =>$e->getMessage()]);
+        }
+
         }
         public function check_access($subMenuId , $status)
         {

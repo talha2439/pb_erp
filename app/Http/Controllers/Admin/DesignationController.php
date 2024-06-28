@@ -20,19 +20,25 @@ class DesignationController extends Controller
 
     public function index()
     {
-        $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'view_status');
-        if ($checkAccess) {
-            $data['designation'] = $this->childModel::with('departments')->withoutTrashed()->get();
+        try{
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'view_status');
+            if ($checkAccess) {
+                $data['designation'] = $this->childModel::with('departments')->withoutTrashed()->get();
 
-            return view($this->parentView . '.index', $data);
-        } else {
-            abort(405);
+                return view($this->parentView . '.index', $data);
+            } else {
+                abort(405);
+            }
+        }
+        catch(\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
     public function trash()
     {
-        $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+        try{
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
         $checkAccess = $this->check_access($submenuId->id, 'view_status');
         if ($checkAccess) {
             $data['designation'] = $this->childModel::with('departments')->onlyTrashed()->get();
@@ -40,21 +46,30 @@ class DesignationController extends Controller
         } else {
             abort(405);
         }
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('error' , $e->getMessage());
+        }
     }
     public function create($id = null)
     {
-        $submenuId   = SubMenu::where('route', $this->parentRoute . '.create')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'create_status');
-        if (!empty($id)) {
-            $checkAccess = $this->check_access($submenuId->id, 'update_status');
+        try{
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.create')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'create_status');
+            if (!empty($id)) {
+                $checkAccess = $this->check_access($submenuId->id, 'update_status');
+            }
+            if ($checkAccess) {
+                $data['action'] = $id == null ? 'create' : 'edit';
+                $data['designation']   = $this->childModel::with('departments')->where('id', $id)->first();
+                $data['department']    = $this->parentModel::all();
+                return view($this->parentView . '.create', $data);
+            } else {
+                abort(405);
+            }
         }
-        if ($checkAccess) {
-            $data['action'] = $id == null ? 'create' : 'edit';
-            $data['designation']   = $this->childModel::with('departments')->where('id', $id)->first();
-            $data['department']    = $this->parentModel::all();
-            return view($this->parentView . '.create', $data);
-        } else {
-            abort(405);
+        catch(\Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
     public function store(Request $request, $id = null)

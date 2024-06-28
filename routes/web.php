@@ -159,6 +159,7 @@ Route::prefix('/')->middleware('auth')->group(function(){
     });
     // Generating PDF
     Route::prefix('/pdf')->group(function(){
+        Route::get('leave_application/{id}' , [PDFController::class , 'leave_application'])->name('leave.application.pdf');
         Route::get('employee_cv/{id}' , [PDFController::class , 'employee_cv'])->name('employee.cv.pdf');
         Route::POST('attendance_report' , [PDFController::class , 'attendance_report'])->name('employee.attendance.pdf');
     });

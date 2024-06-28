@@ -64,7 +64,7 @@ Employee's Leave Applications
                 </tr>
             </thead>
             <tbody>
-
+                
             </tbody>
         </table>
     </div>

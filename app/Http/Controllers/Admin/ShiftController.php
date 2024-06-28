@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\UserAccess;
 use Illuminate\Http\Request;
 use Auth;
+
 class ShiftController extends Controller
 {
     public $parentModel =  Department::class;
@@ -20,29 +21,38 @@ class ShiftController extends Controller
 
     public function index()
     {
-        $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'view_status');
-        if ($checkAccess) {
-            $data['shift'] = $this->childModel::with('departments')->withoutTrashed()->get();
+        try {
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'view_status');
+            if ($checkAccess) {
+                $data['shift'] = $this->childModel::with('departments')->withoutTrashed()->get();
 
-            return view($this->parentView . '.index', $data);
-        } else {
-            abort(405);
+                return view($this->parentView . '.index', $data);
+            } else {
+                abort(405);
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
     public function trash()
     {
-        $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'view_status');
-        if ($checkAccess) {
-            $data['shift'] = $this->childModel::with('departments')->onlyTrashed()->get();
-            return view($this->parentView . '.trash', $data);
-        } else {
-            abort(405);
+        try {
+            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'view_status');
+            if ($checkAccess) {
+                $data['shift'] = $this->childModel::with('departments')->onlyTrashed()->get();
+                return view($this->parentView . '.trash', $data);
+            } else {
+                abort(405);
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
     public function create($id = null)
     {
+       try{
         $submenuId   = SubMenu::where('route', $this->parentRoute . '.create')->first();
         $checkAccess = $this->check_access($submenuId->id, 'create_status');
         if (!empty($id)) {
@@ -56,6 +66,10 @@ class ShiftController extends Controller
         } else {
             abort(405);
         }
+       }
+       catch(\Exception $e) {
+        return redirect()->back()->with('error', $e->getMessage());
+       }
     }
     public function store(Request $request, $id = null)
     {
@@ -67,9 +81,9 @@ class ShiftController extends Controller
             }
             if ($checkAccess) {
                 $data = $request->except('_token');
-                $data['days'] = isset($data['days']) && in_array('all' ,$data["days"])  ? json_encode([0 => 'all']) : json_encode($data['days']);
-                if(!empty($id)){
-                    $updateDays = $this->childModel::where('id' , $id)->update(['days' => ""]);
+                $data['days'] = isset($data['days']) && in_array('all', $data["days"])  ? json_encode([0 => 'all']) : json_encode($data['days']);
+                if (!empty($id)) {
+                    $updateDays = $this->childModel::where('id', $id)->update(['days' => ""]);
                 }
                 $saveData =  $this->childModel::updateOrCreate(['id' => $id], $data);
                 if ($saveData) {

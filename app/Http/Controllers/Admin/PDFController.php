@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\Employee;
+use App\Models\LeaveApplication;
 use Barryvdh\Snappy\PdfWrapper;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -14,6 +15,7 @@ class PDFController extends Controller
 {
     public $parentModel  = Employee::class ;
     public function attendance_report(Request $request){
+      try{
         $data = $this->parentModel::where('id' , $request->employee_id)->with(['attendance' => function($query) use ($request) {
             if (!empty($request->month)) {
                 $query->whereMonth('date', $request->month);}
@@ -25,8 +27,13 @@ class PDFController extends Controller
         $filename = str_replace(" " , "-" ,strtolower($data->first_name) ).'-attendanceReport';
         $generate  = $this->parentModel::PDFgenerate($filename , $view , $data , 'landscape');
         return $generate;
+      }
+      catch(\Exception $e){
+        return redirect()->back()->with('error', 'Error generating attendance report: '. $e->getMessage());
+      }
     }
     public function employee_cv($id){
+      try{
         $id = decrypt($id);
         $data = $this->parentModel::where('id', $id)
         ->with([
@@ -42,5 +49,21 @@ class PDFController extends Controller
         $filename = str_replace(" " , "-" ,strtolower($data->first_name) ).'-cv';
         $generate  = $this->parentModel::PDFgenerate($filename , $view ,$data ,'portrait');
         return $generate;
+      }
+      catch (\Exception $e){
+        return redirect()->back()->with('error', 'Error generating CV: '. $e->getMessage());
+      }
+    }
+    public function leave_application($id){
+        try{
+            $data  = LeaveApplication::where('id', $id)->with('employees','approved','applied')->first();
+            $pdf_type  = 'Pdf.leave_application';
+            $filename = str_replace(" " ,'-' , strtolower($data->employees->first_name ?? "").'leave-application');
+            $generate = $this->parentModel::PDFgenerate($filename , $pdf_type , $data , 'portrait');
+            return $generate;
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('error', 'Error generating leave application: '. $e->getMessage());
+        }
     }
 }

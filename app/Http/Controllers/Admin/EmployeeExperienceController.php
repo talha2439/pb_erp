@@ -20,8 +20,13 @@ class EmployeeExperienceController extends Controller
     public $menuModel = SubMenu::class;
     public function edit($id = null)
     {
-        $experience = $this->parentModel::where('employee_id', $id)->get();
-        return response()->json(['experience' => $experience]);
+        try{
+            $experience = $this->parentModel::where('employee_id', $id)->get();
+            return response()->json(['experience' => $experience]);
+        }
+        catch (\Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
     public function store(Request $request, $id = null)
     {
@@ -47,7 +52,7 @@ class EmployeeExperienceController extends Controller
                         $request->file('attachment')[$key]->move($this->imagePath, $fileNames);
                     }
                     $exp_id = isset($data['exp_id'][$key]) && !empty($data['exp_id'][$key]) ? $data['exp_id'][$key]: null;
-                    
+
                     $storedata = $this->parentModel::updateOrCreate(['id' => $exp_id], [
                         'employee_id' => $data['employee_id'],
                         'job_title' => $data['job_title'][$key],

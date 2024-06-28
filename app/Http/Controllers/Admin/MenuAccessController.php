@@ -15,8 +15,13 @@ class MenuAccessController extends Controller
     public $parentRoute     ='menusettings';
 
     public function index($id = null){
-        $data['access'] = $this->subMenuModel::where('menu_id', $id)->with(['menu_access'])->get();
-        return view($this->parentView.'.role', $data);
+        try{
+            $data['access'] = $this->subMenuModel::where('menu_id', $id)->with(['menu_access'])->get();
+            return view($this->parentView.'.role', $data);
+        }
+        catch(\Exception $e){
+            return redirect(route('users.index'))->with('error', "internal error: ". $e->getMessage());
+        }
     }
 
     public function changeAccess(Request $request  , $id = null){

@@ -36,19 +36,25 @@ class EmployeeController extends Controller
     public $childimagePath  = 'images/Employees/documents/';
     public function index(Request $request)
     {
-        $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'view_status');
-        if ($checkAccess) {
-            $data['employee'] = $this->parentModel::withoutTrashed()->get();
+        try{
+            $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'view_status');
+            if ($checkAccess) {
+                $data['employee'] = $this->parentModel::withoutTrashed()->get();
 
-            return view($this->parentView . '.index', $data);
-        } else {
-            abort(405);
+                return view($this->parentView . '.index', $data);
+            } else {
+                abort(405);
+            }
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
     public function employee_details($id)
     {
-        $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
+        try{
+            $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
         $checkAccess = $this->check_access($submenuId->id, 'view_status');
         if ($checkAccess) {
             try {
@@ -61,22 +67,32 @@ class EmployeeController extends Controller
         } else {
             abort(405);
         }
+        }
+        catch(\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
     public function trash(Request $request)
     {
-        $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.trash')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'view_status');
-        if ($checkAccess) {
-            $data['employee'] = $this->parentModel::onlyTrashed()->get();
+        try{
+            $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.trash')->first();
+            $checkAccess = $this->check_access($submenuId->id, 'view_status');
+            if ($checkAccess) {
+                $data['employee'] = $this->parentModel::onlyTrashed()->get();
 
-            return view($this->parentView . '.trash', $data);
-        } else {
-            abort(405);
+                return view($this->parentView . '.trash', $data);
+            } else {
+                abort(405);
+            }
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
     public function create($id = null)
     {
-        $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.create')->first();
+        try{
+            $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.create')->first();
         $checkAccess = $this->check_access($submenuId->id, 'create_status');
         if (!empty($id)) {
             $checkAccess = $this->check_access($submenuId->id, 'update_status');
@@ -95,6 +111,10 @@ class EmployeeController extends Controller
             return view($this->parentView . '.create', $data);
         } else {
             abort(405);
+        }
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
     public function store(Request $request, $id = null)
@@ -195,31 +215,46 @@ class EmployeeController extends Controller
     }
     public function state($id)
     {
-
-        $data = State::select('name', 'id')->where('country_id', $id)->get();
-        if ($data) {
-            return response()->json($data);
-        } else {
-            return response()->json(['error' => true]);
+        try{
+            $data = State::select('name', 'id')->where('country_id', $id)->get();
+            if ($data) {
+                return response()->json($data);
+            } else {
+                return response()->json(['error' => true]);
+            }
         }
+        catch (\Exception $e){
+                return response()->json(['error' => $e->getMessage()]);
+        }
+
     }
     public function city($id)
     {
+       try{
         $data = City::select('name' , 'id')->where('state_id', $id)->get();
         if ($data) {
             return response()->json($data);
         } else {
             return response()->json(['error' => true]);
         }
+       }
+       catch (\Exception $e){
+                return response()->json(['error' => $e->getMessage()]);
+        }
     }
     public function designation_and_shift($id)
     {
+       try{
         $data['shift']              = Shift::where('department', $id)->withoutTrashed()->first();
         $data['shift']->start_time  = Carbon::parse($data['shift']->start_time)->format('h:i A');
         $data['shift']->end_time    = Carbon::parse($data['shift']->end_time)->format('h:i A');
         $data['designation']        = Designation::where('department', $id)->withoutTrashed()->first();
         if ($data) {
             return response()->json($data);
+        }
+       }
+       catch (\Exception $e){
+                return response()->json(['error' => $e->getMessage()]);
         }
     }
     public function delete($id)

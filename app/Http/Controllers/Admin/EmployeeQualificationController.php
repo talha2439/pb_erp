@@ -20,8 +20,13 @@ class EmployeeQualificationController extends Controller
     public $menuModel = SubMenu::class;
     public function edit($id = null)
     {
-        $emp_qualification = $this->parentModel::where('employee_id', $id)->get();
-        return response()->json(['qualification' => $emp_qualification]);
+        try{
+            $emp_qualification = $this->parentModel::where('employee_id', $id)->get();
+            return response()->json(['qualification' => $emp_qualification]);
+        }
+        catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
     public function store(Request $request, $id = null)
     {
