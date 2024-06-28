@@ -324,6 +324,8 @@ $(document).ready(function () {
         }
         if (isValid) {
             e.preventDefault();
+            $(document).find('.saveBtn').text("Please wait...")
+            $(document).find('.saveBtn').attr("disabled", true)
             let formData = new FormData();
 
             if (image.val() !== "") {
@@ -352,6 +354,10 @@ $(document).ready(function () {
                 success: function (response) {
                     if (response.success) {
                         e.preventDefault();
+                        $(document).find('.saveBtn[title="Save"]').text("Save")
+                        $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                        $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                        $(document).find('.saveBtn').attr("disabled", false)
                         $(empId).val(response.emp_id);
                         let message = action == "edit" && empId != "" ? "Updated" : "Saved";
                         toastr.success("Employee Personal Information has been " + message + " successfully");
@@ -366,17 +372,29 @@ $(document).ready(function () {
                     }
                     else if (response.unauthorized) {
                         e.preventDefault();
+                        $(document).find('.saveBtn[title="Save"]').text("Save")
+                        $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                        $(document).find('.saveBtn[title="Submit"]').text("Submit")
+
+                        $(document).find('.saveBtn').attr("disabled", false)
                         toastr.error("Failed to save Information , you are not allowed to save information about Employees");
                         return false;
                     }
                     else if (response.error) {
                         e.preventDefault();
+                        $(document).find('.saveBtn[title="Save"]').text("Save")
+                        $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                        $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                        $(document).find('.saveBtn').attr("disabled", false)
                         toastr["error"](response.error);
                         return false;
                     }
                 },
                 error: function (xhr, status, error) {
                     e.preventDefault();
+                    $(document).find('.saveBtn[title="Save"]').text("Save")
+                    $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                    $(document).find('.saveBtn').attr("disabled", false)
                     toastr["error"](xhr.responseJSON.message);
                     return false;
                 }

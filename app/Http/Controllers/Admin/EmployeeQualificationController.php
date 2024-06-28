@@ -48,7 +48,7 @@ class EmployeeQualificationController extends Controller
                     }
                     $enddate = Carbon::parse($data['end_date'][$key])->format('Y-m-d');
                     $status = $currentDate == $enddate ? 1 : 0;
-                    $storedata = $this->parentModel::updateOrCreate(['id' => $data['qualification_id'][$key] ??null], [
+                    $storedata = $this->parentModel::updateOrCreate(['id' => $data['qualification_id'][$key] ?? null], [
                         'institute' => $data['institute'][$key],
                         'document' => $fileNames ?? "",
                         'qualification' => $data['qualification'][$key],

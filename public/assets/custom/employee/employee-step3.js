@@ -75,6 +75,8 @@ $(document).ready(function () {
     });
     $(document).on('click', '.removeExp', function (e) {
         e.preventDefault();
+        $(document).find('.saveBtn').text("Please wait...");
+        $(document).find('.saveBtn').attr("disabled", true)
         totalAdded --;
         let id = $(this).data('id');
         if (id != undefined || id == '') {
@@ -96,20 +98,36 @@ $(document).ready(function () {
                         type: "GET",
                         success: function (res) {
                             if (res.success) {
+                                $(document).find('.saveBtn[title="Save"]').text("Save")
+                                $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                                $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                                $(document).find('.saveBtn').attr("disabled", false)
                                 toastr['success']("Experience deleted successfully");
                                 return false;
                             }
                             else if (res.unauthorized) {
                                 toastr['error']("You are not authorized to delete this..!");
+                                $(document).find('.saveBtn[title="Save"]').text("Save")
+                                $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                                $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                                $(document).find('.saveBtn').attr("disabled", false)
                                 return false;
                             }
                             else if (res.error) {
 
                                 toastr['error'](res.error);
+                                $(document).find('.saveBtn[title="Save"]').text("Save")
+                                $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                                $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                                $(document).find('.saveBtn').attr("disabled", false)
                                 return false;
                             }
                             else {
                                 toastr['error']("Something went wrong..!");
+                                $(document).find('.saveBtn[title="Save"]').text("Save")
+                                $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                                $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                                $(document).find('.saveBtn').attr("disabled", false)
                                 return false;
                             }
                         }, error: function (xhr, status, error) {

@@ -46,8 +46,9 @@ class EmployeeExperienceController extends Controller
                         $fileNames = str_replace(" ", "", $employeeData->emp_uniq_id) . '_' . time() . '.' . $request->file('attachment')[$key]->getClientOriginalExtension();
                         $request->file('attachment')[$key]->move($this->imagePath, $fileNames);
                     }
-
-                    $storedata = $this->parentModel::updateOrCreate(['id' => $data['exp_id'][$key] ?? null], [
+                    $exp_id = isset($data['exp_id'][$key]) && !empty($data['exp_id'][$key]) ? $data['exp_id'][$key]: null;
+                    
+                    $storedata = $this->parentModel::updateOrCreate(['id' => $exp_id], [
                         'employee_id' => $data['employee_id'],
                         'job_title' => $data['job_title'][$key],
                         'attachment' => $fileNames ?? "",

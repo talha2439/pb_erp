@@ -29,6 +29,7 @@
         height: 100%;
         overflow: hidden;
         position: relative;
+        bottom: 30px;
     }
 
     .image-container {
@@ -289,6 +290,7 @@
                                     </th>
                                 </tr>
                             </table>
+
                             @foreach ($data->qualifications as $key => $item)
                                 <div class="qualifications">
                                     <h4>{{ $item->qualification ?? '' }}</h4>

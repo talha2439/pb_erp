@@ -10,6 +10,7 @@
           <div class="modal-header">
             <div class="card">
                 <img src="" alt="" id="documentImage" style="height: 400px;width:100%; object-fit:contain">
+                <iframe src="" id="documentFile"  style="height: 400px; width:100%; object-fit:contain" frameborder="0"></iframe>
             </div>
           </div>
         </div>

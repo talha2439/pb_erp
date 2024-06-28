@@ -169,8 +169,8 @@
                     showCancelButton: true,
                     confirmButtonColor: '#6C05A8',
                     cancelButtonColor: '#d33',
-                    cancelButtonText: 'No',
-                    confirmButtonText: 'Yes'
+                    confirmButtonText: 'Yes' ,
+                    cancelButtonText: 'No'
                 }).then((res) => {
                     if (res.isConfirmed) {
                         $.ajax({

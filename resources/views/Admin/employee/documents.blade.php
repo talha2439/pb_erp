@@ -108,7 +108,17 @@
             });
             $(document).on('click', '.viewDocument', function(e) {
                 let image = $(this).data('image');
-                $(document).find('#documentImage').attr('src', image);
+                let ext = image.split('.');
+                if(ext[1] != 'pdf'){
+                $(document).find('#documentFile').hide();
+                $(document).find('#documentImage').show();
+                $(document).find('#documentImage').attr('src', image);}
+                else{
+                $(document).find('#documentFile').show();
+                $(document).find('#documentImage').hide();
+                $(document).find('#documentFile').attr('src', image);
+            }
+
             });
 
         </script>

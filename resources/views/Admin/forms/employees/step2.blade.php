@@ -78,8 +78,8 @@
             <div class="d-flex float-end g-3">
                 <a href="{{ route('employees.index') }}" class="btn btn-secondary me-2">Employees List</a>
                 <button class="btn btn-warning text-white me-2 back_button" title="step1"  data-id="{{ $employeeId ?? "" }}" >Back </button>
-                <button class="btn btn-success me-2 step_2_next" title="Save" >Save </button>
-                <button class="btn btn-primary step_2_next" title="Save and Next">Save & Next</button>
+                <button class="btn btn-success saveBtn me-2 step_2_next" title="Save" >Save </button>
+                <button class="btn btn-primary saveBtn step_2_next" title="Save and Next">Save & Next</button>
             </div>
         </div>
 </form>

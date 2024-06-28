@@ -28,7 +28,16 @@ class PDFController extends Controller
     }
     public function employee_cv($id){
         $id = decrypt($id);
-        $data = $this->parentModel::where('id' , $id)->first();
+        $data = $this->parentModel::where('id', $id)
+        ->with([
+            'qualifications' => function($query) {
+                $query->orderBy('id' , 'desc')->latest()->take(2);
+            },
+            'experiences' => function($query) {
+                $query->orderBy('id', 'desc')->take(2)->latest();
+            }
+        ])
+        ->oldest()->first();
         $view = 'Pdf.employee_cv';
         $filename = str_replace(" " , "-" ,strtolower($data->first_name) ).'-cv';
         $generate  = $this->parentModel::PDFgenerate($filename , $view ,$data ,'portrait');

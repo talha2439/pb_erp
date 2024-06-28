@@ -84,7 +84,7 @@
         <div class="d-flex float-end g-3">
             <a href="{{ route('employees.index') }}" class="btn btn-secondary me-2">Employees List</a>
             <button class="btn btn-warning text-white me-2 back_button" title="step2">Back </button>
-            <button class="btn btn-primary step_3_next" title="Submit">Submit</button>
+            <button class="btn btn-primary saveBtn step_3_next" title="Submit">Submit</button>
         </div>
     </div>
 </form>

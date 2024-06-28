@@ -208,6 +208,8 @@ $(document).ready(function () {
         }
         if (isValid) {
             e.preventDefault();
+            $(document).find('.saveBtn').text("Please wait...")
+            $(document).find('.saveBtn').attr("disabled", true)
             let formData = new FormData();
             let imageFiles = [];
             $("input[name='document[]']").each(function (index, element) {
@@ -235,7 +237,10 @@ $(document).ready(function () {
                 success: function (response) {
                     if (response.success) {
                         e.preventDefault();
-
+                        $(document).find('.saveBtn[title="Save"]').text("Save")
+                        $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                        $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                        $(document).find('.saveBtn').attr("disabled", false)
                         toastr.success("Employee Qualification Information has been saved successfully");
                         editQualification();
                         if (saveButton.attr('title') == "Save and Next") {
@@ -248,16 +253,28 @@ $(document).ready(function () {
                     }
                     else if (response.unauthorized) {
                         e.preventDefault();
+                        $(document).find('.saveBtn[title="Save"]').text("Save")
+                        $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                        $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                        $(document).find('.saveBtn').attr("disabled", false)
                         toastr.error("Failed to save Information , you are not allowed to save information about Employees");
                         return false;
                     }
                     else if (response.error) {
                         e.preventDefault();
+                        $(document).find('.saveBtn[title="Save"]').text("Save")
+                        $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                        $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                        $(document).find('.saveBtn').attr("disabled", false)
                         toastr["error"](response.error);
                         return false;
                     }
                     else {
                         e.preventDefault();
+                        $(document).find('.saveBtn[title="Save"]').text("Save")
+                        $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                        $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                        $(document).find('.saveBtn').attr("disabled", false)
                         toastr["error"]("An error occurred while saving qualification information for employee");
                         return false;
                     }
