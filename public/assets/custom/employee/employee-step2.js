@@ -241,7 +241,7 @@ $(document).ready(function () {
                         $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
                         $(document).find('.saveBtn[title="Submit"]').text("Submit")
                         $(document).find('.saveBtn').attr("disabled", false)
-                        toastr.success("Employee Qualification Information has been saved successfully");
+                      
                         editQualification();
                         if (saveButton.attr('title') == "Save and Next") {
                             editExperience();

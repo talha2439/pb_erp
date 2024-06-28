@@ -155,7 +155,8 @@ Route::prefix('/')->middleware('auth')->group(function(){
     Route::prefix('notifications')->group(function(){
         Route::get('get_notifications' ,[NotificationController::class , 'notifications'])->name('notifications');
         Route::get('mark/{id?}' ,[NotificationController::class , 'readed'])->name('notifications.marked');
-        Route::get('mark/all' ,[NotificationController::class , 'markall'])->name('notifications.marked.all');
+        Route::get('marked/all' ,[NotificationController::class , 'markall'])->name('notifications.marked.all');
+        Route::get('delete/all' ,[NotificationController::class , 'destroy'])->name('notifications.destroy');
     });
     // Generating PDF
     Route::prefix('/pdf')->group(function(){

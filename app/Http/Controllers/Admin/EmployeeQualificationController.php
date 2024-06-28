@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\Notifications;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\EmployeeQualification;
@@ -66,6 +67,10 @@ class EmployeeQualificationController extends Controller
                     ]);
                 }
                 if ($storedata) {
+                    $subject = !empty($id) ? 'Employee Qualification Information Updated' : 'Employee Qualification Information Created';
+                    $route = route('employees.details', encrypt($storedata->id));
+                    $storeNotification =  $this->parentModel::notification($subject ,  $route  , $storedata->created_at );
+                    event(new Notifications($storeNotification));
                     return response()->json(['success' => true]);
                 } else {
                     return response()->json(['error' => true]);

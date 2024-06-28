@@ -359,9 +359,7 @@ $(document).ready(function () {
                         $(document).find('.saveBtn[title="Submit"]').text("Submit")
                         $(document).find('.saveBtn').attr("disabled", false)
                         $(empId).val(response.emp_id);
-                        let message = action == "edit" && empId != "" ? "Updated" : "Saved";
-                        toastr.success("Employee Personal Information has been " + message + " successfully");
-
+                       
                         editQualification();
                         if (button.attr('title') == 'Save and Next') {
                             $('.step_title').html(`<h3><strong class="text-primary ">Step 2 :</strong >  Qualification Information </h3><hr>`);

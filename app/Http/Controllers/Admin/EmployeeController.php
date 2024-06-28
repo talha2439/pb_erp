@@ -185,9 +185,10 @@ class EmployeeController extends Controller
                             ]);
                         }
                     }
-                    $employeeType = !empty($id) ? 'employee_update' : 'employee_create';
+
                     $subject = !empty($id) ? 'Employee Information Updated' : 'Employee Information Created';
-                    $storeNotification =  $this->parentModel::notification($subject , $storeData  , $employeeType , 'users');
+                    $route = route('employees.details', encrypt($storeData->id));
+                    $storeNotification =  $this->parentModel::notification($subject ,  $route  , $storeData->created_at );
                     event(new Notifications($storeNotification));
                     return response()->json(['success' => true, 'emp_id' => $storeData->id]);
                 } else {
@@ -263,10 +264,17 @@ class EmployeeController extends Controller
             $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
             $checkAccess = $this->check_access($submenuId->id, 'delete_status');
             if ($checkAccess) {
+                $empDetail        = $this->parentModel::where('id', $id)->first();
+                $empName          = $empDetail->first_name. " " .$empDetail->last_name;
+                $subject = 'Information For Employee'." ".$empName." ".' has been Deleted';
+                $route = route('employees.index');
+                $storeNotification =  $this->parentModel::notification($subject ,  $route  , Carbon::now() );
+                event(new Notifications($storeNotification));
                 $delete        = $this->parentModel::where('id', $id)->delete();
                 $removeQualification = EmployeeQualification::where('employee_id', $id)->delete();
                 $removeExp           = EmployeeExperience::where('employee_id', $id)->delete();
                 if ($delete) {
+
                     return response()->json(['success' => true]);
                 } else {
                     return response()->json(['error' => true]);
@@ -286,6 +294,12 @@ class EmployeeController extends Controller
             $checkAccess = $this->check_access($submenuId->id, 'delete_status');
 
             if ($checkAccess) {
+                $empDetail        = $this->parentModel::where('id', $id)->withTrashed()->first();
+                $empName          = $empDetail->first_name. " " .$empDetail->last_name;
+                $subject = 'Information For Employee'." ".$empName." ".' has been Deleted';
+                $route = route('employees.index');
+                $storeNotification =  $this->parentModel::notification($subject ,  $route  , Carbon::now() );
+                event(new Notifications($storeNotification));
                 $delete        = $this->parentModel::where('id', $id)->forceDelete();
                 $forceDeleteQualification = EmployeeQualification::where('employee_id', $id)->forceDelete();
                 $forceDeleteExp           = EmployeeExperience::where('employee_id', $id)->forceDelete();
@@ -309,6 +323,12 @@ class EmployeeController extends Controller
             $checkAccess = $this->check_access($submenuId->id, 'delete_status');
 
             if ($checkAccess) {
+                $empDetail        = $this->parentModel::where('id', $id)->withTrashed()->first();
+                $empName          = $empDetail->first_name. " " .$empDetail->last_name;
+                $subject = 'Documents For Employee '." ".$empName." ".' has been Deleted';
+                $route = route('employees.index');
+                $storeNotification =  $this->parentModel::notification($subject ,  $route  , Carbon::now() );
+                event(new Notifications($storeNotification));
                 $delete        = EmployeeDocument::where('id', $id)->forceDelete();
                 if ($delete) {
                     return response()->json(['success' => true]);
@@ -341,6 +361,12 @@ class EmployeeController extends Controller
             $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
             $checkAccess = $this->check_access($submenuId->id, 'delete_status');
             if ($checkAccess) {
+                $empDetail        = $this->parentModel::where('id', $id)->withTrashed()->first();
+                $empName          = $empDetail->first_name. " " .$empDetail->last_name;
+                $subject = 'Information For Employee '." ".$empName." ".' has been Restored';
+                $route = route('employees.index');
+                $storeNotification =  $this->parentModel::notification($subject ,  $route  , Carbon::now() );
+                event(new Notifications($storeNotification));
                 $restore = $this->parentModel::where('id', $id)->restore();
                 $restoreQualification = EmployeeQualification::where('employee_id', $id)->restore();
                 $restoreExp           = EmployeeExperience::where('employee_id', $id)->restore();

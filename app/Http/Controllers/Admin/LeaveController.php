@@ -194,17 +194,9 @@ class LeaveController extends Controller
             }
             $storeData = $this->parentModel::updateOrCreate(['id'=>$id],$data);
             if($storeData){
-                $created_at   = Carbon::parse($storeData->created_at)->format('F d, Y h:i:s A');
-                $type = !empty($id)? 'leave_approved' : 'leave_rejected';
-                $subject = !empty($id) ? 'Leave Application Updated for ' . ucfirst($checkLeaves->first_name) . " " . ucfirst($checkLeaves->last_name) : 'Leave Application Applied'  . ucfirst($checkLeaves->first_name) . " " . ucfirst($checkLeaves->last_name) ;
-                $storeNotification =  $this->parentModel::notification($subject , $storeData  , $type , 'employees');
-                Notification::create([
-                    'subject' => $subject ,
-                    'user_id' => $storeData->employees->user_id,
-                    'created_at' => $created_at,
-                    'data' => $storeData->id,
-                    'type' => $type,
-                ]);
+                $subject = !empty($id) ? 'Leave Application Updated for '. " " . ucfirst($checkLeaves->first_name) . " " . ucfirst($checkLeaves->last_name) : 'Leave Application Applied for '. " " . ucfirst($checkLeaves->first_name) . " " . ucfirst($checkLeaves->last_name) ;
+                $route = route('leave.application.index');
+                $storeNotification =  $this->parentModel::notification($subject ,  $route  , $storeData->created_at );
                 event(new Notifications($storeNotification));
                 return redirect()->route($this->parentRoute.'.index')->with(['success'=> $subject]);
             }
@@ -241,17 +233,9 @@ class LeaveController extends Controller
         $leaveData   = $this->parentModel::where('id' , $data['id'])->with('employees')->first();
         $leaveData->from_date  = Carbon::parse($leaveData->from_date)->format('F d, Y');
         $leaveData->to_date    = Carbon::parse($leaveData->to_date)->format('F d, Y');
-        $created_at   = Carbon::parse($leaveData->updated_at)->format('F d, Y h:i:s A');
-        $type = !empty($data['status']) && $data['status'] == 'approved' ? 'leave_approved' : 'leave_rejected';
-        $subject = !empty($data['status']) && $data['status'] == 'approved' ? 'Leave Application Approved for '. ucfirst($leaveData->employees->first_name) . " " . ucfirst($leaveData->employees->last_name)  : 'Leave Application rejected for' . ucfirst($leaveData->employees->first_name) . " " . ucfirst($leaveData->employees->last_name);
-        $storeNotification =  $this->parentModel::notification($subject , $leaveData  , $type , 'employees');
-        Notification::create([
-            'subject' => $subject ,
-            'user_id' => $leaveData->employees->user_id,
-            'created_at' => $created_at,
-            'data' => $leaveData->id,
-            'type' => $type,
-        ]);
+        $subject = !empty($data['status']) && $data['status'] == 'approved' ? 'Leave Application Approved for '. " ". ucfirst($leaveData->employees->first_name) . " " . ucfirst($leaveData->employees->last_name)  : 'Leave Application rejected for'. " ". ucfirst($leaveData->employees->first_name) . " " . ucfirst($leaveData->employees->last_name);
+        $route = route('leave.application.index');
+        $storeNotification =  $this->parentModel::notification($subject ,  $route  , $leaveData->created_at );
         event(new Notifications($storeNotification));
         if($updateData){
             return response()->json(['success' => true]);

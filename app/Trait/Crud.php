@@ -12,20 +12,14 @@ trait Crud {
         $columns = Schema::getColumnListing($table);
         return $columns;
     }
-    public static function notification($subject  , $data ,  $type , $relations = null){
-        $created_at   = Carbon::parse($data->created_at)->format('F d, Y h:i:s A');
-        $allData = $data;
-        if(!empty($relations)){
-        $allData =   $data->with($relations)->first();
-        }
+    public static function notification($subject  , $route ,  $created_at){
+        $created_at   = Carbon::parse($created_at)->format('F d, Y h:i A');
         $storeNotification = [
             'subject' => $subject,
-            'user_id' => $data->user_id,
+            'route' => $route,
             'created_at' => $created_at,
-            'data' =>  json_encode($allData),
-            'type' => $type,
         ];
-
+        Notification::create($storeNotification);
         return $storeNotification;
     }
     public static function PDFgenerate($filename ,$view ,$data ,  $orientation){

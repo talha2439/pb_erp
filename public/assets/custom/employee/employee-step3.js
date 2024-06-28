@@ -251,8 +251,6 @@ $(document).ready(function () {
                 success: function (res) {
                     if (res.success) {
                         e.preventDefault();
-                        toastr.success("Employee Information has been saved successfully");
-
                         setTimeout(() => {
                             window.location.href = employeesListUrl;
                         }, 1000)

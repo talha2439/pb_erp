@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\Notifications;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{Employee, User , SubMenu , UserAccess};
@@ -123,6 +124,10 @@ class UserController extends Controller
                         if($request->query('type') == 'profile'){
                             return redirect(route('profile_settings', decrypt($id)))->with('success' ,"User Information has been $storeStatus successfully..!");
                         }
+                        $subject = !empty($storeUser->id) ? 'User Information Updated' : 'User Information Created';
+                        $route = route('users.create', $storeUser->id);
+                        $storeNotification =  $this->parentModel::notification($subject ,  $route  , $storeUser->created_at );
+                        event(new Notifications($storeNotification));
                         return redirect(route($this->parentRoute.'.index'))->with('success' ,"User Information has been $storeStatus successfully..!");
 
                     }
@@ -131,6 +136,10 @@ class UserController extends Controller
                         if($request->query('type') == 'profile'){
                             return redirect(route('profile_settings', decrypt($id)))->with('success' ,"User Information has been $storeStatus successfully..!");
                         }
+                        $subject = !empty($storeUser->id) ? 'User Information Updated' : 'User Information Created';
+                        $route = route('users.create', $storeUser->id);
+                        $storeNotification =  $this->parentModel::notification($subject ,  $route  , $storeUser->created_at );
+                        event(new Notifications($storeNotification));
                         return redirect(route($this->parentRoute.'.index'))->with('success' ,"User Information has been $storeStatus successfully..!");
                     }
                 }
@@ -154,11 +163,17 @@ class UserController extends Controller
             if($checkAccess){
             $activeStatus = $request->status == 1 ? Carbon::now() : null;
             $deactive = $this->parentModel::where('id' , $id)->update(['email_verified_at' => $activeStatus]);
+            $userInfo = $this->parentModel::where('id' , $id)->first();
             if($deactive)
             {
                 if($request->type =='deactivate'){
                     return redirect(route('auth.logout'))->with('error' , 'Your account has been deactivated. you have no longer access to your account.');
                 }
+                $status = $request->status == 1 ? 'Activated' : 'Deactivated';
+                $subject = 'User has been ' ." ". $status;
+                $route = route('users.create', $id);
+                $storeNotification =  $this->parentModel::notification($subject ,  $route  , $userInfo->updated_at );
+                event(new Notifications($storeNotification));
                 return response()->json(['success' => true]);
             }
             else{
@@ -183,6 +198,10 @@ class UserController extends Controller
         if($checkAccess){
         $delete  =  $this->parentModel::where('id', $id)->delete();
         if($delete){
+            $subject = 'User has been Deleted';
+            $route = route('users.index');
+            $storeNotification =  $this->parentModel::notification($subject ,  $route  , Carbon::now()->format('d F , Y h:iA') );
+            event(new Notifications($storeNotification));
             return response()->json(['success' => true]);
         }
         else{
