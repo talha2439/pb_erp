@@ -130,7 +130,8 @@ Route::prefix('/')->middleware('auth')->group(function(){
 
         Route::post('/checkin' , [AttendanceController::class ,'checkin'])->name('attendance.checkin');
         Route::post('/checkout' , [AttendanceController::class ,'checkout'])->name('attendance.checkout');
-        Route::Get('/edit/{id?}' , [AttendanceController::class ,'edit'])->name('attendance.edit');
+        Route::Get('/create/{id?}' , [AttendanceController::class ,'create'])->name('attendance.create');
+        Route::Post('/store/{id?}' , [AttendanceController::class ,'store'])->name('attendance.store');
         Route::Get('/delete/{id?}' , [AttendanceController::class ,'delete'])->name('attendance.delete');
         Route::Get('/get_experience/{id?}' , [AttendanceController::class ,'get_experience'])->name('attendance.get');
     });
@@ -139,7 +140,6 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::get('/data' , [AttendanceReportController::class ,'reports'])->name('attendance.reports.data');
         Route::get('/monthly' , [AttendanceReportController::class ,'index'])->name('attendance.reports.monthly');
         Route::get('/yearly' , [AttendanceReportController::class ,'index'])->name('attendance.reports.yearly');
-        Route::get('/edit/{id?}' , [AttendanceReportController::class ,'edit'])->name('attendance.reports.edit');
     });
     Route::prefix('leave/application')->group(function(){
         Route::get('/' , [LeaveController::class ,'index'])->name('leave.application.index');

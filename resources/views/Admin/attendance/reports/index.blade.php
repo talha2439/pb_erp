@@ -25,6 +25,9 @@ $currentYear = $currentDate->year;
                 <button class=" btn btn-primary text-white" style="width: max-content" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                     <i class="fe fe-filter"></i>
                    </button>
+                   <a  class="btn btn-dark text-white" title="Mark Attendance" href="{{ route('attendance.create') }}">
+                    <i class="fe fe-clipboard"></i>
+                </a>
             </div>
            </div>
 
@@ -70,6 +73,8 @@ $currentYear = $currentDate->year;
                     <th>Attendance Status</th>
                     <th>Check in -  Checkout</th>
                     <th>Working hours</th>
+                    <th>Total hours</th>
+                    <th>Extra hours</th>
                     <th>Working Status</th>
                     <th>Action</th>
 
@@ -148,6 +153,8 @@ $currentYear = $currentDate->year;
                 { "data": "attendance_status"},
                 { "data": "checkin_checkout"},
                 { "data":'working_hours'},
+                { "data":'total_hours'},
+                { "data":'extra_hours'},
                 { "data":'working_status'},
                 { "data": "action"},
                 // Add more columns as needed

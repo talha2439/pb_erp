@@ -69,7 +69,6 @@ $(document).on('click', '.deleteDepart', function(e) {
                     return false;
                 }
               else  if (res.success) {
-                    toastr['success']('Department Deleted successfully..!')
                     setTimeout(() => {
                         window.location.reload();
                     }, 1500);
@@ -159,7 +158,6 @@ $("#changeStatus").submit(function(e){
                 else if (res.success) {
                     e.preventDefault();
                     $("#experienceModal").modal('hide');
-                    toastr['success']('Application Status Changed successfully..!');
                     setTimeout(() => {
                         window.location.reload();
                     }, 1500);

@@ -16,6 +16,16 @@ class AttendanceController extends Controller
 {
     public $parentModel = Attendance::class;
     public $childModel  = Employee::class;
+    public $parentRoute = 'attendance';
+    public $parentView   = 'Admin.attendance.reports';
+    public function create($id = null){
+        $data['attendance'] = $this->parentModel::where('id', $id)->with('users' , function($query){
+            $query->with('employees');
+        })->first();
+        $data['employees']   = $this->childModel::latest()->get();
+        $data['action'] = !empty($data['attendance']) ? 'edit' : 'create';
+        return view($this->parentView.'.create', $data);
+    }
     public function checkin(Request $request)
     {
         try {
@@ -122,6 +132,42 @@ class AttendanceController extends Controller
             return response()->json(['error' => $e->getMessage()]);
         }}
 
+        public function store(Request $request, $id = null){
+            try{
+                $data = $request->except("_token");
+                $employees = $this->childModel::where('id', $data['employee_id'])->first();
+                $data['employee_id']  = $employees->user_id;
+                $data['date'] = Carbon::now()->format('Y-m-d');
+                $checkAttendance = $this->parentModel::where(['employee_id' => $data['employee_id'] , 'date'=> $data['date'] ])->count();
+               if(empty($id)){
+                if($checkAttendance > 0 ){
+                    return redirect()->back()->with('error' , "Attendance already marked for: " . " " .$employees->first_name);
+                }
+               }
+                $data['attendance_status'] =  'present';
+                if(!empty($id)){
+                    $data['working_hours']  = $data['working_hours'] ."hours". " " . $data['working_minutes'] . 'minutes';
+                    $data['total_hours']    = $data['working_hours'];
+                    if($data['working_status'] == 'late-setting'){
+                        $data['total_hours']    = (int) $data['working_hours'] + ((int) $data['extra_hours']) . ' hours';
 
+                        $data['extra_hours']   = $data['extra_hours'] . "hours" ." ". $data['extra_minutes']."minutes";
+                    }
+                    unset($data['working_minutes']);
+                    unset($data['extra_minutes']);
+                }
+                $markAttendance  = $this->parentModel::updateOrCreate(['id' => $id] , $data);
+                if($markAttendance){
+                    return redirect(route($this->parentRoute.'.reports.all'))->with('success','Attendance Marked for:' ." " . ucfirst($employees->first_name));
+                }
+                else{
+                    return redirect()->back()->with('error' , "Failed to Mark Attendance");
+                }
+            }
+            catch(\Exception $e){
+                return redirect()->back()->with('error' , $e->getMessage());
+            }
+
+        }
 
 }

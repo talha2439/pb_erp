@@ -202,7 +202,7 @@ $(document).ready(function () {
     function getIcons(icon) {
 
         folderPath = '/svg-list';
-        var iconDropDown = $(document).find('.iconDropDown');
+        var iconDropDown = $(document).find('.iconsDropdown');
         iconDropDown.html(`<option value="">Fetching Icons Please Wait..!</option>`);
         $.ajax({
             url: folderPath,

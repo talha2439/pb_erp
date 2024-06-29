@@ -194,7 +194,7 @@ class LeaveController extends Controller
             }
             $storeData = $this->parentModel::updateOrCreate(['id'=>$id],$data);
             if($storeData){
-                $subject = !empty($id) ? 'Leave Application Updated for '. " " . ucfirst($checkLeaves->first_name) . " " . ucfirst($checkLeaves->last_name) : 'Leave Application Applied for '. " " . ucfirst($checkLeaves->first_name) . " " . ucfirst($checkLeaves->last_name) ;
+                $subject = !empty($id) ? 'Leave Application Updated for '. " " . ucfirst($checkLeaves->first_name  ?? "Unknown") . " " . ucfirst($checkLeaves->last_name  ?? "Unknown") : 'Leave Application Applied for '. " " . ucfirst($checkLeaves->first_name  ?? "Unknown") . " " . ucfirst($checkLeaves->last_name  ?? "Unknown") ;
                 $route = route('leave.application.index');
                 $storeNotification =  $this->parentModel::notification($subject ,  $route  , $storeData->created_at );
                 event(new Notifications($storeNotification));
@@ -233,7 +233,7 @@ class LeaveController extends Controller
         $leaveData   = $this->parentModel::where('id' , $data['id'])->with('employees')->first();
         $leaveData->from_date  = Carbon::parse($leaveData->from_date)->format('F d, Y');
         $leaveData->to_date    = Carbon::parse($leaveData->to_date)->format('F d, Y');
-        $subject = !empty($data['status']) && $data['status'] == 'approved' ? 'Leave Application Approved for '. " ". ucfirst($leaveData->employees->first_name) . " " . ucfirst($leaveData->employees->last_name)  : 'Leave Application rejected for'. " ". ucfirst($leaveData->employees->first_name) . " " . ucfirst($leaveData->employees->last_name);
+        $subject = !empty($data['status']) && $data['status'] == 'approved' ? 'Leave Application Approved for '. " ". ucfirst($leaveData->employees->first_name ?? "Unknown") . " " . ucfirst($leaveData->employees->last_name  ?? "Unknown")  : 'Leave Application rejected for'. " ". ucfirst($leaveData->employees->first_name  ?? "Unknown") . " " . ucfirst($leaveData->employees->last_name  ?? "Unknown");
         $route = route('leave.application.index');
         $storeNotification =  $this->parentModel::notification($subject ,  $route  , $leaveData->created_at );
         event(new Notifications($storeNotification));

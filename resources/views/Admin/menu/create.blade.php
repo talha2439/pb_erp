@@ -86,7 +86,7 @@
                 <div class="col-md-3 menu_container">
                     <div class="form-group">
                         <label for="name">Menu Icon</label>
-                        <select name="icon" class="form-control mt-3 mb-3 iconDropDown">
+                        <select name="icon" class="form-control mt-3 mb-3 iconsDropdown ">
                             <option value=""> Please wait Fetching Icons</option>
                         </select>
                     </div>

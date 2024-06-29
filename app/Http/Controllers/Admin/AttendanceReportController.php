@@ -94,7 +94,7 @@ class AttendanceReportController extends Controller
             }
             return '<span class="blink blink-'.$blinkclass.'">'.$item->attendance_status.'</span>';
         })->addColumn('checkin_checkout', function($item){
-            $checkin  =  $item->check_in .' - '.$item->check_out ?? 'Empty' ;
+            $checkin  =  Carbon::parse($item->check_in)->format('h:i A') .' - '.Carbon::parse($item->check_out)->format('h:i A') ?? 'Empty' ;
             if($item->attendance_status == strtolower('Leave')){
                 $checkin ='On-leave';
             }
@@ -105,16 +105,30 @@ class AttendanceReportController extends Controller
         })->addColumn('working_hours', function($item){
             $workinghours = $item->working_hours ?? '0 hours' ;
             return $workinghours;
-        })->addColumn('working_status' , function($item){
+        })
+        ->addColumn('extra_hours', function($item){
+            $extra_hours = $item->extra_hours ?? '0 hours' ;
+            return $extra_hours;
+        })
+        ->addColumn('total_hours', function($item){
+            $total_hours = $item->total_hours ?? '0 hours' ;
+            return $total_hours;
+        })
+        ->addColumn('working_status' , function($item){
             $blinkclass = '';
             $workingStatus = "";
+            $totalHours = explode(" " ,$item->total_hours);
             if(!empty($item->check_in) && empty($item->check_out) && $item->working_status == strtolower('on-time') || $item->working_status == strtolower('early-in') &&  $item->working_status != strtolower('early-in and early-out')){
                 $blinkclass = 'success';
                 $workingStatus = 'On-time';
             }
-            else if(!empty($item->check_in) &&!empty($item->check_out) && $item->total_hours >= 9 && empty($item->extra_hours)){
+            else if(!empty($item->check_in) &&!empty($item->check_out) && $totalHours[0] >= 9 && empty($item->extra_hours)){
                 $blinkclass ='success';
                 $workingStatus = 'Full-time';
+            }
+            else if(!empty($item->check_in) &&!empty($item->check_out) && $totalHours[0] < 9 ){
+                $blinkclass ='danger';
+                $workingStatus = 'Half-time';
             }
             else if($item->working_status == strtolower('late and early-out') || $item->working_status == strtolower('early-in and early-out') || $item->working_status == strtolower('early-out')){
                 $blinkclass = 'danger';
@@ -141,14 +155,15 @@ class AttendanceReportController extends Controller
             return '<span class="blink blink-'.$blinkclass.'">'.$workingStatus.'</span>';
 
         })->addColumn('action' , function($item){
-            $editRoute = route($this->parentRoute. '.edit', $item->id);
+            $editRoute = route('attendance.create', $item->id);
+            $checkAuth = Auth::user()->role == 1 ? '' : 'disabled';
             $action =  '<a class="btn btn-danger text-white deleteDepart" data-id="'.$item->id.'"> <i
             class="fe fe-trash"></i></a> |
-             <a class="btn btn-success text-white" href="'.$editRoute.'"> <i
+             <a class="btn btn-success text-white '. $checkAuth .' " href="'.$editRoute.'"> <i
             class="fe fe-edit"></i></a>';
             return $action;
         })
-        ->rawColumns(['DT_RowIndex' , 'employee_id' , 'employee_name' ,'department','date','attendance_status','checkin_checkout','working_hours','working_status','action'])->make(true);
+        ->rawColumns(['DT_RowIndex' ,'extra_hours' , 'total_hours' , 'employee_id' , 'employee_name' ,'department','date','attendance_status','checkin_checkout','working_hours','working_status','action'])->make(true);
     }
     public function check_access($subMenuId, $status)
     {
