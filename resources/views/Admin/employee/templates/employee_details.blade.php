@@ -24,10 +24,10 @@
                     {{-- Profile Image and Name --}}
                     <div class="ml-3 row mt-3 mb-2">
                         @php
-                            $imagePath = file_exists(url(asset('images/Employees/profile/' . $employee->image))) ? asset('images/Employees/profile/' . $employee->image) : asset('assets/img/no-image.png') ;
+                            $imagePath = file_exists(public_path('images/Employees/profile/' . $employee->image)) ? url(asset('images/Employees/profile/' . $employee->image)) : url(asset('assets/img/no-image.png')) ;
                         @endphp
                         <div class="col-md-4 " style="min-height:250px;">
-                            <img src="{{ asset( $imagePath ) }}" alt=""
+                            <img src="{{ $imagePath }}" alt=""
                             class="border rounded shadow-sm p-2"
                             style="min-height:250px; min-width:250px; max-width:250px; object-fit:cover">
                         </div>

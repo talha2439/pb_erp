@@ -29,7 +29,6 @@
         height: 100%;
         overflow: hidden;
         position: relative;
-        bottom: 30px;
     }
 
     .image-container {

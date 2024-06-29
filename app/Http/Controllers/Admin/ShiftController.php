@@ -82,6 +82,9 @@ class ShiftController extends Controller
             if ($checkAccess) {
                 $data = $request->except('_token');
                 $data['days'] = isset($data['days']) && in_array('all', $data["days"])  ? json_encode([0 => 'all']) : json_encode($data['days']);
+                if(!isset($data['days'])){
+                    $data['days'] = json_encode([0 => 'all']);
+                }
                 if (!empty($id)) {
                     $updateDays = $this->childModel::where('id', $id)->update(['days' => ""]);
                 }
