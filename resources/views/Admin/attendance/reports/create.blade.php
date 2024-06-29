@@ -50,8 +50,8 @@
         </div>
         <div class="col-md-6 from_container">
             <div class="form-group">
-                <label for="name">Checkout (<small class="text-secondary">optional</small>) </label>
-                <input type="time"   name="check_out" class="form-control  mb-3">
+                <label for="name">Checkout (<small class="text-secondary">optional</small>) <small class="text-warning">Cannot be changed at marking attendance.</small> </label>
+                <input type="time"  @if($action == 'create') readonly @endif name="check_out" class="form-control  mb-3">
             </div>
         </div>
         @if($action == 'edit')
