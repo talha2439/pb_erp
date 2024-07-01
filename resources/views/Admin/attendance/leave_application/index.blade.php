@@ -14,12 +14,12 @@ Employee's Leave Applications
         <div class="row">
            <div class="col-md-12 d-flex justify-content-between">
             <h3>Employee's Leave Applications</h3>
-           <div class="d-flex">
-            <button class=" btn btn-primary text-white" style="width: max-content" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+           <div class="d-flex justify-content-between">
+            <a class=" btn btn-primary text-white" style="width: max-content" type="a" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                 <i class="fe fe-filter"></i>
-               </button> |
+            </a>  |   <a href="{{ route('leave.application.create') }}" class="btn btn-info text-white"><i class="fe fe-plus"></i></a>
              <div>
-                <a href="{{ route('leave.application.create') }}" class="btn btn-info text-white"><i class="fe fe-plus"></i></a>
+
              </div>
            </div>
 
@@ -64,7 +64,7 @@ Employee's Leave Applications
                 </tr>
             </thead>
             <tbody>
-                
+
             </tbody>
         </table>
     </div>

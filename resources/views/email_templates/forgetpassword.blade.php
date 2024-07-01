@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Reset - HRM System</title>
 </head>
-<body style="font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f5f5f5; color: #333;">
+<body style="font-family: Arial, sans-serif; height:100vh; line-height: 1.6; margin: 0; padding: 0; background-color: #f5f5f5; color: #333;">
 
-    <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+    <div style="max-width: 600px; margin: 20px auto; position: absolute; top:50%; bottom:50%; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
         <div style="text-align: center; margin-bottom: 20px;">
             <img src="https://example.com/logo.png" alt="HRM System Logo" width="150">
         </div>

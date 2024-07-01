@@ -163,39 +163,7 @@ $currentYear = $currentDate->year;
     }
     })
 
-    let deleteUrl = "{{ route('departments.delete') }}";
-    $(document).on('click', '.deleteDepart', function(e) {
-        let id = $(this).data('id');
-        let confirm = window.confirm('Are you sure you want to delete');
-        if (confirm) {
-            $.ajax({
-                url: deleteUrl + "/" + id,
-                type: 'Get',
-                success: function(res) {
-                    if (res.unauthorized) {
-                        toastr['error']('You are not authorized to delete department information..!');
-                        return false;
-                    }
-                   else if (res.employee_exist) {
-                        toastr['error']('Failed to delete department some employees are assigned with it delete them first..!');
-                        return false;
-                    }
-                   else if (res.designation_exist) {
-                        toastr['error']('Failed to delete department some designation are assigned with it delete them first !');
-                        return false;
-                    }
-                  else  if (res.success) {
-                        toastr['success']('Department Deleted successfully..!')
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1500);
-                    } else {
-                        toastr['error']('Something went wrong..!');
-                    }
-                }
-            })
-        }
-    });
+    
 
 
 </script>

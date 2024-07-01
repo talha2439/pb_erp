@@ -1,4 +1,4 @@
-<form id="reportForm" action="{{ route('employee.attendance.pdf') }}" method="POST">
+<form id="reportForm" target="_blank"  action="{{ route('employee.attendance.pdf') }}" method="POST">
     @csrf
     <div class="row g-2">
         <div class="col-md-4">

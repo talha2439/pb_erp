@@ -23,9 +23,9 @@
 
 </head>
 
-<body>
+<body >
 
-<div class="main-wrapper login-body">
+<div class="main-wrapper login-body" >
     <div class="login-wrapper">
     <div class="container">
     <img class="img-fluid logo-dark mb-2" src="{{ config('setting.logo') }}" alt="Logo">
@@ -42,7 +42,7 @@
         @csrf
     <div class="input-block mb-3">
     <label class="form-control-label">Email Address</label>
-    <input class="form-control" name="email" type="text">
+    <input class="form-control" placeholder="Enter email address" name="email" type="text">
     </div>
     <div class="input-block mb-0">
     <button class="btn btn-lg btn-primary w-100" type="submit" id="submitBtn">Send Verification</button>

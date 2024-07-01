@@ -136,7 +136,7 @@ class UserController extends Controller
                         if($request->query('type') == 'profile'){
                             return redirect(route('profile_settings', decrypt($id)))->with('success' ,"User Information has been $storeStatus successfully..!");
                         }
-                        $subject = !empty($storeUser->id) ? 'User Information Updated' : 'User Information Created';
+                        $subject = !empty($id) ? 'User Information Updated' : 'User Information Created';
                         $route = route('users.create', $storeUser->id);
                         $storeNotification =  $this->parentModel::notification($subject ,  $route  , $storeUser->created_at );
                         event(new Notifications($storeNotification));

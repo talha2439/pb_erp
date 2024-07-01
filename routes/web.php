@@ -112,6 +112,7 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::GET('/state/{id?}' , [EmployeeController::class,'state'])->name('state.get');
         Route::GET('/city/{id?}' , [EmployeeController::class,'city'])->name('city.get');
         Route::post('/store/{id?}' , [EmployeeController::class ,'store'])->name('employees.store');
+        Route::GET('/alldata' , [EmployeeController::class ,'alldata'])->name('employees.get.data');
         Route::get('shift/designations/{id?}' , [EmployeeController::class,'designation_and_shift'])->name('shift.designations');
     });
     Route::prefix('employees/qualification')->group(function(){

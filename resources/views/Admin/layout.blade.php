@@ -29,6 +29,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>{{ config('setting.site_name') }} - @yield('title')</title>
     <link rel="shortcut icon" href="{{ config('setting.favicon') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">

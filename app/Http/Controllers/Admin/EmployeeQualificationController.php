@@ -48,15 +48,22 @@ class EmployeeQualificationController extends Controller
                 $currentDate = Carbon::now()->format('Y-m-d');
 
                 foreach ($data['institute'] as $key => $value) {
-                    if (!empty($request->file("document")[$key]) && isset($request->file("document")[$key])) {
-                        $fileNames = str_replace(" ", "", $data['qualification'][$key]) . '_' . time() . '.' . $request->file('document')[$key]->getClientOriginalExtension();
-                        $request->file('document')[$key]->move($this->imagePath, $fileNames);
-                    }
+
+                        if (!empty($request->file("document")[$key]) && isset($request->file("document")[$key])) {
+                            $fileNames = str_replace(" ", "", $data['qualification'][$key]) . '_' . time() . '.' . $request->file('document')[$key]->getClientOriginalExtension();
+                            $request->file('document')[$key]->move($this->imagePath, $fileNames);
+
+                        }
+                        if(!empty($data['qualication_id'][$key]) && !isset($request->file("document")[$key])){
+                            $file = $this->parentModel::where('id', $data['qualication_id'][$key])->pluck('document');
+                            $fileNames = $file;
+                        }
+
                     $enddate = Carbon::parse($data['end_date'][$key])->format('Y-m-d');
                     $status = $currentDate == $enddate ? 1 : 0;
                     $storedata = $this->parentModel::updateOrCreate(['id' => $data['qualification_id'][$key] ?? null], [
                         'institute' => $data['institute'][$key],
-                        'document' => $fileNames ?? "",
+                        'document' => $fileNames,
                         'qualification' => $data['qualification'][$key],
                         'employee_id' => $data['employee_id'],
                         'start_date' => $data['start_date'][$key],

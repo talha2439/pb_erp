@@ -224,6 +224,8 @@ $(document).ready(function () {
 
         if (isValid) {
             e.preventDefault();
+            $('#submitStep3').prop('disabled', true);
+            $('#submitStep3').text('Submitting...');
             let formData = new FormData();
             let attachments = [];
             $(document).find('input[name="attachment[]"]').each(function (index, value) {
@@ -251,6 +253,8 @@ $(document).ready(function () {
                 success: function (res) {
                     if (res.success) {
                         e.preventDefault();
+                        $('#submitStep3').prop('disabled', true);
+                        $('#submitStep3').text('Submitted');
                         setTimeout(() => {
                             window.location.href = employeesListUrl;
                         }, 1000)
@@ -258,22 +262,30 @@ $(document).ready(function () {
                     }
                     else if (res.unauthorized) {
                         e.preventDefault();
+                        $('#submitStep3').prop('disabled', false);
+                        $('#submitStep3').text('Submit');
                         toastr.error("Failed to save Information , you are not allowed to save information about Employees");
                         return false;
                     }
                     else if (res.error) {
                         e.preventDefault();
+                        $('#submitStep3').prop('disabled', false);
+                        $('#submitStep3').text('Submit');
                         toastr["error"](res.error);
                         return false;
                     }
                     else {
                         e.preventDefault();
+                        $('#submitStep3').prop('disabled', false);
+                        $('#submitStep3').text('Submit');
                         toastr["error"]("An error occurred while saving experience information for employee");
                         return false;
                     }
                 },
                 error: function (xhr, status, error) {
                     e.preventDefault();
+                    $('#submitStep3').prop('disabled', false);
+                    $('#submitStep3').text('Submit');
                     toastr["error"](xhr.responseJSON.message);
                     return false;
                 }

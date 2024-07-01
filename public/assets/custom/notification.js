@@ -17,13 +17,11 @@ $(document).ready(function() {
                     $(document).find('.notificationbadge').html(badge);
                     return false;
                 }
-              
+
             }
         })
     })
     $(document).on('click', '.marknotification' , function(e) {
-
-        e.preventDefault();
         let row = $(this).closest('li');
         let id  = $(this).attr('data-id');
         $.ajax({

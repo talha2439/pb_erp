@@ -23,7 +23,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Carbon\Carbon;
 use Str;
-
+use Yajra\DataTables\Facades\DataTables;
 class EmployeeController extends Controller
 {
     public $parentModel = Employee::class;
@@ -40,8 +40,10 @@ class EmployeeController extends Controller
             $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
             $checkAccess = $this->check_access($submenuId->id, 'view_status');
             if ($checkAccess) {
-                $data['employee'] = $this->parentModel::withoutTrashed()->get();
-
+                $data['employees'] = $this->parentModel::latest()->get(['first_name' , 'id' , 'last_name']);
+                $data['departments'] = Department::pluck('name','id');
+                $data['designations'] = Designation::pluck('name','id');
+                $data['shifts'] = Shift::pluck('name' , 'id');
                 return view($this->parentView . '.index', $data);
             } else {
                 abort(405);
@@ -55,18 +57,23 @@ class EmployeeController extends Controller
     {
         try{
             $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'view_status');
-        if ($checkAccess) {
-            try {
-                $id  =  decrypt($id);
-                $data['employee'] = $this->parentModel::withTrashed()->where('id', $id)->first();
-                return view($this->parentView . '.templates.employee_details', $data);
-            } catch (\Exception $e) {
-                return redirect(route($this->parentRoute.'.index'))->with('error', $e->getMessage());
+            $checkAccess = $this->check_access($submenuId->id, 'view_status');
+            if ($checkAccess) {
+                try {
+                    $id  =  decrypt($id);
+
+                    $data['employee'] = $this->parentModel::withTrashed()->where('id', $id)->first();
+                    if(!empty($data['employee'])) {
+                    return view($this->parentView . '.templates.employee_details', $data);}
+                    else{
+                        return redirect()->back()->with('error', 'No data found for this employee');
+                    }
+                } catch (\Exception $e) {
+                    return redirect(route($this->parentRoute.'.index'))->with('error', $e->getMessage());
+                }
+            } else {
+                abort(405);
             }
-        } else {
-            abort(405);
-        }
         }
         catch(\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
@@ -78,8 +85,10 @@ class EmployeeController extends Controller
             $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.trash')->first();
             $checkAccess = $this->check_access($submenuId->id, 'view_status');
             if ($checkAccess) {
-                $data['employee'] = $this->parentModel::onlyTrashed()->get();
-
+                $data['employees'] = $this->parentModel::onlyTrashed()->latest()->get(['first_name' , 'id' , 'last_name']);
+                $data['departments'] = Department::pluck('name','id');
+                $data['designations'] = Designation::pluck('name','id');
+                $data['shifts'] = Shift::pluck('name' , 'id');
                 return view($this->parentView . '.trash', $data);
             } else {
                 abort(405);
@@ -229,6 +238,122 @@ class EmployeeController extends Controller
         }
 
     }
+    public function alldata(Request $request){
+        $data = $this->parentModel::latest();
+        if(!empty($request->query('type')) && $request->type == 'trash'){
+            $data->onlyTrashed();
+        }
+        else if(!empty($request->query('index') && $request->type == 'index')){
+            $data->withoutTrashed();
+        }
+        if(!empty($request->employee_id)){
+            $data->where('id' , $request->employee_id);
+
+        }
+        if(!empty($request->department)){
+            $data->where('department' , $request->department);
+
+        }
+        if(!empty($request->designation)){
+            $data->where('designation' , $request->designation);
+        }
+        if(!empty($request->status)){
+            $data->where('employment_status' , $request->status);
+        }
+        if(!empty($request->shifts)){
+            $data->where('shift' , $request->shifts);
+        }
+        $result = $data->get();
+        return DataTables::of($result)->addColumn('row_index' ,  function($item) use(&$index){
+            $index ++;
+            return $index;
+        })->addColumn('employee_id' , function($item){
+            return $item->emp_uniq_id ?? "";
+        })->addColumn('first_name' , function($item){
+            return $item->first_name ;
+        })->addColumn('last_name', function($item) {
+            return $item->last_name ?? 'Unknown';
+        })->addColumn('email' ,  function($item){
+            return $item->personal_email ;
+        })->addColumn('department' ,  function($item){
+            return $item->departments->name ?? "";
+        })->addColumn('designation' ,  function($item){
+            return $item->designations->name ?? "";
+        })->addColumn('status' , function($item){
+            $status =   '<center>
+                <div class="bg-danger text-white fw-bold p-1  shadow-sm text-center "
+                style="font-size: 10px ;width:75px; border-radius:4px; border:1px solid rgba(80, 3, 3, 0.288)">
+                Resigned</div>
+                </center>';
+            if($item->employment_status == "probhition"){
+            $status = ' <center><div class="bg-warning text-white fw-bold p-1 shadow-sm text-center "style="font-size: 10px ;width:65px; border-radius:4px; border:1px solid rgba(212, 132, 11, 0.322)">Probition</div></center>';
+            }
+            else if($item->employment_status == "parmanent"){
+            $status = '<center>
+                                        <div class="bg-success text-white fw-bold p-1 shadow-sm text-center "
+                                            style="font-size: 10px ;width:65px; border-radius:4px; border:1px solid rgba(3, 80, 35, 0.349)">
+                                            Permanent</div></center>';
+            }
+            else if($item->employment_status == "internship"){
+            $status = ' <center>
+                                        <div class="bg-info text-white fw-bold p-1 shadow-sm text-center "
+                                            style="font-size: 10px ;width:65px; border-radius:4px; border:1px solid rgba(3, 39, 80, 0.192)">
+                                            Internship</div>
+                                    </center>';
+            }
+            return $status ;
+        })->addColumn('salary' ,  function($item){
+            $salary = '<div class="d-flex justify-content-between g-3  p-2">
+            <input style="border:none; width:60px" class="salary" readonly type="password"
+                value='.$item->salary.'>
+            <button class="fa fa-eye eye_icon"
+                style="background: none;border:none; position:relative;bottom:2px"
+                data-type="show"></button>
+        </div>';
+        return $salary;
+        })->addColumn('document' , function($item){
+            $docRoute = route('employees.documents' , $item->id);
+            $docs = '<center> <a href="'.$docRoute.'" class="btn btn-primary shadow text-white"> <div class="fa fa-file-invoice"></div></a></center>';
+            return $docs;
+        })->addColumn('qualification' , function($item){
+            $qualification  = '  <center>
+                                    <a class="btn btn-info text-white btn-sm showQualification"
+                                        data-id="'.$item->id.'" data-bs-toggle="modal"
+                                        data-bs-target="#qualificationModal">
+                                        <i class="fa-solid fa-file-invoice"></i>
+                                    </a>
+                                </center>';
+            return $qualification;
+        })->addColumn('experience' ,  function($item){
+            $experience = '<center>
+                                    <a class="btn btn-warning text-white btn-sm showExperience" data-bs-toggle="modal"
+                                        data-bs-target="#experienceModal"data-id="{{ $item->id }}"
+                                        data-id="'.$item->id.'">
+                                        <i class="fa-solid fa-square-poll-horizontal"></i>
+                                    </a>
+                                </center>';
+            return $experience;
+        })->addColumn('details' ,  function($item){
+            $detailsRoute = route('employees.details', encrypt($item->id));
+                $details = ' <center>
+                    <a href="'.$detailsRoute.'"
+                        class="btn btn-primary text-white btn-sm">
+                        <i class="fa fa-eye"></i>
+                    </a>
+                </center>';
+                return $details;
+        })->addColumn('action' , function($item) use($request){
+            $actionRoute =  $request->type =='index' ?  route('employees.create', $item->id) : route('employees.restore', $item->id) ;
+            $editOrRestore  = $request->type =='index' ? ' <a class="btn btn-success text-white"
+                                    href="'.$actionRoute.'"> <i class="fe fe-edit"></i></a>' : '<a class="btn btn-success text-white"href="'.$actionRoute.'"> <i class="fa fa-undo"></i></a>';
+            $action = '<a class="btn btn-danger text-white deleteEmployee" data-id="'.$item->id.'"> <i
+                                        class="fe fe-trash"></i></a> | '.$editOrRestore.'
+                            </td>';
+            return $action ;
+        })->rawColumns(['row_index' ,'employee_id','first_name' ,'last_name','department','designation','email','salary','document','details','qualification','experience','action','status' ])->make(true);
+
+
+    }
     public function city($id)
     {
        try{
@@ -323,7 +448,8 @@ class EmployeeController extends Controller
             $checkAccess = $this->check_access($submenuId->id, 'delete_status');
 
             if ($checkAccess) {
-                $empDetail        = $this->parentModel::where('id', $id)->withTrashed()->first();
+                $documentDetail   = EmployeeDocument::where('id' , $id)->first();
+                $empDetail        = $this->parentModel::where('id', $documentDetail->employee_id)->withTrashed()->first();
                 $empName          = $empDetail->first_name. " " .$empDetail->last_name;
                 $subject = 'Documents For Employee '." ".$empName." ".' has been Deleted';
                 $route = route('employees.index');

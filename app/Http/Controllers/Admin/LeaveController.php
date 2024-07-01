@@ -28,7 +28,7 @@ class LeaveController extends Controller
     public function index()
     {
         try{
-            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
+        $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
         $checkAccess = $this->check_access($submenuId->id, 'view_status');
         if ($checkAccess) {
             $data['departments'] = Department::withoutTrashed()->get();

@@ -45,7 +45,7 @@ class AttendanceReportController extends Controller
         $endDate = Carbon::parse($date[1])->format('Y-m-d');
         $data = $this->parentModel::whereBetween('date', [$startDate , $endDate]);
         }
-        if(empty($request->month) && empty($request->year) && empty($request->daterange))
+        if(empty($request->employee) && empty($request->department) && empty($request->month) && empty($request->year) && empty($request->daterange))
         {
             $data = $data->where('date',  Carbon::now()->format('Y-m-d'));
         }
@@ -94,7 +94,9 @@ class AttendanceReportController extends Controller
             }
             return '<span class="blink blink-'.$blinkclass.'">'.$item->attendance_status.'</span>';
         })->addColumn('checkin_checkout', function($item){
-            $checkin  =  Carbon::parse($item->check_in)->format('h:i A') .' - '.Carbon::parse($item->check_out)->format('h:i A') ?? 'Empty' ;
+            $checkout = !empty($item->check_out) && $item->check_out != null ? Carbon::parse($item->check_out)->format('h:i A') : "";
+            $checkin = !empty($item->check_in) && $item->check_in ? Carbon::parse($item->check_in)->format('h:i A') : "";
+            $checkin  =  $checkin .' - '. $checkout ;
             if($item->attendance_status == strtolower('Leave')){
                 $checkin ='On-leave';
             }
@@ -157,8 +159,7 @@ class AttendanceReportController extends Controller
         })->addColumn('action' , function($item){
             $editRoute = route('attendance.create', $item->id);
             $checkAuth = Auth::user()->role == 1 ? '' : 'disabled';
-            $action =  '<a class="btn btn-danger text-white deleteDepart" data-id="'.$item->id.'"> <i
-            class="fe fe-trash"></i></a> |
+            $action =  '
              <a class="btn btn-success text-white '. $checkAuth .' " href="'.$editRoute.'"> <i
             class="fe fe-edit"></i></a>';
             return $action;
