@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+
 class Dashboardcontroller extends Controller
 {
     public $parentView = 'Admin.';

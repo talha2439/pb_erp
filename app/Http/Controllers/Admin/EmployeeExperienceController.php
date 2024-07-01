@@ -11,7 +11,8 @@ use App\Models\User;
 use App\Models\UserAccess;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+
 
 class EmployeeExperienceController extends Controller
 {

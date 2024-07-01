@@ -10,7 +10,8 @@ use App\Models\SubMenu;
 use App\Models\User;
 use App\Models\UserAccess;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+
 
 class DepartmentController extends Controller
 {

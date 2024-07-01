@@ -20,8 +20,8 @@ use App\Models\Shift;
 use App\Models\State;
 use App\Models\UserAccess;
 use Illuminate\Http\Request;
-use Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Str;
 use Yajra\DataTables\Facades\DataTables;
 class EmployeeController extends Controller
@@ -327,7 +327,7 @@ class EmployeeController extends Controller
         })->addColumn('experience' ,  function($item){
             $experience = '<center>
                                     <a class="btn btn-warning text-white btn-sm showExperience" data-bs-toggle="modal"
-                                        data-bs-target="#experienceModal"data-id="{{ $item->id }}"
+                                        data-bs-target="#experienceModal"
                                         data-id="'.$item->id.'">
                                         <i class="fa-solid fa-square-poll-horizontal"></i>
                                     </a>

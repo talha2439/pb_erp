@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{User, SubMenu, UserAccess};
-use Auth;
+use Illuminate\Support\Facades\Auth;
+
 class UserAccessController extends Controller
 {
     public $parentModel  = User::class;
