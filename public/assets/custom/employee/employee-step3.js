@@ -227,18 +227,20 @@ $(document).ready(function () {
             $('#submitStep3').prop('disabled', true);
             $('#submitStep3').text('Submitting...');
             let formData = new FormData();
-            let attachments = [];
-            $(document).find('input[name="attachment[]"]').each(function (index, value) {
-                let ifiles = value.files;
-                for (let i = 0; i < ifiles.length; i++) {
-                    let imageFile = ifiles[i];
-                    attachments.push(imageFile);
-                }
+
+            let jobtitles = $(document).find('input[name="job_title[]"]');
+            let imageFiles = [];
+            // Collect all selected image files
+            $("input[name='attachment[]']").each(function (index, element) {
+                let files = element.files;
+                let selectedFile = files.length > 0 ? files[0] : ""; // Only take the first file, adjust as needed
+                imageFiles.push(selectedFile);
             });
-            // Appending all attachments to the form
-            for (let i = 0; i < attachments.length; i++) {
-                formData.append('attachment[]', attachments[i]);
-            }
+            // Append each image file to its corresponding institute
+            jobtitles.each(function (index, element) {
+                let imageFile = imageFiles[index] || "";
+                formData.append('attachment['+index+']', imageFile);
+            });
             formData.append('data', expForm.serialize());
             formData.append('employee_id', $(emp_id).val());
             $.ajax({

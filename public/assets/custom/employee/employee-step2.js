@@ -211,18 +211,22 @@ $(document).ready(function () {
             $(document).find('.saveBtn').text("Please wait...")
             $(document).find('.saveBtn').attr("disabled", true)
             let formData = new FormData();
+            let institutes = $(document).find('input[name="institute[]"]');
             let imageFiles = [];
-            $("input[name='document[]']").each(function (index, element) {
-                let ifiles = element.files;
-                for (let i = 0; i < ifiles.length; i++) {
-                    let imageFile = ifiles[i];
-                    imageFiles.push(imageFile);
-                }
-            })
 
-            for (let i = 0; i < imageFiles.length; i++) {
-                formData.append('document[]', imageFiles[i]);
-            }
+            // Collect all selected image files
+            $("input[name='document[]']").each(function (index, element) {
+                let files = element.files;
+                let selectedFile = files.length > 0 ? files[0] : ""; // Only take the first file, adjust as needed
+                imageFiles.push(selectedFile);
+            });
+
+            // Append each image file to its corresponding institute
+            institutes.each(function (index, element) {
+                let imageFile = imageFiles[index] || "";
+                formData.append('document['+index+']', imageFile);
+            });
+
             formData.append('data', formStep2.serialize());
             formData.append('employee_id', $(emp_id).val());
             $.ajax({
@@ -241,7 +245,7 @@ $(document).ready(function () {
                         $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
                         $(document).find('.saveBtn[title="Submit"]').text("Submit")
                         $(document).find('.saveBtn').attr("disabled", false)
-                      
+
                         editQualification();
                         if (saveButton.attr('title') == "Save and Next") {
                             editExperience();

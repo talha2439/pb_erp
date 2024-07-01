@@ -47,10 +47,19 @@ class EmployeeExperienceController extends Controller
                 $employeeData = Employee::where('id', $data['employee_id'])->first();
 
                 foreach ($data['job_title'] as $key => $value) {
-
-                    if (!empty($request->file("attachment")[$key]) && isset($request->file("attachment")[$key])) {
-                        $fileNames = str_replace(" ", "", $employeeData->emp_uniq_id) . '_' . time() . '.' . $request->file('attachment')[$key]->getClientOriginalExtension();
+                    $fileNames = null;
+                    if (!empty($request->file("attachment")[$key])) {
+                        $fileNames = str_replace(" ", "", $data['job_title'][$key]) . '_' . time() . '.' . $request->file('attachment')[$key]->getClientOriginalExtension();
                         $request->file('attachment')[$key]->move($this->imagePath, $fileNames);
+                    }
+                    if($fileNames == null){
+                        $checkname = $this->parentModel::where('id' , $data['exp_id'][$key] )->first();
+                        if(!empty($checkname)){
+                            $fileNames = $checkname->attachment;
+                        }
+                        else{
+                            $fileNames = null;
+                        }
                     }
                     $exp_id = isset($data['exp_id'][$key]) && !empty($data['exp_id'][$key]) ? $data['exp_id'][$key]: null;
 
