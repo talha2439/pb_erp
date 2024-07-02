@@ -15,7 +15,7 @@
         <p>Dear {{ $user->name}},</p>
         <p>We received a request to reset your password for your HRM System account.</p>
         <p>If you made this request, please click on the following link to reset your password:</p>
-        <p><center><a href="{{ route('password.reset.view', ['email' => encrypt($user->email)]) }}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px; margin-top: 15px;">Reset Password</a></center></p>
+        <p><center><a href="{{ route('password.reset.view', ['email' => encrypt($user->email) , 'token' => $token]) }}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px; margin-top: 15px;">Reset Password</a></center></p>
         <p>If you didn't make this request, you can ignore this email. Your password will remain unchanged.</p>
 
         <p>If you encounter any issues or have any questions, feel free to reach out to our support team at [Support Email].</p>

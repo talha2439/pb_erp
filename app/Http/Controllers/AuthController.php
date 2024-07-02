@@ -7,6 +7,8 @@ use Auth;
 use App\Models\User;
 use Mail;
 use Hash;
+use Illuminate\Support\Facades\DB;
+
 class AuthController extends Controller
 {
     public function login()
@@ -32,10 +34,18 @@ class AuthController extends Controller
         try {
             $checkEmail  = User::where('email', $request->email)->first();
             $type        = $request->query('type');
-
-            if ($checkEmail) {
+            if ($checkEmail)  {
                 if ($type == 'forgetpassword') {
-                    $messageSent  =  Mail::send('email_templates.forgetpassword', ['user' => $checkEmail], function ($message)  use ($checkEmail) {
+                    $token = md5(time());
+                    $checkToken   = DB::table('password_reset_tokens')->where('email', $request->email)->count();
+                    if($checkToken > 0) {
+                        return response()->json(['exists' => true]);
+                    }
+                    $storePassword = DB::table('password_reset_tokens')->insert([
+                        'email' => $checkEmail->email,
+                        'token' => $token,
+                    ]);
+                    $messageSent  =  Mail::send('email_templates.forgetpassword', ['user' => $checkEmail , 'token' => $token], function ($message)  use ($checkEmail) {
                         $message->to($checkEmail->email, $checkEmail->name)->subject('Reset Password');
                         $message->from(env("MAIL_FROM_ADDRESS"), env('MAIL_FROM_NAME'));
                     });
@@ -74,14 +84,21 @@ class AuthController extends Controller
     {
         try {
             $data['email']  =  decrypt($request->query('email'));
+            $data['token']  =  $request->query('token');
             $checkEmail  = User::where(['email' => $data['email']])->first();
+            $checkToken  = DB::table('password_reset_tokens')->where(['token' => $data['token'] , 'email' => $data['email']])->first();
+            if($checkToken){
             if ($checkEmail) {
                 return view('Auth.password_reset', $data)->with('success', 'Verification successful .  You can now reset your password!');
             } else {
                 return redirect(route('login'))->with('error', 'Failed to verify your password!');
             }
+          }
+          else{
+            return redirect(route('auth.login'))->with('error', 'Invalid or expired token!');
+          }
         } catch (\Exception $e) {
-            return redirect(route('login'))->with('error', $e->getMessage());
+            return redirect(route('auth.login'))->with('error', $e->getMessage());
         }
     }
     public function password_reset(Request $request)
@@ -90,6 +107,7 @@ class AuthController extends Controller
             $userData = User::where('email', $request->email)->first();
             if ($userData) {
                 $userData->update(['password' => Hash::make($request->password) , 'password_txt' => $request->password]);
+                DB::table('password_reset_tokens')->where(['email' => $request->email , 'token' => $request->token])->delete();
                 return response()->json(['success' => true]);
             } else {
                 return response()->json(['error' => true]);

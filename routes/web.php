@@ -159,7 +159,6 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::get('alldata' ,[NotificationController::class , 'alldata'])->name('notifications.alldata');
         Route::get('mark/{id?}' ,[NotificationController::class , 'readed'])->name('notifications.marked');
         Route::get('marked/all' ,[NotificationController::class , 'markall'])->name('notifications.marked.all');
-        Route::get('destroy/all' ,[NotificationController::class , 'destroy'])->name('notifications.destroy');
         Route::get('delete/{id?}' ,[NotificationController::class , 'delete'])->name('notifications.delete');
     });
     // Generating PDF

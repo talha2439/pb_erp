@@ -37,24 +37,7 @@ $(document).ready(function() {
             }
         })
     })
-    $(document).on('click', '.clearAll' , function(e) {
-
-        e.preventDefault();
-
-        $.ajax({
-            url: removeAllNotifications,
-            type: 'GET',
-            success: function(response){
-                if(response.success){
-                    $(document).find('.notification-list').html("<li><center>No Notifications Available</center></li>");
-                    let badge = ` <i class="fe fe-bell"></i>`;
-                    $(document).find('.notificationbadge').html(badge);
-                    return false;
-                }
-
-            }
-        })
-    })
+  
 })
 
 function pushNotification(){

@@ -41,6 +41,7 @@
     <form  id="resetPasswordForm">
         @csrf
     <input type="hidden" name="email" value="{{ $email }}">
+    <input type="hidden" name="token" value="{{ $token }}">
 
     <div class="input-block mb-3">
     <label class="form-control-label">New Password</label>

@@ -154,7 +154,7 @@
                             </ul>
                         </div>
                         <div class="topnav-dropdown-footer">
-                            <a href="#" class="clearAll">Clear All</a>
+                            <a href="#" class="markall">Clear All</a>
                         </div>
                     </div>
                 </li>
@@ -266,7 +266,6 @@
     let markedURL = "{{ route('notifications.marked') }}";
     let markedallURL = "{{ route('notifications.marked.all') }}";
     let baseURL = "{{ asset('') }}";
-    let removeAllNotifications =" {{ route('notifications.destroy') }}";
     let auth = "{{ Auth::user()->role }}";
     $(document).ready(function() {
         $('.loader-container').hide();

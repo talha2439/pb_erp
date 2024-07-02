@@ -28,7 +28,7 @@ class NotificationController extends Controller
         if(isset($request->readed) && $request->readed != null){
             $data->where('is_readed' , (int) $request->readed);
         }
-      
+
         $result = $data->get();
         return DataTables::of($result)->addColumn('row_index' , function($item) use(&$index){
             $index ++ ;
@@ -80,20 +80,7 @@ class NotificationController extends Controller
              return response()->json(['error' => $e->getMessage()]);
        }
     }
-    public function destroy(){
-        try{
-        $delete = $this->parentModel::latest()->forceDelete();
-        if($delete){
-             return response()->json(['success' => true]);
-        }
-        else{
-             return response()->json(['error' => true]);
-        }
-       }
-       catch(\Exception $e){
-        return response()->json(['error' => $e->getMessage()]);
-        }
-    }
+    
     public function delete($id){
         try{
         $delete = $this->parentModel::where(['id'=>$id])->forceDelete();

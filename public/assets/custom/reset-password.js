@@ -47,6 +47,13 @@ $(document).ready(function () {
                         $(".reset-message").fadeIn();
                         $(submitBtn).prop('disabled', true);
                     }
+                    else if (res.exists) {
+                        e.preventDefault();
+                        toastr['error']("Failed to send email You already have requested for Password reset Check your mail!");
+                        $(submitBtn).text('Resend Email');
+                        $(submitBtn).prop('disabled', false);
+                        return false;
+                    }
                     else {
                         e.preventDefault();
                         toastr['error']("Failed to send email something went wrong!");
