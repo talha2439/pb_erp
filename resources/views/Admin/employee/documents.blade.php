@@ -109,7 +109,7 @@
             $(document).on('click', '.viewDocument', function(e) {
                 let image = $(this).data('image');
                 let ext = image.split('.');
-                if(ext[1] != 'pdf'){
+                if(!ext.includes('pdf')){
                 $(document).find('#documentFile').hide();
                 $(document).find('#documentImage').show();
                 $(document).find('#documentImage').attr('src', image);}

@@ -242,7 +242,7 @@ $(document).ready(function () {
     if (action == 'edit') {
 
         if (menusData.has_sub == 0) {
-            $(menu_title).val(menusData.menu_title);
+            $(menutitle).val(menusData.menu_title);
             $(name).val(menusData.name);
             $('input[name="route[]"]').val(menusData.route);
             getIcons(menusData.icon);
