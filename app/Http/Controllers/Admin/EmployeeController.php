@@ -210,19 +210,7 @@ class EmployeeController extends Controller
             return response()->json(['error' => $e->getMessage()]);
         }
     }
-    public function check_access($subMenuId, $status)
-    {
-        $checkAccess =  UserAccess::where(['sub_menu_id' => $subMenuId, $status => 1, 'user_id' => Auth::user()->id])->first();
-        $checkAdmin  = User::where(['id' => Auth::user()->id, 'role' => 1])->count();
-        if ($checkAdmin > 0) {
-            return true;
-        }
-        if ($checkAccess) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
     public function state($id)
     {
         try{
@@ -504,6 +492,19 @@ class EmployeeController extends Controller
             }
         } catch (\Exception $e) {
             return redirect(route($this->parentRoute . '.index'))->with(['error' => $e->getMessage()]);
+        }
+    }
+    public function check_access($subMenuId, $status)
+    {
+        $checkAccess =  UserAccess::where(['sub_menu_id' => $subMenuId, $status => 1, 'user_id' => Auth::user()->id])->first();
+        $checkAdmin  = User::where(['id' => Auth::user()->id, 'role' => 1])->count();
+        if ($checkAdmin > 0) {
+            return true;
+        }
+        if ($checkAccess) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

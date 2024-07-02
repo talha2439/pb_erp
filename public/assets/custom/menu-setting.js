@@ -139,6 +139,8 @@ $(document).ready(function () {
                     id = menusData.id;
                 }
                 e.preventDefault();
+                $('#submitBtn').prop('disabled',true);
+                $('#submitBtn').text('Please wait...');
                 $.ajax({
                     url: StoreMenuRoute + '/' + id,
                     type: 'POST',
@@ -147,18 +149,24 @@ $(document).ready(function () {
                         if (response.success) {
                             e.preventDefault();
                             action == "edit" ? toastr['success']("Menu has been successfully Update!") : toastr['success']("Menu has been successfully Created!");
+                            $('#submitBtn').text('Saved');
+
                             setTimeout(() => {
                                 location.href = menuIndexUrl;
                             }, 1500);
                         }
                         else {
                             e.preventDefault();
+                            $('#submitBtn').prop('disabled',false);
+                             $('#submitBtn').text('Save');
                             action == "edit" ? toastr['error']("Failed to update menu!") : toastr['error']("Failed to create menu!");
                             return false;
                         }
                     }
                     , error: function (jqXHR, textStatus, errorThrown) {
                         e.preventDefault();
+                        $('#submitBtn').prop('disabled',false);
+                        $('#submitBtn').text('Save');
                         toastr['error'](errorThrown);
                         return false;
                     }
