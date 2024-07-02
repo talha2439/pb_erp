@@ -6268,17 +6268,6 @@ table .badge {
     color: #3f4254
 }
 
-.dataTables_length label:before {
-    content: "Show";
-    margin-right: 5px;
-    font-size: 14px
-}
-
-.dataTables_length label:after {
-    content: "Entries";
-    margin-left: 5px;
-    font-size: 14px
-}
 
 .dataTables_scroll {
     margin-bottom: 24px

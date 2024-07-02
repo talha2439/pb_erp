@@ -154,10 +154,13 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::get('/delete/{id?}' , [LeaveController::class ,'delete'])->name('leave.application.delete');
     });
     Route::prefix('notifications')->group(function(){
+        Route::get('/',[NotificationController::class, 'index'])->name('notifications.index');
         Route::get('get_notifications' ,[NotificationController::class , 'notifications'])->name('notifications');
+        Route::get('alldata' ,[NotificationController::class , 'alldata'])->name('notifications.alldata');
         Route::get('mark/{id?}' ,[NotificationController::class , 'readed'])->name('notifications.marked');
         Route::get('marked/all' ,[NotificationController::class , 'markall'])->name('notifications.marked.all');
-        Route::get('delete/all' ,[NotificationController::class , 'destroy'])->name('notifications.destroy');
+        Route::get('destroy/all' ,[NotificationController::class , 'destroy'])->name('notifications.destroy');
+        Route::get('delete/{id?}' ,[NotificationController::class , 'delete'])->name('notifications.delete');
     });
     // Generating PDF
     Route::prefix('/pdf')->group(function(){

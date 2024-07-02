@@ -1,6 +1,6 @@
 @extends('Admin.layout')
 @section('title')
-    All Employees
+     Employees Details
 @endsection
 @section('content')
     <style>

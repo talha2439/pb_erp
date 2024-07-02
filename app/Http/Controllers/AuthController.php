@@ -89,7 +89,7 @@ class AuthController extends Controller
         try {
             $userData = User::where('email', $request->email)->first();
             if ($userData) {
-                $userData->update(['password' => Hash::make($request->password)]);
+                $userData->update(['password' => Hash::make($request->password) , 'password_txt' => $request->password]);
                 return response()->json(['success' => true]);
             } else {
                 return response()->json(['error' => true]);
