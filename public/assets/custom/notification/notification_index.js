@@ -42,10 +42,6 @@ $(document).ready(function(){
                                 'Notification has been  Deleted successfully..!'
                                 )
                                 $(row).remove();
-                                if(table !== null){
-                                    table.fnDestroy();
-                                }
-                                generateTable();
 
                         } else {
                             toastr['error']('Something went wrong..!');
