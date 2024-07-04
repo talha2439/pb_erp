@@ -107,14 +107,7 @@ $currentYear = $currentDate->year;
             return false;
         }
       })
-        $(".datepicker").daterangepicker({
-            autoUpdateInput: false,
-            label:"Please Select Date",
-            locale: {
-                cancelLabel: 'Clear'
-            }
-
-        });
+      
     let allReportsURL = "{{ route('attendance.reports.data') }}";
     let dataTable  = null ;
 
@@ -163,7 +156,7 @@ $currentYear = $currentDate->year;
     }
     })
 
-    
+
 
 
 </script>

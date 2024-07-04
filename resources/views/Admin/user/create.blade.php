@@ -32,25 +32,25 @@
     </div>
     <div class="col-md-6 menu_container">
         <div class="form-group">
-            <label for="name">User name (<small class="text-danger">Must be unique</small>)</label>
+            <label for="name">User name (<small class="text-danger"> * Must be unique</small>)</label>
             <input type="text" name="username" placeholder="Enter User name for user..!" class="form-control mt-3 mb-3">
         </div>
     </div>
     <div class="col-md-6 menu_container">
         <div class="form-group">
-            <label for="name">Full name (<small class="text-danger">Required</small>) </label>
+            <label for="name">Full name (<small class="text-danger">*</small>) </label>
             <input type="text" name="name" placeholder="Enter Full name for user..!" class="form-control mt-3 mb-3">
         </div>
     </div>
     <div class="col-md-6 menu_container">
         <div class="form-group">
-            <label for="name">Email address (<small class="text-danger">Required</small>)</label>
+            <label for="name">Email address (<small class="text-danger">*</small>)</label>
             <input type="text" name="email" placeholder="Enter Email for user..!" class="form-control mt-3 mb-3">
         </div>
     </div>
     <div class="col-md-6 menu_container mt-3">
         <div class="form-group ">
-            <label for="name">User Role (<small class="text-danger">Required</small>) | <small>( For Example: Admin , HR etc)</small></label>
+            <label for="name">User Role (<small class="text-danger">*</small>) | <small>( For Example: Admin , HR etc)</small></label>
             <select type="text" name="role" placeholder="Enter Email for user..!" class="form-select mt-3 mb-3 select2">
                 <option value="">Select User Role</option>
                 <option value="1">Admin</option>

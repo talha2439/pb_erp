@@ -28,7 +28,7 @@
 
                 <div class="col-md-12 mt-3">
                     <div class="form-group">
-                        <label for="name">Employee name <small class="text-danger">*</small></label>
+                        <label for="name">Employee name (<small class="text-danger">*</small>)</label>
                             <select name="employee_id" data-type="required" data-name="Employee" id="employee_id" class="form-control select2 mb-2">
                                 <option data-salary="" value="">-- Select Employee --</option>
                                 @foreach ($employees as $item )
@@ -40,21 +40,21 @@
 
                 <div class="col-md-6 mt-3 ">
                     <div class="form-group">
-                        <label for="name">Gross Salary <small class="text-danger">*</small></label>
+                        <label for="name">Gross Salary (<small class="text-danger">*</small>)</label>
                         <input type="text"  data-type="required" data-name="Gross Salary" readonly name="gross_salary" id="grossSalary" readonly placeholder="Gross Salary.."
                             class="form-control  mb-3">
                     </div>
                 </div>
                 <div class="col-md-6 mt-3 ">
                     <div class="form-group">
-                        <label for="name">Per Hour Amount <small class="text-danger">*</small></label>
+                        <label for="name">Per Hour Amount (<small class="text-danger">*</small>)</label>
                         <input type="text"  data-type="required" data-name="Amount per hour" readonly name="per_hour" id="perHour" placeholder="Per hour Amount.."
                             class="form-control  mb-3">
                     </div>
                 </div>
                 <div class="col-md-4 mt-3 ">
                     <div class="form-group">
-                        <label for="name">Absent Deduction<small class="text-danger">*</small></label>
+                        <label for="name">Absent Deduction (<small class="text-danger">*</small>)</label>
                         <input type="number" name="absent_deduction"  data-type="required" data-name="Absent Deduction" placeholder="Absent Deduction Amount.."
                             class="form-control  mb-3">
                     </div>
@@ -62,14 +62,14 @@
 
                 <div class="col-md-4 mt-3 ">
                     <div class="form-group">
-                        <label for="name">Per Hour Deduction <small class="text-danger">*</small></label>
+                        <label for="name">Per Hour Deduction (<small class="text-danger">*</small>)</label>
                         <input type="number" name="per_hour_deduction"  data-type="required" data-name="Amount Deduction per hour" placeholder="Deduction Amount.."
                             class="form-control  mb-3">
                     </div>
                 </div>
                 <div class="col-md-4 mt-3 ">
                     <div class="form-group">
-                        <label for="name">Total allowance <small class="text-danger">*</small></label>
+                        <label for="name">Total allowance (<small class="text-danger">*</small>)</label>
                         <input type="number" name="total_allowance"  data-type="required" data-name="Total Allowance" placeholder="Total Allowance.."
                             class="form-control  mb-3">
                     </div>

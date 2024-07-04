@@ -12,7 +12,7 @@
                     </div>
                     <div class="col-md-4 mt-2 mb-3">
                         <div class="form-group">
-                            <label for="">Company Name / Job Title <span class="text-danger">( Required
+                            <label for="">Company Name / Job Title <span class="text-danger">( *
                                     )</span></label>
                             <input type="text" class="form-control" name="job_title[]"
                                 placeholder="Company Name / Title">
@@ -21,13 +21,13 @@
 
                     <div class="col-md-4 mt-2 mb-3">
                         <div class="form-group">
-                            <label for="">Start Date <span class="text-danger">( Required )</span></label>
+                            <label for="">Start Date <span class="text-danger">( * )</span></label>
                             <input type="date" class="form-control" name="exp_start_date[]" placeholder="Start Date">
                         </div>
                     </div>
                     <div class="col-md-4 mt-2 mb-3">
                         <div class="form-group">
-                            <label for="">End Date <span class="text-danger">( Required )</span></label>
+                            <label for="">End Date <span class="text-danger">( * )</span></label>
                             <input type="date" class="form-control" name="exp_end_date[]" placeholder="End Date">
                         </div>
                     </div>

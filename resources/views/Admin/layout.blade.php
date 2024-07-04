@@ -278,6 +278,14 @@
             }
         });
         $('.select2').select2({});
+        $(".datepicker").daterangepicker({
+            autoUpdateInput: true,
+            label:"Please Select Date",
+            locale: {
+                cancelLabel: 'Clear'
+            }
+
+        });
     });
 
 </script>

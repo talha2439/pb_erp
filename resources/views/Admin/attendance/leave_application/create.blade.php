@@ -32,7 +32,7 @@
         @if(Auth::user()->role != 4)
         <div class="col-md-12 mb-3">
             <div class="form-group">
-                <label for="profile">Employee (<small class="text-danger"> Required </small>)</label>
+                <label for="profile">Employee (<small class="text-danger"> * </small>)</label>
                 <select type="text" data-type="required"  data-name ="Employee name " name="employee_id" placeholder="Enter Select employee!" class="form-control mt-3 mb-3 select2">
                   <option value="">-- Select Employee --</option>
                   @foreach($employees as $item)
@@ -50,13 +50,13 @@
     </div>
     <div class="col-md-6 to_date">
         <div class="form-group">
-            <label for="name">To (<small class="text-danger">Required</small>) </label>
+            <label for="name">To (<small class="text-danger">*</small>) </label>
             <input type="date" data-length='greater'  data-type="required"  data-name ="Application End Date " name="to_date" class="form-control  mb-3">
         </div>
     </div>
     <div class="col-md-6 menu_container">
         <div class="form-group">
-            <label for="name">Leave Type (<small class="text-danger"> Required </small>)</label>
+            <label for="name">Leave Type (<small class="text-danger"> * </small>)</label>
             <select type="text" data-type="required"  data-name ="Leave Type "name="leave_type" placeholder="Enter Select employee!" class="form-control mt-2 mb-3 select2">
                 <option value="">-- Select Leave Type --</option>
                 <option value="1">Annual leave</option>
@@ -72,7 +72,7 @@
     </div>
     <div class="col-md-12 menu_container">
         <div class="form-group">
-            <label for="name">Reason (<small class="text-danger">Required</small>)</label>
+            <label for="name">Reason (<small class="text-danger">*</small>)</label>
             <textarea type="text" data-type="required"  data-name ="Reason for Leave " name="reason" placeholder="Enter Reason for leave..!" rows="10" class="form-control mb-3"></textarea>
         </div>
     </div>

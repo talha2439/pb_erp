@@ -15,25 +15,25 @@
 
                 <div class="col-md-3 mt-2 mb-3">
                     <div class="form-group">
-                        <label for="">Institute Name <span class="text-danger">( Required )</span></label>
+                        <label for="">Institute Name <span class="text-danger">( * )</span></label>
                        <input type="text" class="form-control" name="institute[]" placeholder="Institute name">
                     </div>
                 </div>
                 <div class="col-md-3 mt-2 mb-3">
                     <div class="form-group">
-                        <label for="">Qualification <small class="text-danger" >( Required )</small></label>
+                        <label for="">Qualification <small class="text-danger" >( * )</small></label>
                         <input type="text" name="qualification[]" class="form-control" placeholder="Qualification">
                     </div>
                 </div>
                 <div class="col-md-3 mt-2 mb-3">
                     <div class="form-group">
-                        <label for="">Start Date <span class="text-danger">( Required )</span></label>
+                        <label for="">Start Date <span class="text-danger">( * )</span></label>
                        <input type="date" class="form-control" name="start_date[]" placeholder="Start Date">
                     </div>
                 </div>
                 <div class="col-md-3 mt-2 mb-3">
                     <div class="form-group">
-                        <label for="">End Date <span class="text-danger">( Required )</span></label>
+                        <label for="">End Date <span class="text-danger">( * )</span></label>
                        <input type="date" class="form-control" name="end_date[]" placeholder="End Date">
                     </div>
                 </div>
