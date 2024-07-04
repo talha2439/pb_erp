@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\{ SettingController , AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, EmployeeSalaryController, LeaveController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\EmployeePayrollController;
 use App\Http\Controllers\AuthController;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Route;
@@ -174,16 +175,11 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::post('store/{id?}' , [SettingController::class,'store'])->name('settings.store');
     });
     // Salary and Payroll
-    Route::prefix('salary/')->group(function(){
-        Route::get('/' , [EmployeeSalaryController::class,'index'])->name('salary.index');
-        Route::get('/trash' , [EmployeeSalaryController::class,'trash'])->name('salary.trash');
-        Route::get('create/{id?}' , [EmployeeSalaryController::class,'create'])->name('salary.create');
-        Route::post('store/{id?}' , [EmployeeSalaryController::class,'store'])->name('salary.store');
-        Route::get('/data' , [EmployeeSalaryController::class,'alldata'])->name('salary.data');
-        Route::get('/details/{id?}' , [EmployeeSalaryController::class,'details'])->name('salary.details');
-        Route::get('/delete/{id?}' , [EmployeeSalaryController::class,'delete'])->name('salary.delete');
-        Route::get('/destroy/{id?}' , [EmployeeSalaryController::class,'destroy'])->name('salary.destroy');
-        Route::get('/restore/{id?}' , [EmployeeSalaryController::class,'restore'])->name('salary.restore');
+    Route::prefix('payroll/')->group(function(){
+        Route::get('/' , [EmployeePayrollController::class,'index'])->name('payroll.index');
+        Route::get('create/{id?}' , [EmployeePayrollController::class,'create'])->name('payroll.create');
+        Route::post('store/{id?}' , [EmployeePayrollController::class,'store'])->name('payroll.store');
+        Route::get('/data' , [EmployeePayrollController::class,'alldata'])->name('payroll.data');
     });
 
 });

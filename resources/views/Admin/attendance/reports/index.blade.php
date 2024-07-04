@@ -107,7 +107,7 @@ $currentYear = $currentDate->year;
             return false;
         }
       })
-      
+
     let allReportsURL = "{{ route('attendance.reports.data') }}";
     let dataTable  = null ;
 
@@ -127,6 +127,14 @@ $currentYear = $currentDate->year;
         getAllReports($(department).val(), $(employee).val(), $(date).val(), $(month).val(), $(year).val());
     })
 
+    $(".datepicker").daterangepicker({
+            autoUpdateInput: true,
+            label:"Please Select Date",
+            locale: {
+                cancelLabel: 'Clear'
+            }
+
+        });
     function getAllReports(department=null, employee=null,daterange = null , month=null, year=null){
         dataTable = $('.datatables-basic').dataTable({
         serverSide : true,

@@ -278,16 +278,19 @@
             }
         });
         $('.select2').select2({});
-        $(".datepicker").daterangepicker({
-            autoUpdateInput: true,
-            label:"Please Select Date",
-            locale: {
-                cancelLabel: 'Clear'
-            }
 
-        });
     });
-
+    function validate(formId  ,e){
+        let inputs = $(document).find("#"+formId).find('.form-control[data-type="required"]');
+        $(inputs).each(function(){
+            if($(this).val() == "" || $(this).val() == null || $(this).val() == undefined ){
+                e.preventDefault(); //
+                toastr['error']($(this).attr('data-name')+"\n is required..!");
+                isValid = false; //
+                return false;
+            }
+        })
+    }
 </script>
 @stack('js')
 

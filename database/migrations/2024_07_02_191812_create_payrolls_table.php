@@ -13,15 +13,20 @@ return new class extends Migration
     {
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('salary_id');
-            $table->integer('total_leaves');
-            $table->integer('total_deduction');
-            $table->integer('total_off');
-            $table->integer('total_absents');
-            $table->integer('total_overtimes');
-            $table->integer('total_overtimes_hours');
-            $table->integer('total_hours_worked');
-            $table->integer('over_all_salary');
+            $table->bigInteger('ref_number')->default(0000);
+            $table->unsignedBigInteger('employee_id');
+            $table->integer('gross_salary');
+            $table->integer('loan_amount')->default(0);
+            $table->integer('bonus_amount')->default(0);
+            $table->integer('total_leaves')->default(0);
+            $table->integer('total_lates')->default(0);
+            $table->integer('total_early_outs')->default(0);
+            $table->integer('total_deduction')->default(0);
+            $table->integer('total_off')->default(0);
+            $table->integer('per_absents_deduction')->default(0);
+            $table->integer('total_absents')->default(0);
+            $table->integer('total_hours_worked')->default(0);
+            $table->integer('over_all_salary')->default(0);
             $table->string('created_by');
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();
