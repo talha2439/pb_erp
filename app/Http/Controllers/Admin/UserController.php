@@ -31,7 +31,7 @@ class UserController extends Controller
             return view($this->parentView.'.index', $data);
             }
             else{
-                abort(405);
+              abort(403);
             }
           }
           catch(\Exception $e){
@@ -51,7 +51,7 @@ class UserController extends Controller
             return view($this->parentView.'.create', $data);
             }
             else{
-                abort(405);
+              abort(403);
             }
            }
            catch(\Exception $e){
@@ -151,7 +151,7 @@ class UserController extends Controller
                 return redirect()->back()->with('error' , "Internal Server Error:". $e);
              } }
              else{
-                abort(405);
+                abort(403);
              }
 
         }

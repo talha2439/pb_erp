@@ -17,4 +17,7 @@ class Payroll extends Model
         parent::__construct($attributes);
         $this->fillable = Crud::columns($this->table);
     }
+    public function employees(){
+        return $this->hasOne(Employee::class,'id' , 'employee_id');
+    }
 }

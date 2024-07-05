@@ -79,13 +79,13 @@
         <div class="col-md-6 mb-2 to_date">
             <div class="form-group">
                 <label for="name">Working Hours (<small class="text-danger">*</small>) </label>
-                <input type="number" data-type="required" value="0" max="9"  data-name ="Work Hours " placeholder="Work Hours" name="working_hours" class="form-control  mb-3">
+                <input type="text" data-type="required" value="0" max="9"  data-name ="Work Hours " placeholder="Work Hours" name="working_hours" class="form-control  mb-3">
             </div>
         </div>
         <div class="col-md-6 mb-2 to_date">
             <div class="form-group">
                 <label for="name">Working Minutes (<small class="text-danger">*</small>) </label>
-                <input type="number" data-type="required" value="0"  data-name ="Work Minutes " placeholder="Work Minutes" name="working_minutes" class="form-control  mb-3">
+                <input type="text" data-type="required" value="0"  data-name ="Work Minutes " placeholder="Work Minutes" name="working_minutes" class="form-control  mb-3">
             </div>
         </div>
         <div class="col-md-12 mb-3 menu_container">

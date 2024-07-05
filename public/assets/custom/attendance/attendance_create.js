@@ -91,7 +91,7 @@ $("#attendanceForm").submit(function(e){
     let inputs = $(document).find("#attendanceForm").find('.form-control[data-type="required"]');
 
     $(inputs).each(function(){
-        if($(this).val() == "" || $(this).val() == null ){
+        if($(this).val() == "" || $(this).val() == null  ){
             e.preventDefault(); //
             toastr['error']($(this).attr('data-name')+"\n is required..!");
             isValid = false; //
@@ -117,11 +117,17 @@ if(action == 'edit'){
     $("select[name='attendance_status']").trigger("change");
     $("select[name='working_status']").val(attendance.working_status);
     $("select[name='working_status']").trigger("change");
-    $('input[name="working_hours"]').val(attendance.working_hours.split('hours')[0] ?? 0);
-    let workingMins = attendance.working_hours.split('hours')[1].split('minutes')[0].split(' ')[1];
+    let workingMins = attendance.working_hours.split('minutes')[0].split(" ")[0];
+    if(attendance.working_hours.includes('hours')){
+        $('input[name="working_hours"]').val((attendance.working_hours.split('hours')[0] || 0)) ;
+        workingMins = attendance.working_hours.split('hours')[1].split('minutes')[0].split(' ')[1];
+    }
+    $('input[name="working_hours"]').val(0) ;
     $('input[name="working_minutes"]').val(workingMins);
-    $(document).find('input[name="extra_hours"]').val(attendance.extra_hours.split('hours')[0] ?? 0);
-    $(document).find('input[name="extra_minutes"]').val(attendance.extra_hours.split('hours')[1].split('minutes')[0].split(' ')[1] ?? 0);
+    if(attendance.extra_hours){
+    $(document).find('input[name="extra_hours"]').val(attendance.extra_hours.split('hours')[0] || 0);
+    $(document).find('input[name="extra_minutes"]').val(attendance.extra_hours.split('hours')[1].split('minutes')[0].split(' ')[1] || 0);
+    }
 }
 
 function CalculateTime(checkIn, checkOut) {
@@ -157,7 +163,7 @@ function CalculateTime(checkIn, checkOut) {
             $(document).find('input[name="extra_minutes"]').val(minutes > 0 ? minutes : 0);
         } else {
             $(document).find('input[name="working_minutes"]').val(minutes > 0 ? minutes : 0);
-            $(document).find('input[name="working_hours"]').val(hours);
+            $(document).find('input[name="working_hours"]').val(hours ?? 0);
             $(document).find('select[name="working_status"]').val('on-time').trigger('change');
             $(document).find('input[name="extra_hours"]').val(0);
             $(document).find('input[name="extra_minutes"]').val(0);

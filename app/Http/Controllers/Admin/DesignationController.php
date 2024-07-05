@@ -29,7 +29,7 @@ class DesignationController extends Controller
 
                 return view($this->parentView . '.index', $data);
             } else {
-                abort(405);
+              abort(403);
             }
         }
         catch(\Exception $e) {
@@ -45,7 +45,7 @@ class DesignationController extends Controller
             $data['designation'] = $this->childModel::with('departments')->onlyTrashed()->get();
             return view($this->parentView . '.trash', $data);
         } else {
-            abort(405);
+          abort(403);
         }
         }
         catch(\Exception $e){
@@ -66,7 +66,7 @@ class DesignationController extends Controller
                 $data['department']    = $this->parentModel::all();
                 return view($this->parentView . '.create', $data);
             } else {
-                abort(405);
+              abort(403);
             }
         }
         catch(\Exception $e){
@@ -90,7 +90,7 @@ class DesignationController extends Controller
                     return redirect(route($this->parentRoute . '.index'))->with('error', 'Failed to save Designation information');
                 }
             } else {
-                abort(405);
+              abort(403);
             }
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());

@@ -29,7 +29,7 @@ class ShiftController extends Controller
 
                 return view($this->parentView . '.index', $data);
             } else {
-                abort(405);
+              abort(403);
             }
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
@@ -44,7 +44,7 @@ class ShiftController extends Controller
                 $data['shift'] = $this->childModel::with('departments')->onlyTrashed()->get();
                 return view($this->parentView . '.trash', $data);
             } else {
-                abort(405);
+              abort(403);
             }
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
@@ -64,7 +64,7 @@ class ShiftController extends Controller
             $data['department']    = $this->parentModel::all();
             return view($this->parentView . '.create', $data);
         } else {
-            abort(405);
+          abort(403);
         }
        }
        catch(\Exception $e) {
@@ -95,7 +95,7 @@ class ShiftController extends Controller
                     return redirect(route($this->parentRoute . '.index'))->with('error', 'Failed to save Shift and Timing information');
                 }
             } else {
-                abort(405);
+              abort(403);
             }
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());

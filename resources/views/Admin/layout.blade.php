@@ -246,7 +246,6 @@
     <script src="{{ asset('assets/js/pusher.js') }}"></script>
     <script src="{{ asset('assets/custom/badgetoastr.js') }}"></script>
     <script src="{{ asset('assets/custom/notification/notification.js') }}"></script>
-    <script src="{{ asset('assets/js/dataTables.bootstrap5.min.js')}}"></script>
     <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
 </body>
 @if (Session::has('success'))

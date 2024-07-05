@@ -17555,21 +17555,35 @@ body.filter-opened {
     display: flex;
     border-radius: 6px 0 0 6px
 }
+.forgot-link{
+    white-space: nowrap;
+    position: relative;
+    right: 10px;
+}
 
 .login-wrapper .loginbox .login-right {
     align-items: center;
     display: flex;
     justify-content: center;
     padding: 2rem;
-    width: 450px
+    width:450px;
 }
 
 @media(max-width:320px) {
     .login-wrapper .loginbox .login-right {
         width: 100%
     }
-}
 
+}
+@media(max-width:500px){
+    .login-wrapper .loginbox .login-right {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        padding: 2rem;
+        width:auto;
+    }
+}
 .login-wrapper .loginbox .login-right .login-right-wrap {
     max-width: 100%;
     flex: 0 0 100%

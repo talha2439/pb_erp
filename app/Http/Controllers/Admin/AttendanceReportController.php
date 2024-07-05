@@ -29,7 +29,7 @@ class AttendanceReportController extends Controller
                 $data['departments'] = Department::withoutTrashed()->get();
                 return view($this->parentView . '.index', $data);
             } else {
-                abort(405);
+              abort(403);
             }
         }
         catch(\Exception $e){

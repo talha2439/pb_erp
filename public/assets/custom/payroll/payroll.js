@@ -19,5 +19,17 @@ $(document).ready(function(){
         }
 
     });
-
+    if(action  == 'edit'){
+        $('#employee_id').val(payrollData.employee_id);
+        $('#employee_id').trigger('change');
+        $("#grossSalary").val(payrollData.gross_salary);
+        $("#loan_amount").val(payrollData.loan_amount);
+        $("#bonus_amount").val(payrollData.bonus_amount);
+        $("#absent_deduction").val(payrollData.per_absents_deduction);
+        $("#total_absents").val(payrollData.total_absents);
+        $("#total_leaves").val(payrollData.total_leaves);
+        $("#total_lates").val(payrollData.total_lates);
+        $("#total_off").val(payrollData.total_off);
+        $("#total_early_outs").val(payrollData.total_early_outs);
+    }
 });

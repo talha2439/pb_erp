@@ -46,7 +46,7 @@ class EmployeeController extends Controller
                 $data['shifts'] = Shift::pluck('name' , 'id');
                 return view($this->parentView . '.index', $data);
             } else {
-                abort(405);
+              abort(403);
             }
         }
         catch(\Exception $e){
@@ -72,7 +72,7 @@ class EmployeeController extends Controller
                     return redirect(route($this->parentRoute.'.index'))->with('error', $e->getMessage());
                 }
             } else {
-                abort(405);
+              abort(403);
             }
         }
         catch(\Exception $e) {
@@ -91,7 +91,7 @@ class EmployeeController extends Controller
                 $data['shifts'] = Shift::pluck('name' , 'id');
                 return view($this->parentView . '.trash', $data);
             } else {
-                abort(405);
+              abort(403);
             }
         }
         catch(\Exception $e){
@@ -119,7 +119,7 @@ class EmployeeController extends Controller
             $data['department'] = Department::all();
             return view($this->parentView . '.create', $data);
         } else {
-            abort(405);
+          abort(403);
         }
         }
         catch(\Exception $e){

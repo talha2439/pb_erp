@@ -6,7 +6,7 @@
         $parentButton = 'Save';
     } else {
         $title = 'Edit';
-        $parentRoute = route('payroll.store', $salary->id);
+        $parentRoute = route('payroll.store', $payroll->id);
         $parentButton = 'Update';
     }
 @endphp
@@ -69,35 +69,35 @@
                 <div class="col-md-4 mt-3 ">
                     <div class="form-group">
                         <label for="name">Total Absents (<small class="text-danger">*</small>)</label>
-                        <input type="text"  value="0"   data-type="required" data-name="Total Absents "  name="total_absents" id="total_leaves"  placeholder="Total Absents.."
+                        <input type="text"  value="0"    name="total_absents" id="total_absents"  placeholder="Total Absents.."
                             class="form-control  mb-3">
                     </div>
                 </div>
                 <div class="col-md-4 mt-3 ">
                     <div class="form-group">
                         <label for="name">Total Leaves (<small class="text-danger">*</small>)</label>
-                        <input type="text"  value="0"   data-type="required" data-name="Total Leaves "  name="total_leaves" id="total_leaves"  placeholder="Total leaves.."
+                        <input type="text"  value="0"     name="total_leaves" id="total_leaves"  placeholder="Total leaves.."
                             class="form-control  mb-3">
                     </div>
                 </div>
                 <div class="col-md-4 mt-3 ">
                     <div class="form-group">
                         <label for="name">Total Off (<small class="text-danger">*</small>) <small>Holidays or Weekdays etc.</small></label>
-                        <input type="text"  value="0"  data-type="required" data-name="Total Leaves "  name="total_off" id="total_off"  placeholder="Total Off.."
+                        <input type="text"  value="0"   name="total_off" id="total_off"  placeholder="Total Off.."
                             class="form-control  mb-3">
                     </div>
                 </div>
                 <div class="col-md-4 mt-3 ">
                     <div class="form-group">
                         <label for="name">Total Lates (<small class="text-danger">*</small>)</label>
-                        <input type="text"  value="0"  data-type="required" data-name="Total Lates "  name="total_lates" id="total_lates"  placeholder="Total Lates.."
+                        <input type="text"  value="0"    name="total_lates" id="total_lates"  placeholder="Total Lates.."
                             class="form-control  mb-3">
                     </div>
                 </div>
                 <div class="col-md-4 mt-3 ">
                     <div class="form-group">
                         <label for="name">Total Early Outs (<small class="text-danger">*</small>)</label>
-                        <input type="text"  value="0"  data-type="required" data-name="Total Early Outs "  name="total_early_outs" id="total_early_outs"  placeholder="Total Early Outs.."
+                        <input type="text"  value="0"   name="total_early_outs" id="total_early_outs"  placeholder="Total Early Outs.."
                             class="form-control  mb-3">
                     </div>
                 </div>
@@ -122,7 +122,7 @@
     <script>
 
         let action = "{{ $action }}";
-        let salaryData = <?php echo isset($salary) && $salary ? json_encode($salary) : 0; ?>;
+        let payrollData = <?php echo isset($payroll) && $payroll ? json_encode($payroll) : 0; ?>;
 
     </script>
 @endpush

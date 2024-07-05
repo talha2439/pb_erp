@@ -35,7 +35,7 @@ class LeaveController extends Controller
             $data['employees']   = $this->childModel::withoutTrashed()->get();
             return view($this->parentView . '.index' , $data);
         } else {
-            abort(405);
+          abort(403);
         }
         }
         catch(\Exception $e) {
@@ -57,7 +57,7 @@ class LeaveController extends Controller
             $data['employees']    = $this->childModel::all();
             return view($this->parentView . '.create', $data);
         } else {
-            abort(405);
+          abort(403);
         }
       }
       catch(\Exception $e){
