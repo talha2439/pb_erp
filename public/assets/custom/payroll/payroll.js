@@ -10,6 +10,10 @@ $(document).ready(function(){
         $("#grossSalary").val(selectedSalary);
         $("#absent_deduction").val(perHour);
     });
+    $(document).on('input' ,'#total_lates,#total_early_outs' , function(e){
+        e.preventDefault();
+        calculateAbsents(parseInt($('#total_lates').val()) ,parseInt($('#total_early_outs').val()));
+    })
 
     $("#payrollForm").submit(function(e){
         isValid = true;
@@ -32,4 +36,15 @@ $(document).ready(function(){
         $("#total_off").val(payrollData.total_off);
         $("#total_early_outs").val(payrollData.total_early_outs);
     }
+
+    function calculateAbsents(totalLates, totalEarlyOuts) {
+        let absentsInput = $('#total_absents');
+        let currentAbsents = parseInt(absentsInput.val()) || 0;
+        let lateAbsentsCount = Math.floor(totalLates / 2);
+        let earlyAbsentsCount = Math.floor(totalEarlyOuts / 2);
+        let maxAbsents = (lateAbsentsCount + earlyAbsentsCount);
+        let totalAbsents = currentAbsents + maxAbsents;
+        absentsInput.val(totalAbsents);
+    }
+
 });
