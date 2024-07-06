@@ -22,8 +22,10 @@ class AttendanceController extends Controller
         $data['attendance'] = $this->parentModel::where('id', $id)->with('users' , function($query){
             $query->with('employees');
         })->first();
+        if(!empty($data['attendance'])){
         $data['attendance']->check_in =  Carbon::parse($data['attendance']->check_in)->format('h:m:s');
         $data['attendance']->check_out =  Carbon::parse($data['attendance']->check_out)->format('h:m:s');
+        }
         $data['employees']   = $this->childModel::latest()->get();
         $data['action'] = !empty($data['attendance']) ? 'edit' : 'create';
         return view($this->parentView.'.create', $data);
