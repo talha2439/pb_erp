@@ -16,7 +16,7 @@
 {{ $title }} Leave Application
 @endsection
 
-<div class="row my-4">
+
 
     <div class="card-header mb-2">
         <div class="d-flex justify-content-between g-2">
@@ -87,7 +87,7 @@
 
         </form>
     </div>
-</div>
+
 @push('js')
 <script src="{{ asset('assets/custom/attendance/leave_application.js') }}"></script>
 <script>

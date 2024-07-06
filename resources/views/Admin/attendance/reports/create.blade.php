@@ -16,7 +16,7 @@
 {{ $title }} Attendance
 @endsection
 
-<div class="row my-4">
+
 
     <div class="card-header mb-2">
         <div class="d-flex justify-content-between g-2">
@@ -130,7 +130,7 @@
 
         </form>
     </div>
-</div>
+
 @push('js')
 <script src="{{ asset('assets/custom/attendance/attendance_create.js') }}"></script>
 <script>

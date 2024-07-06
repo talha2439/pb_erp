@@ -17560,7 +17560,14 @@ body.filter-opened {
     position: relative;
     right: 10px;
 }
+.btn-group, .btn-group-vertical {
 
+    display: block!important;
+}
+.btn-group .btn{
+    margin-bottom:2px!important ;
+    margin-top:5px!important ;
+}
 .login-wrapper .loginbox .login-right {
     align-items: center;
     display: flex;

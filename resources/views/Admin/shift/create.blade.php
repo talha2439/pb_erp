@@ -15,7 +15,6 @@
     {{ $title }} Shift
 @endsection
 
-<div class="row my-4">
 
     <div class="card-header mb-2">
         <h1>{{ $title }} Shift</h1>
@@ -104,9 +103,9 @@
 
         </form>
     </div>
-</div>
+
 @push('js')
-   
+
     <script src="{{ asset('assets/custom/shift.js') }}"></script>
     <script>
         let action = "{{ $action }}";

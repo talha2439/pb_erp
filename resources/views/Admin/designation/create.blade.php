@@ -15,7 +15,7 @@
     {{ $title }} Designation
 @endsection
 
-<div class="row my-4">
+
 
     <div class="card-header mb-2">
         <h1>{{ $title }} Designation</h1>
@@ -58,7 +58,7 @@
 
         </form>
     </div>
-</div>
+
 @push('js')
 
     <script src="{{ asset('assets/custom/designation.js') }}"></script>

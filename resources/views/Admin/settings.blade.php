@@ -7,7 +7,7 @@ Panel Setting {{ ucfirst($action) }}
     $parentButton = $action == 'edit'? 'Update' : 'Save';
 @endphp
 @section('content')
-    <div class="row my-4">
+
         <div class="card-header mb-2">
             <h1>{{ ucfirst($action) }} Settings</h1>
         </div>
@@ -82,7 +82,6 @@ Panel Setting {{ ucfirst($action) }}
         </div>
             </form>
         </div>
-    </div>
     @push('js')
     <script src="{{ asset('assets/custom/setting.js') }}"></script>
     @endpush

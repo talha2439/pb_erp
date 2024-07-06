@@ -39,7 +39,7 @@
 
     }
 </style>
-<div class="row my-4">
+
 
     <div class="card-header mb-2">
         <h1>{{ $title }} Employee</h1>
@@ -64,13 +64,13 @@
 
 
     </div>
-</div>
+
 
 
 
 
 @push('js')
-   
+
     <script src="{{ asset('assets/plugins/masking/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('assets/custom/employee/employee-step1.js') }}"></script>
     <script src="{{ asset('assets/custom/employee/employee-step2.js') }}"></script>

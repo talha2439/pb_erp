@@ -15,7 +15,7 @@
     {{ $title }} Department
 @endsection
 
-<div class="row my-4">
+
 
     <div class="card-header mb-2">
         <h1>{{ $title }} Department</h1>
@@ -46,7 +46,7 @@
 
         </form>
     </div>
-</div>
+
 @push('js')
     <script src="{{ asset('assets/custom/department.js') }}"></script>
     <script>

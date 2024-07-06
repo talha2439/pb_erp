@@ -16,7 +16,6 @@
 {{ $title }} Users
 @endsection
 
-<div class="row my-4">
 
     <div class="card-header mb-2"><h1>{{ $title }} Users</h1></div>
     <div class="card p-3">
@@ -48,7 +47,7 @@
             <input type="text" name="email" placeholder="Enter Email for user..!" class="form-control mt-3 mb-3">
         </div>
     </div>
-    <div class="col-md-6 menu_container mt-3">
+    <div class="col-md-6 menu_container mt-3 mb-3">
         <div class="form-group ">
             <label for="name">User Role (<small class="text-danger">*</small>) | <small>( For Example: Admin , HR etc)</small></label>
             <select type="text" name="role" placeholder="Enter Email for user..!" class="form-select mt-3 mb-3 select2">
@@ -79,7 +78,7 @@
 
         </form>
     </div>
-</div>
+
 @push('js')
 <script src="{{ asset('assets/custom/users.js') }}"></script>
 <script>

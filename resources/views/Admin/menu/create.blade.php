@@ -58,8 +58,6 @@
 
 </style>
 
-<!-- Collapsible Section -->
-<div class="row my-4">
 
     <div class="card-header">
         <h1>{{ $title }} Menus</h1>
@@ -121,7 +119,6 @@
 
         </form>
     </div>
-</div>
 
 
 
