@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{ SettingController , AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, EmployeeSalaryController, LeaveController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{ SettingController , AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, EmployeeSalaryController, LeaveController, LoanTypeController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
 use App\Http\Controllers\Admin\EmployeePayrollController;
 use App\Http\Controllers\AuthController;
 use App\Models\Attendance;
@@ -181,5 +181,15 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::post('store/{id?}' , [EmployeePayrollController::class,'store'])->name('payroll.store');
         Route::get('/data' , [EmployeePayrollController::class,'alldata'])->name('payroll.data');
     });
-
+    // Loan Managment
+    //== Loan Types ==//
+    Route::prefix('loan_types/')->group(function(){
+        Route::get('/' , [LoanTypeController::class ,'index'])->name('loan_type.index');
+        Route::get('/trash' , [LoanTypeController::class , 'trash'])->name('loan_type.trash');
+        Route::get('/create/{id?}' , [LoanTypeController::class ,'create'])->name('loan_type.create');
+        Route::post('/store/{id?}' , [LoanTypeController::class ,'store'])->name('loan_type.store');
+        Route::get('/delete/{id?}' , [LoanTypeController::class , 'delete'])->name('loan_type.delete');
+        Route::get('/destroy/{id?}' , [LoanTypeController::class , 'destroy'])->name('loan_type.destroy');
+        Route::get('/restore/{id?}' , [LoanTypeController::class , 'restore'])->name('loan_type.restore');
+    });
 });
