@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
     $(document).on('change' , '#employee_id' , function(e){
         var currentDate = new Date();
         var currentMonth = currentDate.getMonth() + 1;
@@ -10,10 +11,11 @@ $(document).ready(function(){
         $("#grossSalary").val(selectedSalary);
         $("#absent_deduction").val(perHour);
     });
-    $(document).on('input' ,'#total_lates,#total_early_outs' , function(e){
-        e.preventDefault();
-        calculateAbsents(parseInt($('#total_lates').val()) ,parseInt($('#total_early_outs').val()));
-    })
+
+    $(document).on('input' ,'#total_absents,#total_leaves,#total_lates,#total_early_outs', function(e){
+         validateDate(e);
+
+    });
 
     $("#payrollForm").submit(function(e){
         isValid = true;
@@ -36,15 +38,53 @@ $(document).ready(function(){
         $("#total_off").val(payrollData.total_off);
         $("#total_early_outs").val(payrollData.total_early_outs);
     }
+    validateDate();
+    function validateDate(e) {
+        let date = new Date();
+        let currentYear = date.getFullYear();
+        let currentMonth = date.getMonth(); // Get current month (0-indexed)
 
-    function calculateAbsents(totalLates, totalEarlyOuts) {
-        let absentsInput = $('#total_absents');
-        let currentAbsents = parseInt(absentsInput.val()) || 0;
-        let lateAbsentsCount = Math.floor(totalLates / 2);
-        let earlyAbsentsCount = Math.floor(totalEarlyOuts / 2);
-        let maxAbsents = (lateAbsentsCount + earlyAbsentsCount);
-        let totalAbsents = currentAbsents + maxAbsents;
-        absentsInput.val(totalAbsents);
+        // Adjust to previous month
+        if (currentMonth === 0) {
+            currentMonth = 11; // December of previous year
+            currentYear--;    // Adjust year accordingly
+        } else {
+            currentMonth--; // Previous month
+        }
+
+        let numDays = new Date(currentYear, currentMonth + 1, 0).getDate(); // Number of days in previous month
+        let sundays = 0;
+
+        for (let day = 1; day <= numDays; day++) {
+            let previousMonthDate = new Date(currentYear, currentMonth, day);
+            let dayOfWeek = previousMonthDate.getDay();
+
+            if (dayOfWeek === 0) { // Sunday is 0, Saturday is 6
+                sundays++;
+
+            }
+        }
+        $("#total_off").val(sundays);
+        // Removing
+        numDays = (numDays  -  sundays);
+        numDays = (numDays - (parseInt($('#total_leaves').val()) || 0)) ;
+        numDays = (numDays - (parseInt($("#total_lates").val()) || 0));
+        numDays = (numDays - (parseInt($("#total_early_outs").val()) || 0));
+        numDays = ( numDays - (parseInt( $('#total_absents').val() || 0) ));
+        if(numDays < 0){
+            e.preventDefault();
+            $('#total_lates').val(0)
+            $('#total_early_outs').val(0)
+            $('#total_leaves').val(0)
+            $('#total_absents').val(0)
+            toastr['error']("Total Absents , Leaves , Lates or early out should be equal or less then working days!");
+            return false;
+        }
+        return true; // Return true if validation passes
     }
+
+
+
+
 
 });

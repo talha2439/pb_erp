@@ -221,7 +221,7 @@
 
         <div class="page-wrapper">
             <div class="content container-fluid">
-                <div class="row">
+                <div class="row m-2">
                     @yield('content')
                 </div>
             </div>
