@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('loan_type_id');
             $table->decimal('requested_amount', 10, 2);
             $table->decimal('approved_amount', 10, 2)->default(0);
+            $table->decimal('paid_amount', 10, 2)->default(0);
+            $table->decimal('remaining_amount', 10, 2)->default(0);
             $table->unsignedBigInteger('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->unsignedBigInteger('rejected_by')->nullable();

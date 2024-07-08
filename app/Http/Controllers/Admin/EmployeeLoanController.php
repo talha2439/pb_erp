@@ -22,6 +22,21 @@ class EmployeeLoanController extends Controller
         $data['loans'] = $this->childModel::latest()->with(['employees','loan_types'])->get();
         return view($this->parentView.'.index' , $data);
     }
+    public function details($id = null){
+        try{
+            $id = decrypt($id);
+            $data['loanDetails'] = $this->childModel::where('id' , $id)->first();
+            if( $data['loanDetails']){
+                return view($this->parentView.'.details', $data);
+            }
+            else{
+                return redirect()->back()->with('error' , 'No Data Found');
+            }
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
     public function create($id = null){
         $data['employees'] = $this->parentModel::latest()->get()->map(function($query){
             return [
@@ -30,8 +45,8 @@ class EmployeeLoanController extends Controller
             ];
         })->pluck('name', 'id');
         $data['loan_types'] = $this->subChildModel::latest()->pluck('name', 'id');
-        $data['loan']       = $this->childModel::where('id' , $id)->first();
-        $data['action']     =  !empty($data['loan']) ? 'edit':'create';
+        $data['loans']       = $this->childModel::where('id' , $id)->first();
+        $data['action']     =  'create';
         return view($this->parentView.'.create', $data);
 
     }
@@ -70,6 +85,22 @@ class EmployeeLoanController extends Controller
         }
         catch(\Exception $e){
             return redirect()->back()->with('error' , $e->getMessage());
+        }
+    }
+
+    public function status(){}
+    public function delete($id = null){
+        try{
+            $delete = $this->childModel::where('id', $id)->delete();
+            if($delete){
+                return response()->json(['success' => true]);
+            }
+            else{
+                return response()->json(['error' => true]);
+            }
+        }
+        catch(\Exception $e){
+            return response()->json(['error' => $e->getMessage()]);
         }
     }
 }

@@ -195,6 +195,7 @@ Route::prefix('/')->middleware('auth')->group(function(){
     //== Loans ==//
     Route::prefix('loans/')->group(function(){
         Route::get('/' , [EmployeeLoanController::class ,'index'])->name('employee_loans.index');
+        Route::get('/details/{id?}' , [EmployeeLoanController::class ,'details'])->name('employee_loans.details');
         Route::get('/trash' , [EmployeeLoanController::class , 'trash'])->name('employee_loans.trash');
         Route::get('/create/{id?}' , [EmployeeLoanController::class ,'create'])->name('employee_loans.create');
         Route::post('/store/{id?}' , [EmployeeLoanController::class ,'store'])->name('employee_loans.store');

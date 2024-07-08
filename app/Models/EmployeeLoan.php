@@ -21,4 +21,11 @@ class EmployeeLoan extends Model
     public function loan_types(){
         return $this->belongsTo(LoanType::class , 'loan_type_id');
     }
+    public function approved(){
+        return $this->belongsTo(User::class , 'approved_by');
+    }
+    public function rejected(){
+        return $this->belongsTo(User::class , 'rejected_by');
+
+    }
 }
