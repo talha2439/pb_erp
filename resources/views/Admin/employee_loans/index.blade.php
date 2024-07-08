@@ -87,8 +87,10 @@ Employee Loan List
                                         class="fe fe-eye"></i></a> |
                                 <a class="btn btn-primary text-white " href="#"> <i
                                         class="fe fe-printer"></i></a> |
-                                        <a class="btn btn-success text-white" href="{{ route('employee_loans.create', $item->id) }}"> <i
-                                            class="fe fe-edit"></i></a> |
+                                        <a class="btn btn-success statusChange text-white"data-bs-toggle="modal"
+                                        data-bs-target="#loanStatusModal"
+                                        data-id="{{ $item->id }}" > <i
+                                            class="fe fe-edit" ></i></a> |
                                             <a class="btn btn-danger text-white deleteLoan" data-id="{{ $item->id }}"> <i
                                                     class="fe fe-trash"></i></a>
                             </td>
@@ -99,50 +101,11 @@ Employee Loan List
         </div>
 
     </div>
+    @include('Admin.employee_loans.partial.popup')
     @push('js')
-        <link rel="stylesheet" href="{{ asset('assets/plugins/datatables/datatables.min.css') }}">
-        <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/custom/loan/loan_index.js') }}"></script>
         <script>
-            $('.datatables-basic').dataTable({});
-
             let deleteUrl = "{{ route('employee_loans.delete') }}";
-            $(document).on('click', '.deleteLoan', function(e) {
-                let id = $(this).data('id');
-                let row = $(this).closest('tr');
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "You sure you want to remove it ? ",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#6C05A8',
-                    cancelButtonColor: '#d33',
-                    cancelButtonText: 'No',
-                    confirmButtonText: 'Yes'
-                }).then((res) => {
-                    if (res.isConfirmed) {
-                        $.ajax({
-                        url: deleteUrl + "/" + id,
-                        type: 'Get',
-                        success: function(res) {
-                            if (res.unauthorized) {
-                                toastr['error']('You are not authorized to delete Loan information..!');
-                                return false;
-                            }
-
-                            else  if (res.success) {
-                                    toastr['success']('Loan Information Deleted successfully..!')
-                                    row.remove();
-                                } else {
-                                    toastr['error']('Something went wrong..!');
-                                }
-                        }
-                    })
-                        }
-                     });
-
-            });
-
-
         </script>
     @endpush
 @endsection
