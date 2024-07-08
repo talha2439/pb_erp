@@ -41,7 +41,7 @@
                 <div class="col-md-6 mt-3">
                     <div class="form-group">
                         <label for="name">Shift name <small class="text-danger">*</small></label>
-                        <input type="text" name="name" placeholder="Enter designation name.."
+                        <input type="text" name="name" placeholder="Enter shift name.."
                             class="form-control  mb-3">
                     </div>
                 </div>
