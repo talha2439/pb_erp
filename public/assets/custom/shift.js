@@ -38,7 +38,7 @@ $(document).ready(function () {
 
     // Validations
     $(shiftform).submit(function (e) {
-
+       
         if (department.val() == "") {
             e.preventDefault();
             toastr['error']("Department is required");
@@ -64,9 +64,8 @@ $(document).ready(function () {
             toastr['error']("End time cannot be equal to start time");
             return false;
         }
-        let selectedDays = days.filter(':checked').length;
-
-        if (selectedDays === 0) {
+        let selectedDays = $('.btn-check:checked').length;
+        if (selectedDays == 0) {
             e.preventDefault();
             toastr['error']("At least one day for shift is required");
             return false;
