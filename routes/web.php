@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{ SettingController , AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeQualificationController, EmployeeSalaryController, LeaveController, LoanTypeController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{ SettingController , AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeLoanController, EmployeeQualificationController, EmployeeSalaryController, LeaveController, LoanTypeController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
 use App\Http\Controllers\Admin\EmployeePayrollController;
 use App\Http\Controllers\AuthController;
 use App\Models\Attendance;
@@ -191,5 +191,15 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::get('/delete/{id?}' , [LoanTypeController::class , 'delete'])->name('loan_type.delete');
         Route::get('/destroy/{id?}' , [LoanTypeController::class , 'destroy'])->name('loan_type.destroy');
         Route::get('/restore/{id?}' , [LoanTypeController::class , 'restore'])->name('loan_type.restore');
+    });
+    //== Loans ==//
+    Route::prefix('loans/')->group(function(){
+        Route::get('/' , [EmployeeLoanController::class ,'index'])->name('employee_loans.index');
+        Route::get('/trash' , [EmployeeLoanController::class , 'trash'])->name('employee_loans.trash');
+        Route::get('/create/{id?}' , [EmployeeLoanController::class ,'create'])->name('employee_loans.create');
+        Route::post('/store/{id?}' , [EmployeeLoanController::class ,'store'])->name('employee_loans.store');
+        Route::get('/delete/{id?}' , [EmployeeLoanController::class , 'delete'])->name('employee_loans.delete');
+        Route::get('/destroy/{id?}' , [EmployeeLoanController::class , 'destroy'])->name('employee_loans.destroy');
+        Route::get('/restore/{id?}' , [EmployeeLoanController::class , 'restore'])->name('employee_loans.restore');
     });
 });

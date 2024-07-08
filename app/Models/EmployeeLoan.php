@@ -15,4 +15,10 @@ class EmployeeLoan extends Model
         parent::__construct($attributes);
         $this->fillable = Crud::columns($this->table);
     }
+    public function employees(){
+        return $this->belongsTo(Employee::class , 'employee_id');
+    }
+    public function loan_types(){
+        return $this->belongsTo(LoanType::class , 'loan_type_id');
+    }
 }
