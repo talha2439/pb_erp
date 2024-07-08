@@ -29,7 +29,8 @@ Employee Loan List
                         <th>Employee name</th>
                         <th>Loan type</th>
                         <th>Requested Date</th>
-                        <th>Due Date</th>
+                        <th>Requested Date</th>
+                        <th>Duration</th>
                         <th>Requested Amount</th>
                         <th>Approved Amount</th>
                         <th>Requested By</th>
@@ -50,7 +51,20 @@ Employee Loan List
                             <td>
                                 {{ $item->employees->first_name .' '. $item->employees->last_name  ?? ""}}
                             </td>
-                            
+                            <td>{{ $item->loan_types->name ?? "" }}</td>
+                            @php
+                                $requested_date = \Carbon\Carbon::parse($item->request_date);
+                                $due_date = \Carbon\Carbon::parse($item->due_date);
+                            @endphp
+                            <td>{{  $requested_date->format('F d , Y') }}</td>
+                            <td>{{  $due_date->format('F d , Y') }}</td>
+                            <td>{{  \Carbon\Carbon::diffInDay($requested_date , $due_date)  }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td>
                                 <a class="btn btn-danger text-white deleteLoanType" data-id="{{ $item->id }}"> <i
                                         class="fe fe-trash"></i></a> |
