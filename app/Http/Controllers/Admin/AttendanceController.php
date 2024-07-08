@@ -141,7 +141,7 @@ class AttendanceController extends Controller
                 $data = $request->except("_token");
                 $employees = $this->childModel::where('id', $data['employee_id'])->first();
                 $data['employee_id']  = $employees->user_id;
-                $data['date'] =   Carbon::now()->format('Y-m-d');
+                $data['date'] =   isset($data['date'])  ? Carbon::parse($data['date'])->format('Y-m-d') : Carbon::now()->format('Y-m-d');
                 $checkAttendance = $this->parentModel::where(['employee_id' => $data['employee_id'] , 'date'=> $data['date'] ])->count();
                if(empty($id)){
                 if($checkAttendance > 0 ){
