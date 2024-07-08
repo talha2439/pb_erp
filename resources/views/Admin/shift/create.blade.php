@@ -64,7 +64,7 @@
                     <div class="form-group">
                         <label for="name">Select Days <small class="text-danger">*</small></label><br>
                         <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                            <input type="checkbox" class="btn-check" name="days[]" id="All" value="all" autocomplete="off">
+                            <input type="checkbox" checked class="btn-check" name="days[]" id="All" value="all" autocomplete="off">
                             <label class="btn btn-outline-primary" for="All">All</label>
 
                             <input type="checkbox" class="btn-check" name="days[]" id="monday" value="monday" autocomplete="off">
