@@ -58,11 +58,11 @@ Employee Loan List
                             @endphp
                             <td>{{  $requested_date->format('F d , Y') }}</td>
                             <td>{{  $due_date->format('F d , Y') }}</td>
-                            <td>{{  \Carbon\Carbon::diffInDay($requested_date , $due_date)  }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{  $requested_date->diffInDays($due_date) .' Days' ?? "0 Days"}}</td>
+                            <td>{{  \Number::currency($item->requested_amount , 'PKR' , 'en_PK') }}</td>
+                            <td>{{  \Number::currency($item->approved_amount  , 'PKR' , 'en_PK') }}</td>
+                            <td>{{  $item->created_by ?? 'unknown' }}</td>
+                            <td>{{ $item-> }}</td>
                             <td></td>
                             <td></td>
                             <td>

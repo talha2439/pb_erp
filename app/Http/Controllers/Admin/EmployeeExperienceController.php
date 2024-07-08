@@ -53,7 +53,7 @@ class EmployeeExperienceController extends Controller
                         $fileNames = str_replace(" ", "", $data['job_title'][$key]) . '_' . time() . '.' . $request->file('attachment')[$key]->getClientOriginalExtension();
                         $request->file('attachment')[$key]->move($this->imagePath, $fileNames);
                     }
-                    if($fileNames == null){
+                    if($fileNames == null && isset($data['exp_id'][$key]) ){
                         $checkname = $this->parentModel::where('id' , $data['exp_id'][$key] )->first();
                         if(!empty($checkname)){
                             $fileNames = $checkname->attachment;

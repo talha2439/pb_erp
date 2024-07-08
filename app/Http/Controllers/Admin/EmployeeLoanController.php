@@ -9,6 +9,7 @@ use App\Models\EmployeeLoan;
 use App\Models\LoanType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeLoanController extends Controller
 {
@@ -48,6 +49,12 @@ class EmployeeLoanController extends Controller
             if($checkSalary->salary < $data['requested_amount']){
                 return redirect()->back()->with('error' ,'Requested amount must be less than or equal to Employee salary');
             };
+            if(!empty($id)){
+                $data['updated_by'] = Auth::user()->username;
+            }
+            else{
+                $data['created_by'] = Auth::user()->username;
+            }
             $storeData  = $this->childModel::updateOrCreate(['id' => $id] , $data);
             if($storeData){
                 $empName          = $checkSalary->first_name. " " .$checkSalary->last_name;
