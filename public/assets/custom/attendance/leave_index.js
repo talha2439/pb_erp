@@ -187,7 +187,7 @@ $("#changeStatus").submit(function(e){
 
                     var attachment = "";
                     if(res.data.application.attachment != "" || res.data.application.attachment != null){
-                    attachment = `<div class="card-text col-md-4 col-12 col-sm-6 d-flex mt-2 mb-2 "><span >Attachment:</span> <div class="me-3" style="margin-left:10px">  <span class="blink blink-success"> <a class="text-white" target="_blank" href="${'../../images/leave_application/'+ res.data.application.attachment}">View</a>  <span> </div></span></div>`;
+                    attachment = `<div class="card-text col-md col-12 col-sm-6 d-flex mt-2 mb-2 "><span >Attachment:</span> <div class="me-3" style="margin-left:10px">  <span class="blink blink-success"> <a class="text-white" target="_blank" href="${'../../images/leave_application/'+ res.data.application.attachment}">View</a>  <span> </div></span></div>`;
                 }
                     var status = 'warning';
                     if(res.data.application.status == 'approved'){
@@ -198,27 +198,27 @@ $("#changeStatus").submit(function(e){
                     }
                     applicationDetails = `
                     <div class="card border rounded p-2 hv-50">
-                                    <div class="card-header bg-dark text-white  mb-0 p-2 rounded-1 d-flex border-0">
-                                        <div> <i class="fe fe-user fw-bold"></i> : <b> ${res.data.application.employees.first_name} ${res.data.application.employees.last_name}</b> </div>
-                                        <div ><i class="fe fe-calendar underline "  style="margin-left:40px"></i> :  <b> ${res.data.application.from_date} - ${res.data.application.to_date}</b></div>
-                                    </div><hr>
-                                    <div class="card-body p-2">
+                        <div class="card-header bg-dark text-white  mb-0 p-2 rounded-1 d-flex flex-wrap border-0">
+                            <div> <i class="fe fe-user fw-bold"></i> : <b> ${res.data.application.employees.first_name} ${res.data.application.employees.last_name}</b> </div>
+                            <div ><i class="fe fe-calendar underline ms-md-4"></i> :  <b> ${res.data.application.from_date} - ${res.data.application.to_date}</b></div>
+                        </div><hr>
+                        <div class="card-body p-2">
 
-                                        <div class="row mb-0 justify-content-between">
-                                            <div class="card-text col-md-4 col-12  d-flex mb-2 mt-2"><div class="span" >Status: </div><div class="me-3" style="margin-left:10px">  <span class="blink blink-${status} "><b>${ res.data.application.status}</b> <span></div></span></div>
-                                            ${attachment}
-                                            <div class="card-text col-md-4 col-12  d-flex mt-2" style="white-space:nowrap"><span >Type:</span> <div class="me-3" style="margin-left:10px" >  <span class="blink blink-info "><b> ${res.data.application.leave_type} </b> <span></div></span></div>
-                                            </div><br>
-                                        <div class="card-text ml-2">
-                                            <span> <b> <i class="fe fe-mail"></i> &nbsp;Application:</b></span><br>
-                                        </div>
-                                        <div class="card-text mb-2 p-2 border rounded-1" style="margin-top:10px ;min-height:300px; height:auto">
-                                            <p>
-                                               ${res.data.application.reason ?? ""}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="row mb-0">
+                                <div class="card-text col-md col-12  d-flex mb-2 mt-2"><div class="span" >Status: </div><div class="me-3" style="margin-left:10px">  <span class="blink blink-${status} "><b>${ res.data.application.status}</b> <span></div></span></div>
+                                ${attachment}
+                                <div class="card-text col-md col-12  d-flex mt-2" style="white-space:nowrap"><span >Type:</span> <div class="me-3" style="margin-left:10px" >  <span class="blink blink-info "><b> ${res.data.application.leave_type} </b> <span></div></span></div>
+                                </div><br>
+                            <div class="card-text ml-2">
+                                <span> <b> <i class="fe fe-mail"></i> &nbsp;Application:</b></span><br>
+                            </div>
+                            <div class="card-text mb-2 p-2 border rounded-1" style="margin-top:10px ;min-height:300px; height:auto">
+                                <p>
+                                    ${res.data.application.reason ?? ""}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                     `;
                    $(modalBody).html(applicationDetails);
 
