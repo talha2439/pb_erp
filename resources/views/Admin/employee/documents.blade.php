@@ -42,7 +42,9 @@
                                 {{ $item->document }}
                             </td>
                             <td>
-                                    <a class="btn btn-primary text-white btn-sm viewDocument" data-image="{{ $item->document }}" data-bs-toggle="modal"
+                                    <a class="btn btn-success text-white btn-sm" href="{{ $item->document }}" download>
+                                        <i class="fa fa-download"></i>
+                                    </a> | <a class="btn btn-primary text-white btn-sm viewDocument" data-image="{{ $item->document }}" data-bs-toggle="modal"
                                         data-bs-target="#documentModal">
                                         <i class="fa fa-eye"></i>
                                     </a> |  <a data-id="{{ $item->id }}"
