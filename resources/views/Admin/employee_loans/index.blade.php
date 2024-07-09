@@ -89,7 +89,7 @@ Employee Loan List
                                         class="fe fe-printer"></i></a> |
                                         <a class="btn btn-success statusChange @if($item->status == 'rejected' && $item->status == 'paid') disabled @endif text-white"data-bs-toggle="modal"
                                         data-bs-target="#loanStatusModal"
-                                        data-id="{{ $item->id }}"   > <i
+                                        data-id="{{ $item->id }}" data-status="{{ $item->status }}"  > <i
                                             class="fe fe-edit" ></i></a> |
                                             <a class="btn btn-danger text-white deleteLoan" data-id="{{ $item->id }}"> <i
                                                     class="fe fe-trash"></i></a>
