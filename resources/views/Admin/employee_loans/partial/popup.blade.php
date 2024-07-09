@@ -17,12 +17,18 @@
                        <select name="status" id="status" class="form-control" data-type="required" data-name="Status">
                            <option value="">-- SELECT STATUS --</option>
                            <option value="approved">Approve</option>
+                           <option value="paid">Reject</option>
+                           <option value="all-paid">All Paid</option>
                            <option value="rejected">Reject</option>
                        </select>
                    </div>
                    <div class="col-md-12 mt-2 mb-2 approved_amount" style="display: none">
                        <label for="approved_amount">Approved Amount</label>
                        <input type="number" id="approved_amount" name="approved_amount" data-type="" data-name="Approved Amount" class="form-control" placeholder="Approved Amount">
+                   </div>
+                   <div class="col-md-12 mt-2 mb-2 paid_amount" style="display: none">
+                       <label for="paid_amount">Paid Amount</label>
+                       <input type="number" id="paid_amount" name="paid_amount" data-type="" data-name="Paid Amount" class="form-control" placeholder="Paid Amount">
                    </div>
                    <div class="col-md-12 mt-2 mb-2">
                        <div class="form-group">
