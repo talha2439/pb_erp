@@ -177,6 +177,18 @@ function parseTime(timeStr) {
     return [hours, minutes, period];
 }
 
+// Date Validation
 
+$(document).on('input','.attendance_date',function(e){
+    e.preventDefault();
+    let current_date = new Date();
+    let selected_date = new Date($(this).val());
+    if(current_date < selected_date){
+        toastr['error']("Attendance date can't exceed current date");
+        $('#submitBtn').prop('disabled',true);
+    }else{
+        $('#submitBtn').prop('disabled',false);
+    }
+})
 
 })

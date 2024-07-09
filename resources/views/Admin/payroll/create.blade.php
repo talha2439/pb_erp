@@ -83,7 +83,7 @@
                 <div class="col-md-4 mt-3 ">
                     <div class="form-group">
                         <label for="name">Total Off (<small class="text-danger">*</small>) <small>Holidays or Weekdays etc.</small></label>
-                        <input type="number"  value="0"   name="total_off" id="total_off"  placeholder="Total Off.."
+                        <input type="number" readonly  value="0"   name="total_off" id="total_off"  placeholder="Total Off.."
                             class="form-control  mb-3">
                     </div>
                 </div>

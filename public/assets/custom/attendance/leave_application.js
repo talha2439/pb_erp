@@ -15,7 +15,7 @@ $(document).ready(function() {
             else if($(this).attr('data-length') == 'required' && $(this).val() != '' &&  toDate.val() !="") {
                 var from_date = new Date($(this).val());
                 var to_date = new Date($(toDate).val());
-                if(to_date <= from_date  ){
+                if(to_date < from_date  ){
                     e.preventDefault();
                     toastr['error']($(this).attr('data-name')+' Must be less then  ' + toDate.attr('data-name'));
                     isValid = false;
