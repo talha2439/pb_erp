@@ -98,11 +98,14 @@ class EmployeeLoanController extends Controller
             $remaining_amount = isset($data['approved_amount']) &&  $data['approved_amount'] > 0 ? $data['approved_amount'] : $loanData->requested_amount;
             $data['remaining_amount'] = $remaining_amount;
             if(isset($data['status']) && $data['status'] == 'paid'){
-                $remaining_amount = ($loanData->remaining_amount - (int) $data['paid_amount']);
-                $loanData->paid_amount += (int) $data['paid_amount'];
-                $paid_amount = $loanData->paid_amount;
-                $data['paid_amount'] = $paid_amount;
+                $remaining_amount = 0 ;
+                $data['paid_amount'] = $loanData->approved_amount ;
                 $data['remaining_amount'] = $remaining_amount ;
+                $data['rejected_at'] = null;
+                $data['rejected_by'] = null;
+                $data['approved_by'] = Auth::user()->id;
+                $data['approved_at'] = Carbon::now();
+                unset($data['approved_amount']);
             }
             elseif(isset($data['status']) && $data['status'] == 'rejected'){
                 $data['rejected_by'] = Auth::user()->id;

@@ -26,7 +26,7 @@
            <div class="col-md-12">
         <div class="form-group">
             <label for="profile">User Profile (<small> Optional </small>)</label>
-            <input type="file" name="image" class="form-control mt-3 mb-3">
+            <input type="file" value="" name="image" class="form-control mt-3 mb-3">
         </div>
     </div>
     <div class="col-md-6 menu_container">

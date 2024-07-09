@@ -85,9 +85,13 @@ Employee Loan List
                             <td>
                                 <a class="btn btn-info text-white " href="{{ route('employee_loans.details', encrypt($item->id)) }}"> <i
                                         class="fe fe-eye"></i></a> |
+                                <a class="btn btn-warning text-white amountPay @if($item->status != 'paid') disabled @endif" data-bs-toggle="modal"
+                                data-bs-target="#loanStatusModal"
+                                data-id="{{ $item->id }}"  href="#"> <i
+                                        class="fe fe-dollar-sign" title="Pay Installment"></i></a> |
                                 <a class="btn btn-primary text-white " href="#"> <i
                                         class="fe fe-printer"></i></a> |
-                                        <a class="btn btn-success statusChange @if($item->status == 'rejected' && $item->status == 'paid') disabled @endif text-white"data-bs-toggle="modal"
+                                        <a class="btn btn-success statusChange @if($item->status == 'rejected' || $item->status == 'paid') disabled @endif text-white"data-bs-toggle="modal"
                                         data-bs-target="#loanStatusModal"
                                         data-id="{{ $item->id }}" data-status="{{ $item->status }}"  > <i
                                             class="fe fe-edit" ></i></a> |

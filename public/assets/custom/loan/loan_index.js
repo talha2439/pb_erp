@@ -52,9 +52,9 @@ $(document).on('click', '.deleteLoan', function(e) {
     $(document).on('click' , '.statusChange' , function(e){
         let id = $(document).find('.id').val($(this).attr('data-id'));
         let status  = $(this).attr('data-status');
-        if(status == 'approved'){
+        if(status == 'approved' || status == 'paid'){
             $(document).find('#status').html(
-                '<option value="">-- SELECT STATUS --</option> <option value="approved">Approve</option><option value="rejected">Reject</option><option value="paid"> Paid </option><option value="cleared">All Installment Paid</>'
+                '<option value="">-- SELECT STATUS --</option><option value="paid">Amount Paid </option><option value="rejected">Reject</option>'
             );
         }
         else{
