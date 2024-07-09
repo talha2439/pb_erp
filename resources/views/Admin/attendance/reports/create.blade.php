@@ -58,7 +58,7 @@
         <div class="col-md-6 from_container">
             <div class="form-group">
                 <label for="name">Date (<small class="text-danger">*</small>) </label>
-                <input type="date"  data-type="required"  data-name ="Attendance  Date " placeholder="Date" name="date" class="form-control  mb-3">
+                <input type="date"  data-type="required"  data-name ="Attendance  Date " placeholder="Date" name="date" class="form-control  mb-3 attendance_date">
             </div>
         </div>
         <div class="col-md-6 menu_container">
@@ -124,7 +124,7 @@
 
     <div class="col-md-12 d-flex justify-content-end ">
         <a href="{{ route('attendance.reports.all') }}" class="btn btn-primary" style="margin-right: 10px">Attendance Reports</a>
-        <button class="btn btn-success" type="submit">{{ $parentButton }}</button>
+        <button class="btn btn-success" type="submit" id="submitBtn">{{ $parentButton }}</button>
     </div>
 </div>
 

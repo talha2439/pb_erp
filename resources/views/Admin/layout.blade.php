@@ -268,6 +268,12 @@
     let baseURL = "{{ asset('') }}";
     let auth = "{{ Auth::user()->role }}";
     $(document).ready(function() {
+        var num_type = $(document).find('input[type="number"]');
+        $(num_type).on('input',function(){
+            if($(this).val()<=0){
+                $(this).val(0);
+            }
+        })
         $('.loader-container').hide();
         var currentroute = "{{ Route::currentRouteName('') }}";
         $(".dynamic_sub_menu").each(function() {
