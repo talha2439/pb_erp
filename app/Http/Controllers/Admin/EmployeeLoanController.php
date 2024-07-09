@@ -88,7 +88,38 @@ class EmployeeLoanController extends Controller
         }
     }
 
-    public function status(){}
+    public function status(Request $request){
+        try{
+            $data = $request->except('_token');
+            $loanData = $this->childModel::where('id', $data['id'])->first();
+            if($loanData->requested_amount < (int) $data['approved_amount']){
+                return response()->json(['exceed' => true]);
+            }
+            $remaining_amount = isset($data['approved_amount']) &&  $data['approved_amount'] > 0 ? $data['approved_amount'] : $loanData->requested_amount;
+
+            if($loanData){
+                $loanData->update([
+                    'status' => $data['status'] ?? "",
+                    'updated_by' => Auth::user()->username ?? "",
+                    'remaining_amount' =>  $remaining_amount ?? "" ,
+                    'approved_amount'  =>  isset($data['approved_amount']) ? $data['approved_amount']: 0,
+                    'approved_by' => $data['status'] == 'approved' ? Auth::user()->id : null ,
+                    'approved_at' => $data['status'] == 'approved' ? Carbon::now(): null ,
+                    'rejected_by' => $data['status'] == 'rejected' ? Auth::user()->id : null,
+                    'rejected_at' => $data['status'] == 'rejected' ? Carbon::now() : null,
+                    'reason' => $data['remarks'] ?? "",
+
+                ]);
+                return response()->json(['success' => true]);
+            }
+            else{
+                return response()->json(['error' => true]);
+            }
+        }
+        catch(\Exception $e){
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
     public function delete($id = null){
         try{
             $delete = $this->childModel::where('id', $id)->delete();

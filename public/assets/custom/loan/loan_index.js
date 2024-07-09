@@ -54,14 +54,21 @@ $(document).on('click', '.deleteLoan', function(e) {
     })
     $(document).submit('#loanStatusForm' , function(e){
         e.preventDefault();
-        let data = $(this).serializeArray();
+        let data = $("#loanStatusForm").serialize();
         $.ajax({
-            url: statusChangeUrl,
+            url: statusUrl,
             type: 'POST',
-            data: data,
+            data: data ,
+            headers:{
+                'X-CSRF-TOKEN':$('#csrf-token').val(),
+            },
             success: function(res) {
                 if (res.unauthorized) {
                     toastr['error']('You are not authorized to change Loan status..!');
+                    return false;
+                }
+                if (res.exceed) {
+                    toastr['error']('Loan Approved Amount cannot be Exceed the requested amount..!');
                     return false;
                 }
 

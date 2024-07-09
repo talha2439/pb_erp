@@ -78,8 +78,8 @@ Employee Loan List
                             <td>{{  \Number::currency($item->remaining_amount  , 'PKR' , 'en_PK') }}</td>
                             <td>{{  \Number::currency($item->paid_amount  , 'PKR' , 'en_PK') }}</td>
                             <td>{{  $item->created_by ?? 'unknown' }}</td>
-                            <td>{{ @$item->approved->first_name .' ' .@$item->approved->last_name  }}</td>
-                            <td>{{ @$item->rejected->first_name .' ' .@$item->rejected->last_name  }}</td>
+                            <td>{{ @$item->approved->name  }}</td>
+                            <td>{{ @$item->rejected->name }}</td>
                             <td>
                                 <span class="blink blink-{{ $blinkstatus }}">{{ $item->status }}</span></td>
                             <td>
@@ -89,7 +89,7 @@ Employee Loan List
                                         class="fe fe-printer"></i></a> |
                                         <a class="btn btn-success statusChange text-white"data-bs-toggle="modal"
                                         data-bs-target="#loanStatusModal"
-                                        data-id="{{ $item->id }}" > <i
+                                        data-id="{{ $item->id }}"  @if($item->status == 'rejected') disable @endif > <i
                                             class="fe fe-edit" ></i></a> |
                                             <a class="btn btn-danger text-white deleteLoan" data-id="{{ $item->id }}"> <i
                                                     class="fe fe-trash"></i></a>
@@ -106,6 +106,7 @@ Employee Loan List
     <script src="{{ asset('assets/custom/loan/loan_index.js') }}"></script>
         <script>
             let deleteUrl = "{{ route('employee_loans.delete') }}";
+            let statusUrl = "{{ route('employee_loans.status') }}";
         </script>
     @endpush
 @endsection

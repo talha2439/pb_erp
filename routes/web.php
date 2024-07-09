@@ -202,5 +202,6 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::get('/delete/{id?}' , [EmployeeLoanController::class , 'delete'])->name('employee_loans.delete');
         Route::get('/destroy/{id?}' , [EmployeeLoanController::class , 'destroy'])->name('employee_loans.destroy');
         Route::get('/restore/{id?}' , [EmployeeLoanController::class , 'restore'])->name('employee_loans.restore');
+        Route::POST('/status/{id?}' , [EmployeeLoanController::class , 'status'])->name('employee_loans.status');
     });
 });

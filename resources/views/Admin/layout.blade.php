@@ -32,6 +32,7 @@
 
     <title>{{ config('setting.site_name') }} - @yield('title')</title>
     <link rel="shortcut icon" href="{{ config('setting.favicon') }}">
+    <input type="hidden" id="csrf-token" value="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/blinker.css') }}">
