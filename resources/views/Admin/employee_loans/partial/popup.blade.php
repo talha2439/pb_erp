@@ -15,11 +15,6 @@
                    <div class="col-md-12 mt-2 mb-2">
                        <label for="status">Status <small class="text-danger">(*)</small></label>
                        <select name="status" id="status" class="form-control" data-type="required" data-name="Status">
-                           <option value="">-- SELECT STATUS --</option>
-                           <option value="approved">Approve</option>
-                           <option value="paid">Reject</option>
-                           <option value="all-paid">All Paid</option>
-                           <option value="rejected">Reject</option>
                        </select>
                    </div>
                    <div class="col-md-12 mt-2 mb-2 approved_amount" style="display: none">
