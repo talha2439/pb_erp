@@ -26,8 +26,9 @@ class AttendanceController extends Controller
         $data['attendance']->check_in =  Carbon::parse($data['attendance']->check_in)->format('h:m:s');
         $data['attendance']->check_out =  Carbon::parse($data['attendance']->check_out)->format('h:m:s');}
         $data['currentAttendance']  = $this->parentModel::whereDate('date' , Carbon::now())->pluck('employee_id');
-        $data['employees']          = $this->childModel::whereNotIn('user_id' , $data['currentAttendance'])->get();
         $data['action'] = !empty($data['attendance']) ? 'edit' : 'create';
+        $data['employees']          =  $data['action'] == 'create' ? $this->childModel::whereNotIn('user_id' , $data['currentAttendance'])->get():$this->childModel::where('user_id',$data['attendance']->employee_id)->latest()->get();
+        
         return view($this->parentView.'.create', $data);
     }
     public function checkin(Request $request)

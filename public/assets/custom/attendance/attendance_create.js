@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    showextra();
     let checkIn  = $(document).find('input[name="check_in"]');
     let checkOut = $(document).find('input[name="check_out"]');
     CalculateTime(checkIn.val(),checkOut.val())
@@ -105,8 +106,9 @@ $("#attendanceForm").submit(function(e){
 });
 
 
-
-
+$(document).on('input','input[name="check_out"]',function(){
+    showextra($(this).val());
+})
 if(action == 'edit'){
     $("select[name='employee_id']").val(attendance.users.employees.id);
     $("select[name='employee_id']").trigger("change");
@@ -118,11 +120,12 @@ if(action == 'edit'){
     $("select[name='working_status']").val(attendance.working_status);
     $("select[name='working_status']").trigger("change");
     let workingMins = attendance.working_hours.split('minutes')[0].split(" ")[0];
+    $('input[name="working_hours"]').val(0) ;
     if(attendance.working_hours.includes('hours')){
         $('input[name="working_hours"]').val((attendance.working_hours.split('hours')[0] || 0)) ;
         workingMins = attendance.working_hours.split('hours')[1].split('minutes')[0].split(' ')[1];
     }
-    $('input[name="working_hours"]').val(0) ;
+    
     $('input[name="working_minutes"]').val(workingMins);
     if(attendance.extra_hours){
     $(document).find('input[name="extra_hours"]').val(attendance.extra_hours.split('hours')[0] || 0);
@@ -131,6 +134,7 @@ if(action == 'edit'){
 }
 
 function CalculateTime(checkIn, checkOut) {
+    
     let [checkInHour, checkInMinute, checkInPeriod] = parseTime(checkIn);
     let [checkOutHour, checkOutMinute, checkOutPeriod] = parseTime(checkOut);
     if (checkInPeriod === 'PM' && checkInHour !== 12) {
@@ -169,6 +173,7 @@ function CalculateTime(checkIn, checkOut) {
             $(document).find('input[name="extra_minutes"]').val(0);
         }
     }
+
 }
 
 function parseTime(timeStr) {
@@ -178,7 +183,15 @@ function parseTime(timeStr) {
 }
 
 // Date Validation
-
+function showextra(value = null)
+{
+    if(value!=null && value != "" || action == 'edit'){
+        $(document).find('.extra-container').fadeIn();
+    }
+    else{
+        $(document).find('.extra-container').fadeOut();
+    }
+}
 $(document).on('input','.attendance_date',function(e){
     e.preventDefault();
     let current_date = new Date();

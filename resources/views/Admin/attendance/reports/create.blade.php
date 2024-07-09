@@ -32,11 +32,11 @@
 
         <div class="col-md-12 mb-3">
             <div class="form-group">
-                <label for="profile">Employee (<small class="text-danger"> * </small>)</label>
-                <select type="text" data-type="required"  data-name ="Employee name " name="employee_id" placeholder="Enter Select employee!" class="form-control mt-3 mb-3 select2">
-                  <option value="">-- Select Employee --</option>
+                <label for="profile">Employee (<small class="text-danger"> * </small>) @if ($action=='edit') <small class="text-warning">Employee name can't be changed while editing.</small> @endif</label>
+                <select type="text" @if($action == 'create')  data-type="required" @endif data-name ="Employee name " name="employee_id" placeholder="Enter Select employee!" class="form-control mt-3 mb-3 select2">
+                  <option value="" @if($action == 'edit') disabled @endif>-- Select Employee --</option>
                   @foreach($employees as $item)
-                  <option value="{{ $item->id }}">{{ $item->first_name }}</option>
+                  <option value="{{ $item->id }}" @if($action == 'edit') readonly @endif >{{ $item->first_name }}</option>
                   @endforeach
                 </select>
             </div>
@@ -50,74 +50,80 @@
         </div>
         <div class="col-md-6 from_container">
             <div class="form-group">
-                <label for="name">Checkout (<small class="text-secondary">optional</small>) <small class="text-warning">Cannot be changed at marking attendance.</small> </label>
-                <input type="time"  @if($action == 'create') readonly @endif name="check_out" class="form-control  mb-3">
+                <label for="name">Checkout (<small class="text-secondary">optional</small>) </label>
+                <input type="time" value="" name="check_out" class="form-control  mb-3">
             </div>
         </div>
-        @if($action == 'edit')
-        <div class="col-md-6 from_container">
-            <div class="form-group">
-                <label for="name">Date (<small class="text-danger">*</small>) </label>
-                <input type="date"  data-type="required"  data-name ="Attendance  Date " placeholder="Date" name="date" class="form-control  mb-3 attendance_date">
-            </div>
-        </div>
-        <div class="col-md-6 menu_container">
-            <div class="form-group">
-                <label for="name">Attendance Status (<small class="text-danger"> * </small>)</label>
-                <select type="text" data-type="required"  data-name ="Attendance Status "name="attendance_status"  class="form-control mt-2 mb-3 select2">
-                    <option value="">-- Select Attendance Status --</option>
-                    <option value="present">Present</option>
-                    <option value="absent">Absent</option>
-                    <option value="leave">Leave</option>
-                    <option value="off">Off</option>
-                    </select>
+        
+        <div class="col-md-12 extra-container" style="display: none">
+            <div class="row">
+                <div class="col-md-6 from_container">
+                    <div class="form-group">
+                        <label for="name">Date (<small class="text-danger">*</small>) </label>
+                        <input type="date"  data-type="required"  data-name ="Attendance  Date " placeholder="Date" name="date" class="form-control  mb-3 attendance_date">
+                    </div>
+                </div>
+                <div class="col-md-6 menu_container">
+                    <div class="form-group">
+                        <label for="name">Attendance Status (<small class="text-danger"> * </small>)</label>
+                        <select type="text" data-type="required"  data-name ="Attendance Status "name="attendance_status"  class="form-control mt-2 mb-3 select2">
+                            <option value="">-- Select Attendance Status --</option>
+                            <option value="present">Present</option>
+                            <option value="absent">Absent</option>
+                            <option value="leave">Leave</option>
+                            <option value="off">Off</option>
+                            </select>
+                    </div>
+                </div>
+        
+        
+        
+                <div class="col-md-6 mb-2 to_date">
+                    <div class="form-group">
+                        <label for="name">Working Hours (<small class="text-danger">*</small>) </label>
+                        <input type="text" data-type="required" value="0" max="9"  data-name ="Work Hours " placeholder="Work Hours" name="working_hours" class="form-control  mb-3">
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2 to_date">
+                    <div class="form-group">
+                        <label for="name">Working Minutes (<small class="text-danger">*</small>) </label>
+                        <input type="text" data-type="required" value="0"  data-name ="Work Minutes " placeholder="Work Minutes" name="working_minutes" class="form-control  mb-3">
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3 menu_container">
+                    <div class="form-group">
+                        <label for="name">Work Status (<small class="text-danger"> * </small>)</label>
+                        <select type="text" data-type="required"  data-name ="Working Status "name="working_status"  class="form-control mt-2 mb-3 select2">
+                            <option value="">-- Select Work Status --</option>
+                            <option value="on-time">On Time</option>
+                            <option value="absent">Absent</option>
+                            <option value="leave">Leave</option>
+                            <option value="late">Late</option>
+                            <option value="off">Off</option>
+                            <option value="late and early-out">Late and Early-out</option>
+                            <option value="early-out">Early out</option>
+                            <option value="early-in and early-out">Early-in & Early-out</option>
+                            <option value="late-setting">Extra Hours</option>
+                          </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3 extra_container" style="display: none">
+                    <div class="form-group">
+                        <label for="name">Extra Hours (<small class="text-danger"> * </small>)</label>
+                       <input type="number" class="form-control"  name="extra_hours" data-type="required"  data-name="Extra Working Hours" placeholder="Extra Hours">
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3 extra_container" style="display: none">
+                    <div class="form-group">
+                        <label for="name">Extra Minutes (<small class="text-danger"> * </small>)</label>
+                       <input type="number" class="form-control" value="0" name="extra_minutes"  placeholder="Extra Minutes">
+                    </div>
+                </div>
             </div>
         </div>
 
 
-
-        <div class="col-md-6 mb-2 to_date">
-            <div class="form-group">
-                <label for="name">Working Hours (<small class="text-danger">*</small>) </label>
-                <input type="text" data-type="required" value="0" max="9"  data-name ="Work Hours " placeholder="Work Hours" name="working_hours" class="form-control  mb-3">
-            </div>
-        </div>
-        <div class="col-md-6 mb-2 to_date">
-            <div class="form-group">
-                <label for="name">Working Minutes (<small class="text-danger">*</small>) </label>
-                <input type="text" data-type="required" value="0"  data-name ="Work Minutes " placeholder="Work Minutes" name="working_minutes" class="form-control  mb-3">
-            </div>
-        </div>
-        <div class="col-md-12 mb-3 menu_container">
-            <div class="form-group">
-                <label for="name">Work Status (<small class="text-danger"> * </small>)</label>
-                <select type="text" data-type="required"  data-name ="Working Status "name="working_status"  class="form-control mt-2 mb-3 select2">
-                    <option value="">-- Select Work Status --</option>
-                    <option value="on-time">On Time</option>
-                    <option value="absent">Absent</option>
-                    <option value="leave">Leave</option>
-                    <option value="late">Late</option>
-                    <option value="off">Off</option>
-                    <option value="late and early-out">Late and Early-out</option>
-                    <option value="early-out">Early out</option>
-                    <option value="early-in and early-out">Early-in & Early-out</option>
-                    <option value="late-setting">Extra Hours</option>
-                  </select>
-            </div>
-        </div>
-        <div class="col-md-6 mb-3 extra_container" style="display: none">
-            <div class="form-group">
-                <label for="name">Extra Hours (<small class="text-danger"> * </small>)</label>
-               <input type="number" class="form-control"  name="extra_hours" data-type="required"  data-name="Extra Working Hours" placeholder="Extra Hours">
-            </div>
-        </div>
-        <div class="col-md-6 mb-3 extra_container" style="display: none">
-            <div class="form-group">
-                <label for="name">Extra Minutes (<small class="text-danger"> * </small>)</label>
-               <input type="number" class="form-control" value="0" name="extra_minutes"  placeholder="Extra Minutes">
-            </div>
-        </div>
-        @endif
+        
 
 
 <hr>
