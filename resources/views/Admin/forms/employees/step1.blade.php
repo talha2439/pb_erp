@@ -77,7 +77,7 @@
                 <select name="department" class="form-select select2">
                     <option value="">-- Select Department --</option>
                     @foreach ($department as $item)
-                    <option value="{{ $item->id }}" @if($action == 'edit' && $employee->departments->id == $item->id) selected @endif>
+                    <option value="{{ $item->id }}" @if($action == 'edit' && @$employee->departments->id == $item->id) selected @endif>
                         {{ $item->name }}
                       </option>
                     @endforeach
@@ -90,8 +90,8 @@
                 <select name="designation" class="form-select select2">
                     <option value="">-- Select Department First --</option>
                     @if($action == 'edit')
-                    <option  value="{{ $employee->designations->id }}" selected >
-                       {{ $employee->designations->name }}
+                    <option  value="{{ @$employee->designations->id }}" selected >
+                       {{ @$employee->designations->name }}
                     </option>
                     @endif
                 </select>
@@ -103,8 +103,8 @@
                 <select name="shift" class="form-select select2">
                     <option value="">-- Select Designation First --</option>
                     @if($action == 'edit')
-                    <option  value="{{ $employee->shifts->id }}" selected >
-                       {{ $employee->shifts->name }} | {{ $employee->shifts->start_time }} - {{ $employee->shifts->end_time }}
+                    <option  value="{{ @$employee->shifts->id }}" selected >
+                       {{ @$employee->shifts->name }} | {{ @$employee->shifts->start_time }} - {{ @$employee->shifts->end_time }}
                     </option>
                     @endif
                 </select>
@@ -116,7 +116,7 @@
                 <select name="country" class="form-select select2">
                     <option value="">-- Select Country --</option>
                     @foreach ($country as $key => $items)
-                    <option value="{{ $key }}" @if($action == 'edit' && $employee->countries->id == $key) selected @endif>
+                    <option value="{{ $key }}" @if($action == 'edit' && @$employee->countries->id == $key) selected @endif>
                         {{ $items }}
                       </option>
                     @endforeach
@@ -129,8 +129,8 @@
                 <select name="state" class="form-select  select2">
                     <option value="">-- Select State --</option>
                     @if($action == 'edit')
-                    <option  value="{{ $employee->states->id }}" selected >
-                       {{ $employee->states->name }}
+                    <option  value="{{ @$employee->states->id }}" selected >
+                       {{ @$employee->states->name }}
                     </option>
                     @endif
                 </select>
@@ -142,8 +142,8 @@
                 <select name="city" class="form-select select2">
                     <option value="">-- Select City --</option>
                     @if($action == 'edit')
-                    <option  value="{{ $employee->cities->id }}" selected >
-                       {{ $employee->cities->name }}
+                    <option  value="{{ @$employee->cities->id }}" selected >
+                       {{ @$employee->cities->name }}
                     </option>
                     @endif
                 </select>
@@ -156,7 +156,7 @@
                 <select name="nationality" class="form-select select2">
                     <option value="">-- Select Nationality --</option>
                     @foreach ($nationality as $key => $item)
-                        <option value="{{ $item }}" @if($action == 'edit' && $employee->nationalties->name == $item) selected @endif>{{ $item }}</option>
+                        <option value="{{ $item }}" @if($action == 'edit' && @$employee->nationalties->name == $item) selected @endif>{{ $item }}</option>
                     @endforeach
                 </select>
             </div>
