@@ -35,7 +35,7 @@ Route::get('/svg-list', function () {
     }
 
     return response()->json($iconList);
-});
+})->name('svg.list');
 //Auth Routes
 Route::get('login', [AuthController::class,'login'])->name('auth.login');
 Route::get('forget_password', [AuthController::class,'forget_password'])->name('auth.forget.password');

@@ -132,7 +132,7 @@
         let StoreMenuRoute = "{{ route('menusettings.store') }}";
         let menuIndexUrl = "{{ route('menusettings.index') }}";
         let action = "{{ $action }}";
-
+        let svgRoute = "{{route('svg.list')}}";
         let menusData = <?php echo isset($menu) && $menu ? json_encode($menu) : 0; ?>;
     </script>
 @endpush

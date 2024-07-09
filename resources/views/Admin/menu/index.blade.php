@@ -66,7 +66,6 @@ All Menus
         });
 
         let deleteUrl  = "{{ route('menusettings.delete') }}";
-
         $(document).on('click', '.deleteMenu' , function (e) {
             let id = $(this).data('id');
             let row = $(this).closest('tr');
