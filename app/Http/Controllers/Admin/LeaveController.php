@@ -192,6 +192,7 @@ class LeaveController extends Controller
                 $request->file('attachment')->move($this->imagePath, $filename);
                 $data['attachment'] = $filename;
             }
+            $data['total_days']  = $from_date == $to_date ? '1' : $data['total_days'];
             $storeData = $this->parentModel::updateOrCreate(['id'=>$id],$data);
             if($storeData){
                 $subject = !empty($id) ? 'Leave Application Updated for '. " " . ucfirst($checkLeaves->first_name  ?? "Unknown") . " " . ucfirst($checkLeaves->last_name  ?? "Unknown") : 'Leave Application Applied for '. " " . ucfirst($checkLeaves->first_name  ?? "Unknown") . " " . ucfirst($checkLeaves->last_name  ?? "Unknown") ;
@@ -220,11 +221,13 @@ class LeaveController extends Controller
             $data['from_date']     = carbon::parse($date_range[0])->format('Y-m-d');
             $data['to_date']       = carbon::parse($date_range[1])->format('Y-m-d');
             $data['approved_days'] = Carbon::parse($data['from_date'])->diffInDays(Carbon::parse($data['to_date']));
+            $data['approved_days']  = $data['from_date'] ==   $data['to_date']  ? '1' : $data['approved_days'];
             $data['rejected_days'] = $employeedata->total_days - $data['approved_days'];
             $data['approved_by']   = $data['status'] == 'approved' ? Auth::user()->name : null;
             $data['approved_at']   = $data['status'] == 'approved' ? Carbon::now() : null;
         }
         else{
+            $data['approved_days']  = '0';
             unset($data['from_date']);
             unset($data['to_date']);
         }

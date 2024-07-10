@@ -113,7 +113,7 @@ if(action == 'edit'){
     $("select[name='employee_id']").val(attendance.users.employees.id);
     $("select[name='employee_id']").trigger("change");
     $('input[name="check_in"]').val(attendance.check_in);
-    $('input[name="check_out"]').val(attendance.check_out);
+    $('input[name="check_out"]').val(attendance.check_out == 'empty' ? '' : attendance.check_out);
     $('input[name="date"]').val(attendance.date);
     $("select[name='attendance_status']").val(attendance.attendance_status);
     $("select[name='attendance_status']").trigger("change");

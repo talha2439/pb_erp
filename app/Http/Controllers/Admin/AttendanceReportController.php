@@ -94,7 +94,7 @@ class AttendanceReportController extends Controller
             }
             return '<span class="blink blink-'.$blinkclass.'">'.$item->attendance_status.'</span>';
         })->addColumn('checkin_checkout', function($item){
-            $checkout = !empty($item->check_out) && $item->check_out != null ? Carbon::parse($item->check_out)->format('h:i A') : "";
+            $checkout = !empty($item->check_out) && $item->check_out != 'empty' && $item->check_out != null ? Carbon::parse($item->check_out)->format('h:i A') : "";
             $checkin = !empty($item->check_in) && $item->check_in ? Carbon::parse($item->check_in)->format('h:i A') : "";
             $checkin  =  $checkin .' - '. $checkout ;
             if($item->attendance_status == strtolower('Leave')){
@@ -106,7 +106,7 @@ class AttendanceReportController extends Controller
             return $checkin;
         })->addColumn('working_hours', function($item){
             $workinghours = $item->working_hours ?? '0 hours' ;
-            return $workinghours;
+            return $workinghours == "NaN" ? '0hours' : $workinghours;
         })
         ->addColumn('extra_hours', function($item){
             $extra_hours = $item->extra_hours ?? '0 hours' ;
