@@ -56,8 +56,9 @@
                             <input type="text" value="{{ $user->email ?? '' }}" name="email" class="form-control"
                                 placeholder="Enter Email Address">
                         </div>
-                    </div><hr>
-                    <div class="col-lg-12">
+                    </div>
+                    @if(Auth::user()->role != 1)
+                    <hr><div class="col-lg-12">
                         <div class="form-title">
                             <h5>Bank Account Information</h5>
                         </div>
@@ -98,7 +99,7 @@
                                 placeholder="Enter IBAN Number">
                         </div>
                     </div>
-
+                    @endif
 
                     <div class="col-lg-12">
                         <div class="btn-path text-end">
