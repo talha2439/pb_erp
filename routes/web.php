@@ -203,5 +203,6 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::get('/destroy/{id?}' , [EmployeeLoanController::class , 'destroy'])->name('employee_loans.destroy');
         Route::get('/restore/{id?}' , [EmployeeLoanController::class , 'restore'])->name('employee_loans.restore');
         Route::POST('/status/{id?}' , [EmployeeLoanController::class , 'status'])->name('employee_loans.status');
+        Route::POST('/pay/loan' , [EmployeeLoanController::class , 'payLoan'])->name('employee_loans.pay_loan');
     });
 });

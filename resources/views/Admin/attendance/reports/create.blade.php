@@ -54,19 +54,19 @@
                 <input type="time" value="" name="check_out" class="form-control  mb-3">
             </div>
         </div>
-        
+
         <div class="col-md-12 extra-container" style="display: none">
             <div class="row">
                 <div class="col-md-6 from_container">
                     <div class="form-group">
                         <label for="name">Date (<small class="text-danger">*</small>) </label>
-                        <input type="date"  data-type="required"  data-name ="Attendance  Date " placeholder="Date" name="date" class="form-control  mb-3 attendance_date">
+                        <input type="date"   data-name ="Attendance  Date " placeholder="Date" name="date" class="form-control  mb-3 attendance_date">
                     </div>
                 </div>
                 <div class="col-md-6 menu_container">
                     <div class="form-group">
                         <label for="name">Attendance Status (<small class="text-danger"> * </small>)</label>
-                        <select type="text" data-type="required"  data-name ="Attendance Status "name="attendance_status"  class="form-control mt-2 mb-3 select2">
+                        <select type="text"   data-name ="Attendance Status "name="attendance_status"  class="form-control mt-2 mb-3 select2">
                             <option value="">-- Select Attendance Status --</option>
                             <option value="present">Present</option>
                             <option value="absent">Absent</option>
@@ -75,25 +75,25 @@
                             </select>
                     </div>
                 </div>
-        
-        
-        
+
+
+
                 <div class="col-md-6 mb-2 to_date">
                     <div class="form-group">
                         <label for="name">Working Hours (<small class="text-danger">*</small>) </label>
-                        <input type="text" data-type="required" value="0" max="9"  data-name ="Work Hours " placeholder="Work Hours" name="working_hours" class="form-control  mb-3">
+                        <input type="text" value="0" max="9"  data-name ="Work Hours " placeholder="Work Hours" name="working_hours" class="form-control  mb-3">
                     </div>
                 </div>
                 <div class="col-md-6 mb-2 to_date">
                     <div class="form-group">
                         <label for="name">Working Minutes (<small class="text-danger">*</small>) </label>
-                        <input type="text" data-type="required" value="0"  data-name ="Work Minutes " placeholder="Work Minutes" name="working_minutes" class="form-control  mb-3">
+                        <input type="text"  value="0"  data-name ="Work Minutes " placeholder="Work Minutes" name="working_minutes" class="form-control  mb-3">
                     </div>
                 </div>
                 <div class="col-md-12 mb-3 menu_container">
                     <div class="form-group">
                         <label for="name">Work Status (<small class="text-danger"> * </small>)</label>
-                        <select type="text" data-type="required"  data-name ="Working Status "name="working_status"  class="form-control mt-2 mb-3 select2">
+                        <select type="text"   data-name ="Working Status "name="working_status"  class="form-control mt-2 mb-3 select2">
                             <option value="">-- Select Work Status --</option>
                             <option value="on-time">On Time</option>
                             <option value="absent">Absent</option>
@@ -123,7 +123,7 @@
         </div>
 
 
-        
+
 
 
 <hr>

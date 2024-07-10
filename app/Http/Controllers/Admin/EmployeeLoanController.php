@@ -148,4 +148,32 @@ class EmployeeLoanController extends Controller
             return response()->json(['error' => $e->getMessage()]);
         }
     }
+    public function payLoan(Request $request){
+        try{
+            $data  = $request->except('_token');
+            $loanData  = $this->childModel::where('id' , $data['id'])->first();
+            if(round($loanData->remaining_amount) < $data['paid_amount']){
+                return response()->json(['exceed' => true]);
+            }
+            $data['remaining_amount'] =  $loanData->remaining_amount - (int) $data['paid_amount'] ;
+            if($data['remaining_amount'] <= 0){
+                $loanData->status = 'paid';
+                $loanData->paid_amount += $data['paid_amount'];
+                $loanData->remaining_amount = 0;
+                $loanData->save();
+                return response()->json(['success' => true]);
+            }
+            $data['paid_amount']  = $loanData->paid_amount += $data['paid_amount'];
+            $update =  $loanData->update($data);
+            if($update){
+                return response()->json(['success' => true]);
+            }
+            else{
+                return response()->json(['error' => true]);
+            }
+        }
+        catch(\Exception $e){
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
 }
