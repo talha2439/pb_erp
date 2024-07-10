@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{ SettingController , AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeController, EmployeeExperienceController, EmployeeLoanController, EmployeeQualificationController, EmployeeSalaryController, LeaveController, LoanTypeController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{ SettingController , AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeBankDetailController, EmployeeController, EmployeeExperienceController, EmployeeLoanController, EmployeeQualificationController, EmployeeSalaryController, LeaveController, LoanTypeController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
 use App\Http\Controllers\Admin\EmployeePayrollController;
 use App\Http\Controllers\AuthController;
 use App\Models\Attendance;
@@ -114,6 +114,9 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::GET('/city/{id?}' , [EmployeeController::class,'city'])->name('city.get');
         Route::post('/store/{id?}' , [EmployeeController::class ,'store'])->name('employees.store');
         Route::GET('/alldata' , [EmployeeController::class ,'alldata'])->name('employees.get.data');
+        Route::GET('/bank_details' , [EmployeeBankDetailController::class ,'create'])->name('employees.bank_details.create');
+        Route::GET('/employee_bank_details/{id?}' , [EmployeeBankDetailController::class ,'employee_bank_details'])->name('employees.employee_bank_details');
+        Route::POST('/bank_details/store' , [EmployeeBankDetailController::class ,'store'])->name('employees.bank_details.store');
         Route::get('shift/designations/{id?}' , [EmployeeController::class,'designation_and_shift'])->name('shift.designations');
     });
     Route::prefix('employees/qualification')->group(function(){
