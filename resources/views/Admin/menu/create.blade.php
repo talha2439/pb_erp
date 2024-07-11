@@ -59,8 +59,11 @@
 </style>
 
 
-    <div class="card-header">
-        <h1>{{ $title }} Menus</h1>
+    <div class="card-header mb-2">
+        <div class="d-flex justify-content-between g-2">
+            <h1>{{ $title }} Menus </h1>
+            <div>  <a href="{{ route('menusettings.index') }}" class="btn btn-primary btn-sm shadow"><i class="fe fe-menu"></i></a></div>
+        </div>
     </div>
     <div class="card p-3">
         <form id="menuForm">
