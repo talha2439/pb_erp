@@ -38,8 +38,6 @@
 
 
                 <div class="col-md-12 d-flex justify-content-end ">
-                    <a href="{{ route('departments.index') }}" class="btn btn-primary"
-                        style="margin-right: 10px">Department List</a>
                     <button class="btn btn-success" type="submit">{{ $parentButton }}</button>
                 </div>
             </div>

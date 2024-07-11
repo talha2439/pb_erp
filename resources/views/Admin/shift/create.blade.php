@@ -95,8 +95,6 @@
 
 
                 <div class="col-md-12 d-flex justify-content-end ">
-                    <a href="{{ route('shifts.index') }}" class="btn btn-primary"
-                        style="margin-right: 10px">Shift List</a>
                     <button class="btn btn-success" type="submit">{{ $parentButton }}</button>
                 </div>
             </div>

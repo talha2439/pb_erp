@@ -129,7 +129,6 @@
 <hr>
 
     <div class="col-md-12 d-flex justify-content-end ">
-        <a href="{{ route('attendance.reports.all') }}" class="btn btn-primary" style="margin-right: 10px">Attendance Reports</a>
         <button class="btn btn-success" type="submit" id="submitBtn">{{ $parentButton }}</button>
     </div>
 </div>
