@@ -1,4 +1,14 @@
 $(document).ready(function(){
+    let workingStatus = $('select[name="working_status"]');
+
+    $('#attendance_status').on('input'  , function(){
+        statusChange($(this));
+    });
+    $('select[name="working_status"]' ).on('input' , function(){
+        workingStatusChange('#attendance_status' ,$(this));
+    });
+
+
     showextra();
     let checkIn  = $(document).find('input[name="check_in"]');
     let checkOut = $(document).find('input[name="check_out"]');
@@ -6,6 +16,7 @@ $(document).ready(function(){
     $(document).on('input', 'input[name="check_out"] , input[name="check_in"] ', function(e) {
         CalculateTime(checkIn.val(), checkOut.val());
     });
+
 $(document).on('change' , 'select[name="working_status"]',  function(e){
     if($(this).val() == 'late-setting'){
         $(document).find('.extra_container').fadeIn();
@@ -119,7 +130,6 @@ if(action == 'edit'){
     $("select[name='attendance_status']").trigger("change");
     $("select[name='working_status']").val(attendance.working_status);
     $("select[name='working_status']").trigger("change");
-    let workingMins = attendance.working_hours.split('minutes')[0].split(" ")[0];
     $('input[name="working_hours"]').val(0) ;
     if(attendance.working_hours.includes('hours')){
         $('input[name="working_hours"]').val((attendance.working_hours.split('hours')[0] || 0)) ;
@@ -212,5 +222,60 @@ $(document).on('input','.attendance_date',function(e){
         $('#submitBtn').prop('disabled',false);
     }
 })
+function workingStatusChange(attendanceStatus , working_status){
+    if($(working_status).val() == 'on-time' || $(working_status).val() == 'late' || $(working_status).val() == 'early-out' || $(working_status).val()=='late and early-out' ||
+     $(workingStatus).val() == 'early-in and early-out' || $(working_status).val() == 'late-setting' ){
+        $(attendanceStatus).val('present');
 
+        if($(workingStatus).val() == 'late-setting'){
+            CalculateTime(checkIn.val(),checkOut.val())
+            $(workingStatus).val('late-setting');
+            $(workingStatus).trigger('change');
+        }
+        else{
+            $('input[name="extra_hours"]').val(0);
+            $('input[name="extra_minutes"]').val(0);
+        }
+
+    }
+    else if($(working_status).val() == 'absent'){
+        $(document).find('input[name="working_hours"]').val('0');
+        $(attendanceStatus).val('absent');
+    }
+    else if($(working_status).val() == 'leave'){
+        $(document).find('input[name="working_hours"]').val('0');
+        $(attendanceStatus).val('leave');
+    }
+    else if($(working_status).val() == 'off'){
+        $(document).find('input[name="working_hours"]').val('0');
+        $(attendanceStatus).val('off');
+    }
+    $(attendanceStatus).trigger('change');
+}
+function statusChange(attendance_status){
+    if($(attendance_status).val() == 'present'){
+        $(workingStatus).val('on-time');
+        CalculateTime(checkIn.val(),checkOut.val())
+
+         if(workingStatus == 'late-setting'){
+            CalculateTime(checkIn.val(),checkOut.val())
+            $(workingStatus).val('late-setting');
+            $(workingStatus).trigger('change');
+        }
+    }
+    else if($(attendance_status).val() == 'absent'){
+        $(document).find('input[name="working_hours"]').val('0');
+        $(workingStatus).val('absent');
+    }
+    else if($(attendance_status).val() == 'leave'){
+        $(document).find('input[name="working_hours"]').val('0');
+        $(workingStatus).val('leave');
+    }
+    else if($(attendance_status).val() == 'off'){
+        $(document).find('input[name="working_hours"]').val('0');
+        $(workingStatus).val('off');
+    }
+    $(workingStatus).trigger('change');
+
+}
 })
