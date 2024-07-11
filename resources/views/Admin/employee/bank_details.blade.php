@@ -53,8 +53,8 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="name">Branch Name (<small class="text-danger">*</small>)</label>
-                        <input type="text" name="branch_name" id="branch_name" data-type="required" data-name="Branch Name" placeholder="Enter Branch Name.."
+                        <label for="name">Branch Name (<small class="text-secondary">Optional</small>)</label>
+                        <input type="text" name="branch_name" id="branch_name" placeholder="Enter Branch Name.."
                             class="form-control mt-3 mb-3">
                     </div>
                 </div>

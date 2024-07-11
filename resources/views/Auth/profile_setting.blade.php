@@ -80,7 +80,7 @@
                     </div>
                     <div class="col-lg-6 col-12">
                         <div class="input-block mb-3">
-                            <label>Branch Name <small class="text-danger">(*)</small></label>
+                            <label>Branch Name <small class="text-secondary">(optional)</small></label>
                             <input type="text" value="{{ $user->employees->bank_details->branch_name ?? '' }}" name="branch_name" class="form-control"
                                 placeholder="Enter Branch Name">
                         </div>
