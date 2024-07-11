@@ -64,38 +64,38 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-12">
-                        <input type="hidden" name="id" value="{{ $user->employees->id ?? "" }}" id="id">
+                        <input type="hidden" name="employee_id" value="{{ $user->employees->id ?? "" }}" id="id">
                         <div class="input-block mb-3">
                             <label>Account Holder Name <small class="text-danger">(*)</small></label>
-                            <input type="text" value="{{ $user->employees->bank_details->account_holder_name ?? '' }}" name="username" class="form-control"
+                            <input type="text" value="{{ $user->employees->bank_details->account_holder_name ?? '' }}" name="account_holder_name" class="form-control"
                                 placeholder="Enter User Name">
                         </div>
                     </div>
                     <div class="col-lg-6 col-12">
                         <div class="input-block mb-3">
                             <label>Bank Name <small class="text-danger">(*)</small></label>
-                            <input type="text" value="{{ $user->employees->bank_details->name ?? '' }}" name="name" class="form-control"
+                            <input type="text" value="{{ $user->employees->bank_details->name ?? '' }}" name="bank_name" class="form-control"
                                 placeholder="Enter Bank Name">
                         </div>
                     </div>
                     <div class="col-lg-6 col-12">
                         <div class="input-block mb-3">
                             <label>Branch Name <small class="text-danger">(*)</small></label>
-                            <input type="text" value="{{ $user->employees->bank_details->branch_name ?? '' }}" name="name" class="form-control"
+                            <input type="text" value="{{ $user->employees->bank_details->branch_name ?? '' }}" name="branch_name" class="form-control"
                                 placeholder="Enter Branch Name">
                         </div>
                     </div>
                     <div class="col-lg-6 col-12">
                         <div class="input-block mb-3">
                             <label>Account Number <small class="text-danger">(*)</small></label>
-                            <input type="text" value="{{ $user->employees->bank_details->account_number ?? '' }}" name="name" class="form-control"
+                            <input type="text" value="{{ $user->employees->bank_details->account_number ?? '' }}" name="account_number" class="form-control"
                                 placeholder="Enter Account Number">
                         </div>
                     </div>
                     <div class="col-lg-6 col-12">
                         <div class="input-block mb-3">
                             <label>IBAN Number</label>
-                            <input type="text" value="{{ $user->employees->bank_details->iban ?? '' }}" name="email" class="form-control"
+                            <input type="text" value="{{ $user->employees->bank_details->iban ?? '' }}" name="iban" class="form-control"
                                 placeholder="Enter IBAN Number">
                         </div>
                     </div>
