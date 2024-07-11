@@ -24,8 +24,8 @@ class AttendanceController extends Controller
             $query->with('employees');
         })->first();
         if(!empty($data['attendance'])){
-        $data['attendance']->check_in  =  Carbon::parse($data['attendance']->check_in)->format('h:m:s');
-        $data['attendance']->check_out =  !empty($data['attendance']->check_out) && $data['attendance']->check_out != 'empty' ? Carbon::parse($data['attendance']->check_out)->format('h:m:s') : "empty" ;
+        $data['attendance']->check_in  =  !empty($data['attendance']->check_in) && $data['attendance']->check_in != 'empty' ? $data['attendance']->check_in: "empty" ;
+        $data['attendance']->check_out =  !empty($data['attendance']->check_out) && $data['attendance']->check_out != 'empty' ? $data['attendance']->check_out : "empty" ;
         }
         $data['currentAttendance']  = $this->parentModel::whereDate('date' , Carbon::now())->pluck('employee_id');
         $data['action'] = !empty($data['attendance']) ? 'edit' : 'create';
@@ -162,7 +162,8 @@ class AttendanceController extends Controller
                     unset($data['extra_minutes']);
                 }
                 $data['working_hours'] = $data['check_out'] == null && $data['working_hours'] == "NaN" ? '0' : $data['working_hours'];
-                $data['check_out'] = $data['check_out'] == null ? 'empty' : $data['check_out'];
+                $data['check_in'] = $data['check_in'] == null ? 'empty' :Carbon::parse($data['check_in'])->format('H:i A');
+                $data['check_out'] = $data['check_out'] == null ? 'empty' : Carbon::parse($data['check_out'])->format('H:i A');
                 $markAttendance  = $this->parentModel::updateOrCreate(['id' => $id] , $data);
                 if($markAttendance){
                     return redirect(route($this->parentRoute.'.reports.all'))->with('success','Attendance Marked for:' ." " . ucfirst($employees->first_name));

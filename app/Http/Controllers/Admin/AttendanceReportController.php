@@ -93,8 +93,8 @@
                 }
                 return '<span class="blink blink-'.$blinkclass.'">'.$item->attendance_status.'</span>';
             })->addColumn('checkin_checkout', function($item){
-                $checkout = !empty($item->check_out) && $item->check_out != 'empty' && $item->check_out != null ? Carbon::parse($item->check_out)->format('h:i A') : "";
-                $checkin = !empty($item->check_in) && $item->check_in ? Carbon::parse($item->check_in)->format('h:i A') : "";
+                $checkout = !empty($item->check_out) && $item->check_out != 'empty' && $item->check_out != null ? $item->check_out : "";
+                $checkin = !empty($item->check_in) && $item->check_in != 'empty' && $item->check_in != null ? $item->check_in : "";
                 $checkin  =  $checkin .' - '. $checkout ;
                 if($item->attendance_status == strtolower('Leave')){
                     $checkin ='On-leave';

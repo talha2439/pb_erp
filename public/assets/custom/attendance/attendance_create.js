@@ -1,17 +1,35 @@
 $(document).ready(function(){
     let workingStatus = $('select[name="working_status"]');
-
+    let checkIn  = $(document).find('input[name="check_in"]');
+    let checkOut = $(document).find('input[name="check_out"]');
+    if($("#attendance_status").val() == 'present'){
+        checkIn.attr('data-type','required');
+    }
+    else{
+        checkIn.attr('data-type','');
+    }
     $('#attendance_status').on('input'  , function(){
+        if($(this).val() == 'present'){
+            checkIn.attr('data-type','required');
+        }
+        else{
+            checkIn.attr('data-type','');
+        }
         statusChange($(this));
     });
     $('select[name="working_status"]' ).on('input' , function(){
         workingStatusChange('#attendance_status' ,$(this));
+        if($("#attendance_status").val() == 'present'){
+            checkIn.attr('data-type','required');
+        }
+        else{
+            checkIn.attr('data-type','');
+        }
     });
 
 
     showextra();
-    let checkIn  = $(document).find('input[name="check_in"]');
-    let checkOut = $(document).find('input[name="check_out"]');
+
     CalculateTime(checkIn.val(),checkOut.val())
     $(document).on('input', 'input[name="check_out"] , input[name="check_in"] ', function(e) {
         CalculateTime(checkIn.val(), checkOut.val());
@@ -123,29 +141,34 @@ $(document).on('input','input[name="check_out"]',function(){
 if(action == 'edit'){
     $("select[name='employee_id']").val(attendance.users.employees.id);
     $("select[name='employee_id']").trigger("change");
-    $('input[name="check_in"]').val(attendance.check_in);
-    $('input[name="check_out"]').val(attendance.check_out == 'empty' ? '' : attendance.check_out);
+    console.log(attendance.check_out);
+    $('input[name="check_in"]').val(attendance.check_in == 'empty' ? '' :parseTimeHHmmToSFormat(attendance.check_in));
+    $('input[name="check_out"]').val(attendance.check_out == 'empty' ? '' : parseTimeHHmmToSFormat(attendance.check_out));
+
     $('input[name="date"]').val(attendance.date);
     $("select[name='attendance_status']").val(attendance.attendance_status);
     $("select[name='attendance_status']").trigger("change");
     $("select[name='working_status']").val(attendance.working_status);
     $("select[name='working_status']").trigger("change");
     $('input[name="working_hours"]').val(0) ;
-    if(attendance.working_hours.includes('hours')){
-        $('input[name="working_hours"]').val((attendance.working_hours.split('hours')[0] || 0)) ;
-        workingMins = attendance.working_hours.split('hours')[1].split('minutes')[0].split(' ')[1];
-    }
+    if($(attendance.check_out != 'empty'&& attendance.check_in != 'empty')){
+        if(attendance.working_hours.includes('hours')){
+            $('input[name="working_hours"]').val((attendance.working_hours.split('hours')[0] || 0)) ;
+            workingMins = attendance.working_hours.split('hours')[1].split('minutes')[0].split(' ')[1];
+        }
 
-    $('input[name="working_minutes"]').val(workingMins);
-    if(attendance.extra_hours){
-    $(document).find('input[name="extra_hours"]').val(attendance.extra_hours.split('hours')[0] || 0);
-    $(document).find('input[name="extra_minutes"]').val(attendance.extra_hours.split('hours')[1].split('minutes')[0].split(' ')[1] || 0);
+        $('input[name="working_minutes"]').val(workingMins);
+        if(attendance.extra_hours){
+        $(document).find('input[name="extra_hours"]').val(attendance.extra_hours.split('hours')[0] || 0);
+        $(document).find('input[name="extra_minutes"]').val(attendance.extra_hours.split('hours')[1].split('minutes')[0].split(' ')[1] || 0);
+        }
     }
 }
 
 function CalculateTime(checkIn, checkOut) {
 
-    let [checkInHour, checkInMinute, checkInPeriod] = parseTime(checkIn);
+    if(checkIn && checkOut){
+        let [checkInHour, checkInMinute, checkInPeriod] = parseTime(checkIn);
     let [checkOutHour, checkOutMinute, checkOutPeriod] = parseTime(checkOut);
     if (checkInPeriod === 'PM' && checkInHour !== 12) {
         checkInHour += 12;
@@ -182,6 +205,7 @@ function CalculateTime(checkIn, checkOut) {
             $(document).find('input[name="extra_hours"]').val(0);
             $(document).find('input[name="extra_minutes"]').val(0);
         }
+    }
     }
 
 }
@@ -240,14 +264,20 @@ function workingStatusChange(attendanceStatus , working_status){
     }
     else if($(working_status).val() == 'absent'){
         $(document).find('input[name="working_hours"]').val('0');
+        $(document).find('input[name="check_in"]').val('');
+        $(document).find('input[name="check_out"]').val('');
         $(attendanceStatus).val('absent');
     }
     else if($(working_status).val() == 'leave'){
         $(document).find('input[name="working_hours"]').val('0');
+        $(document).find('input[name="check_in"]').val('');
+        $(document).find('input[name="check_out"]').val('');
         $(attendanceStatus).val('leave');
     }
     else if($(working_status).val() == 'off'){
         $(document).find('input[name="working_hours"]').val('0');
+        $(document).find('input[name="check_in"]').val('');
+        $(document).find('input[name="check_out"]').val('');
         $(attendanceStatus).val('off');
     }
     $(attendanceStatus).trigger('change');
@@ -265,17 +295,48 @@ function statusChange(attendance_status){
     }
     else if($(attendance_status).val() == 'absent'){
         $(document).find('input[name="working_hours"]').val('0');
+        $(document).find('input[name="check_in"]').val('');
+        $(document).find('input[name="check_out"]').val('');
         $(workingStatus).val('absent');
     }
     else if($(attendance_status).val() == 'leave'){
         $(document).find('input[name="working_hours"]').val('0');
+        $(document).find('input[name="check_in"]').val('');
+        $(document).find('input[name="check_out"]').val('');
         $(workingStatus).val('leave');
     }
     else if($(attendance_status).val() == 'off'){
         $(document).find('input[name="working_hours"]').val('0');
+        $(document).find('input[name="check_in"]').val('');
+        $(document).find('input[name="check_out"]').val('');
         $(workingStatus).val('off');
     }
     $(workingStatus).trigger('change');
 
 }
+function parseTimeHHmmToSFormat(timeHHmm) {
+    // Split the time string into hours and minutes
+if(timeHHmm){
+
+    var parts = timeHHmm.split(':');
+    var hours = parseInt(parts[0], 10);
+    var minutes = parseInt(parts[1], 10);
+
+    // Check if the time is in PM and adjust hours accordingly
+    if (timeHHmm.indexOf('PM') !== -1 && hours < 12) {
+        hours += 12;
+    }
+
+    // Construct a date object with today's date and the adjusted time
+    var today = new Date();
+    today.setHours(hours);
+    today.setMinutes(minutes);
+
+    // Format the date object into "s" format
+    var formattedTime = ('0' + today.getHours()).slice(-2) + ':' + ('0' + today.getMinutes()).slice(-2);
+
+    return formattedTime;
+}
+}
+
 })
