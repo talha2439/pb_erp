@@ -102,8 +102,6 @@
                     </div>
                 </div>
                 <div class="col-md-12 d-flex justify-content-end ">
-                    <a href="{{ route('payroll.index') }}" class="btn btn-primary"
-                        style="margin-right: 10px">Payroll List</a>
                     <button class="btn btn-success" type="submit">{{ $parentButton }}</button>
                 </div>
             </div>

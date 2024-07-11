@@ -80,8 +80,6 @@
 
 
                 <div class="col-md-12 d-flex justify-content-end mt-3">
-                    <a href="{{ route('employee_loans.index') }}" class="btn btn-primary"
-                        style="margin-right: 10px">Loans  List</a>
                     <button class="btn btn-success" type="submit">{{ $parentButton }}</button>
                 </div>
             </div>
