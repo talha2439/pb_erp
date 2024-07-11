@@ -297,6 +297,11 @@
             }
         })
     }
+    function maxLength(input, maxLength) {
+        if($('#'+ input).val().length >= maxLength){
+            $('#'+ input).val($('#'+ input).val().substr(0 , maxLength));
+        }
+    }
 </script>
 @stack('js')
 

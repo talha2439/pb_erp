@@ -1,5 +1,4 @@
-    <?php
-
+<?php
     namespace App\Http\Controllers\Admin;
 
     use App\Http\Controllers\Controller;
@@ -124,19 +123,33 @@
                     $blinkclass = 'success';
                     $workingStatus = 'On-time';
                 }
+                else if($item->working_status == strtolower('Leave')){
+                    $blinkclass = 'info';
+                    $workingStatus = 'leave';
 
-                else if(!empty($item->check_in) &&!empty($item->check_out) && $totalHours[0] >= 9 && empty($item->extra_hours)){
-                    $blinkclass ='success';
-                    $workingStatus = 'Full-time';
                 }
-                else if($item->working_status == 'off'){
-                    $blinkclass ='secondary';
-                    $workingStatus = 'Off';
+                else if($item->working_status == strtolower('absent')){
+                    $blinkclass = 'danger';
+                    $workingStatus = 'Absent';
+
+                }
+                else if($item->working_status == strtolower('off')){
+                    $blinkclass = 'secondary';
+                    $workingStatus = "Off";
+                }
+                else if($item->working_status == strtolower('late')){
+                    $blinkclass = 'danger';
+                    $workingStatus = "Late";
                 }
                 else if($item->working_status == 'on-time'){
                     $blinkclass ='success';
                     $workingStatus = 'On-time';
                 }
+                else if(!empty($item->check_in) &&!empty($item->check_out) && $totalHours[0] >= 9 && empty($item->extra_hours)){
+                    $blinkclass ='success';
+                    $workingStatus = 'Full-time';
+                }
+
                 else if(!empty($item->check_in) &&!empty($item->check_out) && $totalHours[0] < 9 ){
                     $blinkclass ='danger';
                     $workingStatus = 'Half-time';
@@ -150,19 +163,7 @@
                     $workingStatus = 'Over-time';
 
                 }
-                else if($item->working_status == strtolower('Leave')){
-                    $blinkclass = 'info';
-                    $workingStatus = 'on-leave';
 
-                }
-                else if($item->working_status == strtolower('off')){
-                    $blinkclass = 'secondary';
-                    $workingStatus = "Off";
-                }
-                else if($item->working_status == strtolower('late')){
-                    $blinkclass = 'danger';
-                    $workingStatus = "Late";
-                }
                 return '<span class="blink blink-'.$blinkclass.'">'.$workingStatus.'</span>';
 
             })->addColumn('action' , function($item){

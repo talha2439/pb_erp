@@ -38,7 +38,12 @@ $(document).ready(function(){
         }
 
     })
-
+    $("#account_number").on('input' , function(){
+        maxLength('account_number' , 18);
+    })
+    $("#iban_number").on('input' , function(){
+        maxLength('iban_number' , 34);
+    })
     $("#employee_id").on('change' , function(e){
         e.preventDefault();
         let id  = $(this).val();
@@ -67,6 +72,7 @@ $(document).ready(function(){
             }
         })
     })
+   
     function validate(formId , e){
         let inputs = $(document).find('#'+formId).find('.form-control[data-type="required"]');
         $(inputs).each(function(){
