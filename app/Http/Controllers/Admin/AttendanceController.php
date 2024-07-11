@@ -19,16 +19,17 @@ class AttendanceController extends Controller
     public $parentRoute = 'attendance';
     public $parentView   = 'Admin.attendance.reports';
     public function create($id = null){
+
         $data['attendance'] = $this->parentModel::where('id', $id)->with('users' , function($query){
             $query->with('employees');
         })->first();
         if(!empty($data['attendance'])){
         $data['attendance']->check_in =  Carbon::parse($data['attendance']->check_in)->format('h:m:s');
-        $data['attendance']->check_out =  Carbon::parse($data['attendance']->check_out)->format('h:m:s');}
+        $data['attendance']->check_out =  !empty($data['attendance']->check_out) && $data['attendance']->check_out != 'empty' ? Carbon::parse($data['attendance']->check_out)->format('h:m:s') : "empty" ;
+        }
         $data['currentAttendance']  = $this->parentModel::whereDate('date' , Carbon::now())->pluck('employee_id');
         $data['action'] = !empty($data['attendance']) ? 'edit' : 'create';
         $data['employees']          =  $data['action'] == 'create' ? $this->childModel::whereNotIn('user_id' , $data['currentAttendance'])->get():$this->childModel::where('user_id',$data['attendance']->employee_id)->latest()->get();
-        
         return view($this->parentView.'.create', $data);
     }
     public function checkin(Request $request)
@@ -77,8 +78,8 @@ class AttendanceController extends Controller
             $data           =  $request->except('_token');
             $attendanceData =  $this->parentModel::where(['employee_id' => $emp_id, 'date' => $date])->first();
             $checkIn        =  $attendanceData->check_in;
-            $checkIn        =  Carbon::parse($checkIn);
-            $checkout       =  Carbon::parse($data['check_out']);
+            $checkIn        =   Carbon::parse($checkIn);
+            $checkout       =   Carbon::parse($data['check_out']);
             $data['timeElapsed']  =  $checkout->diffInMilliseconds($checkIn);
 
             if ($attendanceData->count() > 0) {
@@ -161,6 +162,8 @@ class AttendanceController extends Controller
                     unset($data['working_minutes']);
                     unset($data['extra_minutes']);
                 }
+                $data['working_hours'] = $data['check_out'] == null && $data['working_hours'] == "NaN" ? '0' : $data['working_hours'];
+                $data['check_out'] = $data['check_out'] == null ? 'empty' : $data['check_out'];
                 $markAttendance  = $this->parentModel::updateOrCreate(['id' => $id] , $data);
                 if($markAttendance){
                     return redirect(route($this->parentRoute.'.reports.all'))->with('success','Attendance Marked for:' ." " . ucfirst($employees->first_name));

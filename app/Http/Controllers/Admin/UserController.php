@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Events\Notifications;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Employee, User , SubMenu , UserAccess};
+use App\Models\{Employee, EmployeeBankDetail, User , SubMenu , UserAccess};
 use Illuminate\Support\Facades\Auth;
 use Str;
 use Hash;
@@ -64,13 +64,34 @@ class UserController extends Controller
             $data                = $request->except('_token');
             $query               = $request->query('type');
 
+            // Update Bank Details
+            if($query == 'profile'){
+                if(!empty($data['employee_id'])){
+                $storeBankDetails  = EmployeeBankDetail::updateOrCreate(['employee_id' => $data['employee_id']],[
+                    'employee_id' => $data['employee_id'] ?? "",
+                    'name' => $data['bank_name']  ?? "",
+                    'branch_name' => $data['branch_name']  ?? "",
+                    'account_holder_name'=>$data['account_holder_name']  ?? "",
+                    'account_number' => $data['account_number']  ?? "",
+                    'iban' => $data['iban'] ?? "",
+                ]);
+                if($storeBankDetails){
+                    unset($data['employee_id']);
+                    unset($data['bank_name']);
+                    unset($data['branch_name']);
+                    unset($data['account_holder_name']);
+                    unset($data['account_number']);
+                    unset($data['iban']);
+                }
+                }
+            }
             // Acccess
             $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.create')->first();
             $checkAccess = $this->check_access($submenuId->id , 'create_status');
             if(!empty($id)){
              $checkAccess = $this->check_access($submenuId->id , 'update_status');
             }
-            if($checkAccess){
+            if($checkAccess || $query == 'profile'){
             try{
             $storeStatus         = empty($id)  ? 'saved' : 'updated';
             if($request->hasFile('image')){
@@ -87,7 +108,6 @@ class UserController extends Controller
                 }
             }
             $data['email_verified_at']      = isset($data['active']) == "on" ? Carbon::now() : null ; // it will check that verified user is checked or unchecked
-
             // To check user name and email
             if(empty($id)){
                 $checkusername       = $this->parentModel::where("username", $data['username'])->count();
@@ -99,7 +119,7 @@ class UserController extends Controller
                 if($checkemail > 0){
                 return redirect()->back()->with('error' ,"Email address already Exists..!");
                 }
-                $data['password']     =  Str::random(15);
+                $data['password']     =  isset($data['password']) && $data['password'] != null ? $data['password'] : Str::random(15);
                 $password             =  $data['password'];
                 $data['password_txt'] =  $data['password'];
                 $data['password']     =  Hash::make($data['password']);

@@ -113,7 +113,7 @@ if(action == 'edit'){
     $("select[name='employee_id']").val(attendance.users.employees.id);
     $("select[name='employee_id']").trigger("change");
     $('input[name="check_in"]').val(attendance.check_in);
-    $('input[name="check_out"]').val(attendance.check_out);
+    $('input[name="check_out"]').val(attendance.check_out == 'empty' ? '' : attendance.check_out);
     $('input[name="date"]').val(attendance.date);
     $("select[name='attendance_status']").val(attendance.attendance_status);
     $("select[name='attendance_status']").trigger("change");
@@ -125,7 +125,7 @@ if(action == 'edit'){
         $('input[name="working_hours"]').val((attendance.working_hours.split('hours')[0] || 0)) ;
         workingMins = attendance.working_hours.split('hours')[1].split('minutes')[0].split(' ')[1];
     }
-    
+
     $('input[name="working_minutes"]').val(workingMins);
     if(attendance.extra_hours){
     $(document).find('input[name="extra_hours"]').val(attendance.extra_hours.split('hours')[0] || 0);
@@ -134,7 +134,7 @@ if(action == 'edit'){
 }
 
 function CalculateTime(checkIn, checkOut) {
-    
+
     let [checkInHour, checkInMinute, checkInPeriod] = parseTime(checkIn);
     let [checkOutHour, checkOutMinute, checkOutPeriod] = parseTime(checkOut);
     if (checkInPeriod === 'PM' && checkInHour !== 12) {
@@ -186,9 +186,18 @@ function parseTime(timeStr) {
 function showextra(value = null)
 {
     if(value!=null && value != "" || action == 'edit'){
+    $(document).find('input[name="date"]').attr('data-type','required');
+    $(document).find('select[name="attendance_status"]').attr('data-type','required');
+    $(document).find('input[name="working_hours"]').attr('data-type','required');
+    $(document).find('select[name="working_status"]').attr('data-type','required');
+
         $(document).find('.extra-container').fadeIn();
     }
     else{
+    $(document).find('input[name="date"]').attr('data-type','');
+        $(document).find('select[name="attendance_status"]').attr('data-type','');
+        $(document).find('input[name="working_hours"]').attr('data-type','');
+        $(document).find('select[name="working_status"]').attr('data-type','');
         $(document).find('.extra-container').fadeOut();
     }
 }

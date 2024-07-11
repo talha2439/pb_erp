@@ -85,8 +85,8 @@ Employee Loan List
                             <td>
                                 <a class="btn btn-info text-white " href="{{ route('employee_loans.details', encrypt($item->id)) }}"> <i
                                         class="fe fe-eye"></i></a> |
-                                <a class="btn btn-warning text-white amountPay @if($item->status != 'paid') disabled @endif" data-bs-toggle="modal"
-                                data-bs-target="#loanStatusModal"
+                                <a class="btn btn-warning text-white amountPay @if($item->status == 'paid' || $item->status =="rejected" && $item->status != "approved" || $item->status == 'pending') disabled @endif" data-bs-toggle="modal"
+                                data-bs-target="#loanPaymentModal"
                                 data-id="{{ $item->id }}"  href="#"> <i
                                         class="fe fe-dollar-sign" title="Pay Installment"></i></a> |
                                 <a class="btn btn-primary text-white " href="#"> <i
@@ -106,11 +106,13 @@ Employee Loan List
 
     </div>
     @include('Admin.employee_loans.partial.popup')
+    @include('Admin.employee_loans.partial.payment')
     @push('js')
     <script src="{{ asset('assets/custom/loan/loan_index.js') }}"></script>
         <script>
-            let deleteUrl = "{{ route('employee_loans.delete') }}";
-            let statusUrl = "{{ route('employee_loans.status') }}";
+            let deleteUrl  = "{{ route('employee_loans.delete') }}";
+            let statusUrl  = "{{ route('employee_loans.status') }}";
+            let payLoanUrl = "{{ route('employee_loans.pay_loan') }}";
         </script>
     @endpush
 @endsection

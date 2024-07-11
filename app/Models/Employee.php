@@ -53,4 +53,7 @@ class Employee extends Model
     public function experiences(){
         return $this->hasMany(EmployeeExperience::class , 'employee_id' , 'id');
     }
+    public function bank_details(){
+        return $this->hasOne(EmployeeBankDetail::class,'employee_id' , 'id');
+    }
 }

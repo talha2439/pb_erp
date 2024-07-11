@@ -271,7 +271,7 @@
         var num_type = $(document).find('input[type="number"]');
         $(num_type).on('input',function(){
             if($(this).val()<=0){
-                $(this).val(0);
+                $(this).val("");
             }
         })
         $('.loader-container').hide();
