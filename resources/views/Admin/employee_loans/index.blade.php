@@ -73,7 +73,7 @@ Employee Loan List
                             <td>{{  $requested_date->format('F d , Y') }}</td>
                             <td>{{  $due_date->format('F d , Y') }}</td>
                             <td>{{  $requested_date->diffInDays($due_date) .' Days' ?? "0 Days"}}</td>
-                            <td>{{  \Number::currency(!empty($item->requested_amount)  ? $item->requested_amount : 0 , 'PKR' , 'en_PK') : "0" }}</td>
+                            <td>{{  \Number::currency(!empty($item->requested_amount)  ? $item->requested_amount : 0 , 'PKR' , 'en_PK') }}</td>
                             <td>{{  \Number::currency(!empty($item->approved_amount) ? $item->approved_amount : 0  , 'PKR' , 'en_PK') }}</td>
                             <td>{{  \Number::currency(!empty($item->remaining_amount) ? $item->remaining_amount : 0  , 'PKR' , 'en_PK') }}</td>
                             <td>{{  \Number::currency(!empty($item->paid_amount) ? $item->paid_amount : 0  , 'PKR' , 'en_PK') }}</td>
