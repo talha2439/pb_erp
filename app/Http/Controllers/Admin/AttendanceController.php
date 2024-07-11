@@ -24,7 +24,7 @@ class AttendanceController extends Controller
             $query->with('employees');
         })->first();
         if(!empty($data['attendance'])){
-        $data['attendance']->check_in =  Carbon::parse($data['attendance']->check_in)->format('h:m:s');
+        $data['attendance']->check_in  =  Carbon::parse($data['attendance']->check_in)->format('h:m:s');
         $data['attendance']->check_out =  !empty($data['attendance']->check_out) && $data['attendance']->check_out != 'empty' ? Carbon::parse($data['attendance']->check_out)->format('h:m:s') : "empty" ;
         }
         $data['currentAttendance']  = $this->parentModel::whereDate('date' , Carbon::now())->pluck('employee_id');
@@ -49,7 +49,7 @@ class AttendanceController extends Controller
             if (empty($checkAttendance)) {
                 $shiftIn          = Carbon::parse($employee->shifts->start_time);
                 $checkInTime      = Carbon::parse($data['check_in']);
-                if ($checkInTime->lessThan($shiftIn)) {
+                if($checkInTime->lessThan($shiftIn)) {
                     $data['working_status'] = 'early-in';
                 }
                 else{
@@ -150,7 +150,6 @@ class AttendanceController extends Controller
                     return redirect()->back()->with('error' , "Attendance already marked for: " . " " .$employees->first_name);
                 }
                }
-                $data['attendance_status'] =  'present';
                 if(!empty($id)){
                     $data['working_hours']  = $data['working_hours'] ."hours". " " . $data['working_minutes'] . 'minutes';
                     $data['total_hours']    = $data['working_hours'];
@@ -176,6 +175,51 @@ class AttendanceController extends Controller
                 return redirect()->back()->with('error' , $e->getMessage());
             }
 
+        }
+        public function mark_holidays(Request $request){
+            try{
+                $data  = $request->except("_token");
+
+                    $employees =  $this->childModel::latest()->pluck('user_id');
+                    $carbonDateRange = [];
+                    $dates           = Carbon::parse($data['start_date'])->daysUntil($data['end_date']);
+                    foreach($dates as $date){
+                        $carbonDateRange[] = $date->format('Y-m-d');
+                    }
+                    foreach($carbonDateRange as $carbonDate){
+                        $checkData = $this->parentModel::whereDate("date",$carbonDate)->pluck('id');
+                        if($checkData->count() > 0){
+                            $storeAttendance = $this->parentModel::whereIn('id' , $checkData)->update(['attendance_status' => 'off' , 'working_status' => 'off','working_hours' => '0hours 0minutes',
+                                'total_hours' => '0hours 0minutes',
+                                'extra_hours' => '0hours 0minutes',]);
+                        }
+                        else{
+                        foreach( $employees  as $ids){
+                            $storeAttendance = $this->parentModel::create([
+                                'employee_id' => $ids ,
+                                'date' => $carbonDate,  // Assuming all holidays are on same day
+                                'attendance_status' => 'off', // Off means Holidays
+                                'working_status'=>'off',// Off means Holidays
+                                'working_hours' => '0hours 0minutes',
+                                'total_hours' => '0hours 0minutes',
+                                'extra_hours' => '0hours 0minutes',
+                            ]);
+                        }
+                        }
+
+                    }
+                    if($storeAttendance){
+                        return response()->json(['success' => true]);
+                    }
+                    else{
+                        return response()->json(['error' => true]);
+                    }
+
+
+            }
+            catch(\Exception $e){
+                return response()->json(['error' => $e->getMessage()]);
+            }
         }
 
 }

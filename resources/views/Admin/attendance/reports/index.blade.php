@@ -16,18 +16,30 @@ $currentYear = $currentDate->year;
 <div class="card p-3">
     <div class="card-header mb-2">
         <div class="row">
-           <div class="col-md-12 d-flex justify-content-between">
-            <h3>Employee's Attendance Report</h3>
-            <div>
-                <a href="#" class="btn btn-info text-white" data-bs-toggle="collapse" data-bs-target="#collapseReport" aria-expanded="false" aria-controls="collapseReport">
-                    <i class="fe fe-printer"></i>
+           <div class="col-md-12 d-flex flex-wrap justify-content-center justify-content-md-between">
+            <h3 class="mt-2">Employee's Attendance Report</h3>
+            <div class="d-flex justify-content-between mt-2" >
+                <div class=" ms-2 me-2">
+                    <a href="#" class="btn btn-warning text-white" title="Public Holidays Mark" data-bs-toggle="modal"
+                data-bs-target="#holidaysModal">
+                    <i class="fe fe-calendar"></i>
                 </a>
+                </div>
+                <div class="me-2">
+                    <a href="#" class="btn btn-info text-white" data-bs-toggle="collapse" data-bs-target="#collapseReport" aria-expanded="false" aria-controls="collapseReport">
+                        <i class="fe fe-printer"></i>
+                    </a>
+                </div>
+               <div class="me-2">
                 <button class=" btn btn-primary text-white" style="width: max-content" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                     <i class="fe fe-filter"></i>
                    </button>
-                   <a  class="btn btn-dark text-white" title="Mark Attendance" href="{{ route('attendance.create') }}">
-                    <i class="fe fe-clipboard"></i>
-                </a>
+               </div>
+                 <div class="me-2">
+                    <a  class="btn btn-dark text-white" title="Mark Attendance" href="{{ route('attendance.create') }}">
+                        <i class="fe fe-clipboard"></i>
+                    </a>
+                 </div>
             </div>
            </div>
 
@@ -87,87 +99,16 @@ $currentYear = $currentDate->year;
     </div>
 
 </div>
+@include('Admin.attendance.reports.partial.holidays_popup')
 @push('js')
 <link rel="stylesheet" href="{{ asset('assets/plugins/datatables/datatables.min.css') }}">
 <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
 <script src="{{ asset('assets/js/moment.js') }}"></script>
 <script src="{{ asset('assets/js/daterangepicker.js') }}"></script>
+<script src="{{ asset('assets/custom/attendance/attendance_index.js') }}"></script>
 <script>
-    $(document).ready(function() {
-
-      $("#reportForm").submit(function(e){
-        if($("#report_emp").val() == ""){
-            e.preventDefault();
-            toastr['error']("Please Select Employee!");
-            return false;
-        }
-        if($("#report_month").val() == "" && $("#report_year").val() == "" ){
-            e.preventDefault();
-            toastr['error']("Please Select Month or Year!");
-            return false;
-        }
-      })
-
     let allReportsURL = "{{ route('attendance.reports.data') }}";
-    let dataTable  = null ;
-
-    getAllReports();
-    // Filters
-    let date       = $(document).find('.datepicker');
-    let department = $(document).find('#department');
-    let employee   = $(document).find('#employee');
-    let month      = $(document).find('#month');
-    let year       = $(document).find('#year');
-    let searchBtn  = $("#searchBtn")
-    $(searchBtn).on('click' , function(e) {
-        e.preventDefault();
-        if(dataTable !== null){
-            dataTable.fnDestroy();
-        }
-        getAllReports($(department).val(), $(employee).val(), $(date).val(), $(month).val(), $(year).val());
-    })
-
-    $(".datepicker").daterangepicker({
-            autoUpdateInput: true,
-            label:"Please Select Date",
-            locale: {
-                cancelLabel: 'Clear'
-            }
-
-        });
-    function getAllReports(department=null, employee=null,daterange = null , month=null, year=null){
-        dataTable = $('.datatables-basic').dataTable({
-        serverSide : true,
-        processing : true,
-        ajax:{
-            url: allReportsURL ,
-            type:'Get',
-            data:{department: department, employee: employee, daterange: daterange , month: month , year: year}
-        }
-        , "columns": [
-                // Define your columns here
-                { "data": "DT_RowIndex" },
-                { "data": "employee_id" },
-                { "data": "employee_name"},
-                { "data": "department"},
-                { "data": "date"},
-                { "data": "attendance_status"},
-                { "data": "checkin_checkout"},
-                { "data":'working_hours'},
-                { "data":'total_hours'},
-                { "data":'extra_hours'},
-                { "data":'working_status'},
-                { "data": "action"},
-                // Add more columns as needed
-            ]
-    });
-    }
-    })
-
-
-
-
+    let holidaysURL   = "{{ route('attendance.mark_holidays') }}"
 </script>
-
 @endpush
 @endsection
