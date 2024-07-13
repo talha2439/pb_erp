@@ -64,9 +64,9 @@ $(document).ready(function(){
     $("#total_month").on('input', function(e){
         let totalAmount = parseInt($(this).val());
         let requested_amount = parseInt($("#requested_amount").val());
-        let partialAmount = ((requested_amount / totalAmount) || requested_amount );
+        let partialAmount = parseFloat((requested_amount / totalAmount) || requested_amount ).toFixed(1);
         $("#partial_amount").val(partialAmount);
     });
-    
+
 
 })

@@ -38,7 +38,7 @@ class EmployeeLoanController extends Controller
         }
     }
     public function create($id = null){
-        $data['employees'] = $this->parentModel::latest()->get()->map(function($query){
+        $data['employees'] = $this->parentModel::where('employment_status' , 'parmanent')->latest()->get()->map(function($query){
             return [
                 'id' => $query->id,
                 'name' => $query->first_name .' ' . $query->last_name
@@ -58,7 +58,6 @@ class EmployeeLoanController extends Controller
             $data['partial_amount']  = isset($data['partial_amount']) && !empty($data['partial_amount']) ? $data['partial_amount'] : 0 ;
             // Check If there is any loan is already available
             $checkLoan = $this->childModel::where('employee_id', $data['employee_id'])
-            ->where('loan_type_id', $data['loan_type_id'])
             ->whereIn('status', ['pending', 'approved'])
             ->exists();
             if($checkLoan){

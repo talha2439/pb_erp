@@ -7,6 +7,14 @@ $(document).ready(function(){
         var totalDays = new Date(currentYear, currentMonth, 0).getDate();
 
         var selectedSalary = $(this).find(':selected').data('salary');
+        var selectedloanStatus = $(this).find(':selected').data('loan-status');
+        var selectedpartailStatus = $(this).find(':selected').data('loan');
+        if(selectedloanStatus == 'salary'){
+             $("#loan_amount").val(selectedpartailStatus);
+        }
+        else{
+            $("#loan_amount").val(0);
+        }
         var perHour  = (parseInt(selectedSalary) / totalDays ).toFixed(2);
         $("#grossSalary").val(selectedSalary);
         $("#absent_deduction").val(perHour);
