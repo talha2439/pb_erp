@@ -17,7 +17,12 @@
 @endsection
 
 
-    <div class="card-header mb-2"><h1>{{ $title }} Users</h1></div>
+    <div class="card-header mb-2">
+        <div class="d-flex justify-content-between g-2">
+            <h1>{{ $title }} Users </h1>
+            <div>  <a href="{{ route('users.index') }}" class="btn btn-primary btn-sm shadow"><i class="fe fe-menu"></i></a></div>
+        </div>
+    </div>
     <div class="card p-3">
         <form action="{{ $parentRoute }}" method="POST"  id="userForm" enctype="multipart/form-data">
             @csrf

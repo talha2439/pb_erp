@@ -18,7 +18,10 @@
 
 
     <div class="card-header mb-2">
-        <h1>{{ $title }} Department</h1>
+        <div class="d-flex justify-content-between g-2">
+            <h1>{{ $title }} Department </h1>
+            <div>  <a href="{{ route('departments.index') }}" class="btn btn-primary btn-sm shadow"><i class="fe fe-menu"></i></a></div>
+        </div>
     </div>
     <div class="card p-3">
         <form action="{{ $parentRoute }}" method="POST" id="departForm" enctype="multipart/form-data">
