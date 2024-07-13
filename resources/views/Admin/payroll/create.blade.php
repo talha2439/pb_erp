@@ -35,7 +35,7 @@
                             <select name="employee_id" data-type="required" data-name="Employee" id="employee_id" class="form-control select2 mb-2">
                                 <option data-salary="" value="">-- Select Employee --</option>
                                 @foreach ($employees as $item )
-                                <option data-salary="{{ $item->salary }}" value="{{ $item->id }}">{{ $item->first_name }} {{ $item->last_name }}</option>
+                                <option data-loan="{{ $item->loans->partial_amount ?? 0 }}" data-loan-status="{{ $item->loans->repay_type ?? 0 }}" data-salary="{{ $item->salary }}" value="{{ $item->id }}">{{ $item->first_name }} {{ $item->last_name }}</option>
                                 @endforeach
                             </select>
                     </div>

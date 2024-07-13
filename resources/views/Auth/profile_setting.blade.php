@@ -80,7 +80,7 @@
                     </div>
                     <div class="col-lg-6 col-12">
                         <div class="input-block mb-3">
-                            <label>Branch Name <small class="text-danger">(*)</small></label>
+                            <label>Branch Name <small class="text-secondary">(optional)</small></label>
                             <input type="text" value="{{ $user->employees->bank_details->branch_name ?? '' }}" name="branch_name" class="form-control"
                                 placeholder="Enter Branch Name">
                         </div>
@@ -88,14 +88,14 @@
                     <div class="col-lg-6 col-12">
                         <div class="input-block mb-3">
                             <label>Account Number <small class="text-danger">(*)</small></label>
-                            <input type="text" value="{{ $user->employees->bank_details->account_number ?? '' }}" name="account_number" class="form-control"
+                            <input type="number"  value="{{ $user->employees->bank_details->account_number ?? '' }}" name="account_number"  id="account_number" class="form-control"
                                 placeholder="Enter Account Number">
                         </div>
                     </div>
                     <div class="col-lg-6 col-12">
                         <div class="input-block mb-3">
                             <label>IBAN Number</label>
-                            <input type="text" value="{{ $user->employees->bank_details->iban ?? '' }}" name="iban" class="form-control"
+                            <input type="text" value="{{ $user->employees->bank_details->iban ?? '' }}" name="iban"  id="iban_number" class="form-control"
                                 placeholder="Enter IBAN Number">
                         </div>
                     </div>
@@ -113,4 +113,17 @@
             </div>
         </div>
     </div>
+    @push('js')
+    <script>
+        $(document).ready(function(){
+            $("#account_number").on('input' , function(){
+                 maxLength('account_number' , 18);
+            })
+            $("#iban_number").on('input' , function(){
+                maxLength('iban_number' , 34);
+            })
+        })
+    </script>
+
+    @endpush
 @endsection

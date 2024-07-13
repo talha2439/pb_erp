@@ -95,13 +95,13 @@ class UserController extends Controller
             try{
             $storeStatus         = empty($id)  ? 'saved' : 'updated';
             if($request->hasFile('image')){
-                $filename = $data['username'].'.'.$data['image']->getClientOriginalExtension();
+                $filename = str_replace(' ' , '-' , strtolower($data['username'])).'.'.$data['image']->getClientOriginalExtension();
                 $data['image']->move($this->imagePath , $filename);
                 $data['image'] = $filename;
                 // To Remove existing image while updating profile
                 if(!empty($id)){
-                    $imageFile =  $this->parentModel::where('id' , $id)->get('image');
-                    $imagePath =  asset($this->imagePath . $imageFile);
+                    $imageFile =  $this->parentModel::where('id' , $id)->first();
+                    $imagePath =  asset($this->imagePath . $imageFile->image);
                     if(file_exists($imagePath)){
                         unlink($imagePath);
                     }

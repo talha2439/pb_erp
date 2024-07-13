@@ -66,7 +66,7 @@
                 <div class="col-md-6 menu_container">
                     <div class="form-group">
                         <label for="name">Attendance Status (<small class="text-danger"> * </small>)</label>
-                        <select type="text"   data-name ="Attendance Status "name="attendance_status"  class="form-control mt-2 mb-3 select2">
+                        <select type="text"   data-name ="Attendance Status "name="attendance_status" id="attendance_status" class="form-control mt-2 mb-3 select2">
                             <option value="">-- Select Attendance Status --</option>
                             <option value="present">Present</option>
                             <option value="absent">Absent</option>

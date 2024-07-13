@@ -139,6 +139,7 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::Post('/store/{id?}' , [AttendanceController::class ,'store'])->name('attendance.store');
         Route::Get('/delete/{id?}' , [AttendanceController::class ,'delete'])->name('attendance.delete');
         Route::Get('/get_experience/{id?}' , [AttendanceController::class ,'get_experience'])->name('attendance.get');
+        Route::POST('/mark_holidays',[AttendanceController::class,'mark_holidays'])->name('attendance.mark_holidays');
     });
     Route::prefix('attendance/reports')->group(function(){
         Route::get('/' , [AttendanceReportController::class ,'index'])->name('attendance.reports.all');

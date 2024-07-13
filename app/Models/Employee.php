@@ -56,4 +56,8 @@ class Employee extends Model
     public function bank_details(){
         return $this->hasOne(EmployeeBankDetail::class,'employee_id' , 'id');
     }
+    public function loans() {
+        return $this->hasOne(EmployeeLoan::class, 'employee_id', 'id')
+                    ->whereIn('status', ['pending', 'approved']);
+    }
 }

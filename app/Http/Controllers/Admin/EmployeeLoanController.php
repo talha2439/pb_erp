@@ -38,7 +38,7 @@ class EmployeeLoanController extends Controller
         }
     }
     public function create($id = null){
-        $data['employees'] = $this->parentModel::latest()->get()->map(function($query){
+        $data['employees'] = $this->parentModel::where('employment_status' , 'parmanent')->latest()->get()->map(function($query){
             return [
                 'id' => $query->id,
                 'name' => $query->first_name .' ' . $query->last_name
@@ -53,10 +53,14 @@ class EmployeeLoanController extends Controller
     public function store( Request $request , $id = null){
         try{
             $data = $request->except('_token');
+            $data['employee_id']  = isset($data['employee_id']) && !empty($data['employee_id']) ? $data['employee_id'] : Auth::user()->employees->id;
+            $data['total_month']  = isset($data['total_month']) && !empty($data['total_month']) ? $data['total_month'] : 0 ;
+            $data['partial_amount']  = isset($data['partial_amount']) && !empty($data['partial_amount']) ? $data['partial_amount'] : 0 ;
             // Check If there is any loan is already available
-            $checkLoan  =  $this->childModel::where(['employee_id'=> $data['employee_id'] , 'status' => 'pending' , 'loan_type_id' => $data['loan_type_id']])
-                          ->orWhere(['status' => 'approved'])->count();
-            if($checkLoan > 0){
+            $checkLoan = $this->childModel::where('employee_id', $data['employee_id'])
+            ->whereIn('status', ['pending', 'approved'])
+            ->exists();
+            if($checkLoan){
                 return redirect()->back()->with('error' ,'Cannot request for loan for this employee , there are already some pending loans for this employee..!');
             }
             // Check if Requested or Approved amount is equal or greated then employee salary
@@ -103,6 +107,7 @@ class EmployeeLoanController extends Controller
                 $data['remaining_amount'] = $remaining_amount ;
                 $data['rejected_at'] = null;
                 $data['rejected_by'] = null;
+                $data['partial_amount'] = 0 ;
                 $data['approved_by'] = Auth::user()->id;
                 $data['approved_at'] = Carbon::now();
                 unset($data['approved_amount']);
@@ -110,11 +115,14 @@ class EmployeeLoanController extends Controller
             elseif(isset($data['status']) && $data['status'] == 'rejected'){
                 $data['rejected_by'] = Auth::user()->id;
                 $data['remaining_amount'] = 0;
+                $data['partial_amount'] = 0 ;
                 $data['rejected_at'] = Carbon::now();
+                $data['approved_amount'] = 0;
             }
             elseif(isset($data['status']) && $data['status'] == 'approved'){
                 $data['approved_by'] = Auth::user()->id;
                 $data['approved_at'] = Carbon::now();
+                $data['partial_amount'] = $loanData->repay_type != 'duration' ?  ( $data['approved_amount'] / $loanData->total_month ) : 0 ;
                 unset($data['paid_amount']);
             }
             if($loanData){

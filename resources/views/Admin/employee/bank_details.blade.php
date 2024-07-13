@@ -53,22 +53,22 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="name">Branch Name (<small class="text-danger">*</small>)</label>
-                        <input type="text" name="branch_name" id="branch_name" data-type="required" data-name="Branch Name" placeholder="Enter Branch Name.."
+                        <label for="name">Branch Name (<small class="text-secondary">Optional</small>)</label>
+                        <input type="text" name="branch_name" id="branch_name" placeholder="Enter Branch Name.."
                             class="form-control mt-3 mb-3">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="name">Account Number (<small class="text-danger">*</small>)</label>
-                        <input type="text" name="account_number" id="account_number" data-type="required" data-name="Account Number" placeholder="Enter Account number.."
+                        <input type="number" name="account_number" id="account_number" data-type="required" data-name="Account Number" placeholder="Enter Account number.."
                             class="form-control mt-3 mb-3">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="name">IBAN Number (<small class="text-secondary">Optional</small>)</label>
-                        <input type="text" id="iban_number" name="iban" placeholder="Enter IBAN number.."
+                        <input type="text" max="34" id="iban_number" name="iban" placeholder="Enter IBAN number.."
                             class="form-control mt-3 mb-3">
                     </div>
                 </div>
