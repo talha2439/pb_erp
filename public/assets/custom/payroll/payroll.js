@@ -9,8 +9,8 @@ $(document).ready(function(){
         var selectedSalary = $(this).find(':selected').data('salary');
         var selectedloanStatus = $(this).find(':selected').data('loan-status');
         var selectedpartailStatus = $(this).find(':selected').data('loan');
-        if(selectedloanStatus == 'salary'){
-             $("#loan_amount").val(selectedpartailStatus);
+        if(selectedloanStatus == 'salary' || selectedloanStatus == 'monthly'){
+             $("#loan_amount").val(selectedpartailStatus ?? 0);
         }
         else{
             $("#loan_amount").val(0);

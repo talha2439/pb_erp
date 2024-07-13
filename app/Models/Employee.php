@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Trait\Crud;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -57,7 +58,16 @@ class Employee extends Model
         return $this->hasOne(EmployeeBankDetail::class,'employee_id' , 'id');
     }
     public function loans() {
+        $currentDay = Carbon::now()->day;
+       $employeeId   = $this->id;
         return $this->hasOne(EmployeeLoan::class, 'employee_id', 'id')
-                    ->whereIn('status', ['pending', 'approved']);
+            ->where(function ($query) {
+                $query->where('repay_type', 'salary')
+                      ->where('status' ,'approved');
+            })
+            ->orWhere(function ($query) use ($currentDay) {
+                $query->where('repay_type', 'monthly')->where('status' ,'approved')
+                      ->where('date_of_payment', '<', $currentDay);
+            })->where('employee_id' , $employeeId  );
     }
 }

@@ -28,7 +28,7 @@
             @csrf
             <input type="hidden" value="{{ csrf_token() }}" id="csrf-token">
             <div class="row">
-                
+
                 @if(Auth::user()->role != 4)
                 <div class="col-md-3">
                     <div class="form-group">
@@ -85,14 +85,20 @@
                     </div>
                     <input type="date" name="due_date" id="due_date" class="form-control" data-type="" data-name="Due date">
                 </div>
-                <div class="col-md-6 mt-3 mb-1 no_months "style="display:none">
+                <div class="col-md-4 mt-3 mb-1 due_date_container" style="display: none">
+                    <div class="form-group">
+                        <label for="">Date of Payment (<small class="text-danger">*</small>) <small>Enter from 1 - 9 .</small></label>
+                    </div>
+                    <input type="number" name="date_of_payment" id="date_of_payment" class="form-control" placeholder="Date of Payment" data-type="" data-name="Date of Payment ">
+                </div>
+                <div class="col-md-4 mt-3 mb-1 no_months "style="display:none">
                     <div class="form-group">
                         <label for="name">Number of Months (<small class="text-danger">*</small>)</label>
                         <input type="number" placeholder="Number of Months" name="total_month" id="total_month" class="form-control" data-type="" data-name="Number Months">
 
                     </div>
                 </div>
-                <div class="col-md-6 mt-3 mb-1 partial_container" style="display: none">
+                <div class="col-md-4 mt-3 mb-1 partial_container" style="display: none">
                     <div class="form-group">
                         <label for="name">Partial Payment (<small class="text-danger">*</small>)</label>
                         <input type="number" placeholder="Partial Amount" name="partial_amount" id="partial_amount" class="form-control" data-type="" data-name="Partial Amount">

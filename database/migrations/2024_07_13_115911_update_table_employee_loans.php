@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('repay_type')->default('monthly')->after('due_date');
             $table->integer('total_month')->default(0)->after('repay_type');
             $table->integer('partial_amount')->default(0)->after('total_month');
+            $table->integer('date_of_payment')->nullable()->after('partial_amount');
             $table->date('request_date')->nullable()->change();
             $table->date('due_date')->nullable()->change();
         });
@@ -28,9 +29,10 @@ return new class extends Migration
         Schema::table('employee_loans', function(Blueprint $table){
             $table->dropColumn('repay_type');
             $table->dropColumn('total_month');
+            $table->integer('date_of_payment')->nullable();
             $table->dropColumn('partial_amount');
-            $table->string('request_date')->change();
-            $table->string('due_date')->change();
+            $table->string('request_date')->nullable()->change();
+            $table->string('due_date')->nullable()->change();;
         });
     }
 };
