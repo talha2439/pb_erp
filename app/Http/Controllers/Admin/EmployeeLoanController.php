@@ -99,6 +99,7 @@ class EmployeeLoanController extends Controller
             if($loanData->requested_amount < (int) $data['approved_amount']){
                 return response()->json(['exceed' => true]);
             }
+            $data['approved_amount'] = isset($data['approved_amount']) ? $data['approved_amount'] : $loanData->requested_amount;
             $remaining_amount = isset($data['approved_amount']) &&  $data['approved_amount'] > 0 ? $data['approved_amount'] : $loanData->requested_amount;
             $data['remaining_amount'] = $remaining_amount;
             if(isset($data['status']) && $data['status'] == 'paid'){
