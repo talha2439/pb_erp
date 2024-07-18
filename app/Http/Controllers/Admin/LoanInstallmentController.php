@@ -163,19 +163,30 @@ class LoanInstallmentController extends Controller
             $update = $this->parentModel::where('id' , $data['id'])->first();
             $loanData = $this->childModel::where('id' , $update->loan_id)->first();
             if($update){
-
+                if ($update->amount == 0) {
+                    return response()->json(['exceed' => true]);
+                }
+                $remainingData = $loanData->remaining_amount;
+                $paid_amount = $loanData->paid_amount;
+                if ($loanData->remaining_amount + $update->amount - $data['amount'] < 0) {
+                    return response()->json(['exceed' => true]);
+                }
                 $loanData->remaining_amount += $update->amount;
                 $loanData->paid_amount -= $update->amount;
                 $loanData->save();
                 $update->amount = $data['amount'];
                 $update->save();
-                $newdata = $this->parentModel::where('id' , $data['id'])->first();
-                if($newdata->amount > $loanData->remaining_amount){
+                $newdata = $this->parentModel::where('id', $data['id'])->first();
+                $loanData->remaining_amount -= $newdata->amount;
+                $loanData->paid_amount += $newdata->amount;
+                if ($loanData->remaining_amount < 0) {
+
+                    $loanData->remaining_amount = $remainingData;
+                    $loanData->paid_amount = $paid_amount;
+                    $loanData->save();
                     return response()->json(['exceed' => true]);
                 }
 
-                $loanData->remaining_amount -= $newdata->amount;
-                $loanData->paid_amount += $newdata->amount;
                 $loanData->save();
                 return response()->json(['success' => true]);
             }
