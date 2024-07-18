@@ -58,7 +58,7 @@ class Employee extends Model
         return $this->hasOne(EmployeeBankDetail::class,'employee_id' , 'id');
     }
     public function loans() {
-        $currentDay = Carbon::now()->day;
+       $currentDay   = Carbon::now()->day;
        $employeeId   = $this->id;
         return $this->hasOne(EmployeeLoan::class, 'employee_id', 'id')
             ->where(function ($query) {

@@ -76,7 +76,11 @@ $(document).ready(function(){
                     url: deleteUrl + "/" + id,
                     type: 'Get',
                     success: function(res) {
-                        if (res.success) {
+                        if(res.unauthorized){
+                            toastr['error']("You are not allowed to delete employee Information ..!");
+                            return false;
+                        }
+                        else if (res.success) {
                             toastr['success'](
                                 'Employee information has been  Deleted successfully..!'
                                 )
@@ -91,6 +95,8 @@ $(document).ready(function(){
 
 
     });
+
+
     // Qualification show
     $(document).on('click', '.showQualification', function(e) {
         let id = $(this).data('id');

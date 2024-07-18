@@ -183,6 +183,13 @@
                             <div class="subscription-menu">
                                 <ul>
 
+                                    @if(Auth::user()->role != 1)
+                                    <li>
+                                        <a class="dropdown-item"
+                                            href="{{ route('loan_installment.index') }}">Pay Loans
+                                        </a>
+                                    </li>
+                                    @endif
                                     <li>
                                         <a class="dropdown-item"
                                             href="{{ route('profile_settings', encrypt(Auth::user()->id)) }}">Profile

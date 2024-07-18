@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{ SettingController , AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeBankDetailController, EmployeeController, EmployeeExperienceController, EmployeeLoanController, EmployeeQualificationController, EmployeeSalaryController, LeaveController, LoanTypeController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
+use App\Http\Controllers\Admin\{ SettingController , AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeBankDetailController, EmployeeController, EmployeeExperienceController, EmployeeLoanController, EmployeeQualificationController, EmployeeSalaryController, LeaveController, LoanInstallmentController, LoanTypeController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
 use App\Http\Controllers\Admin\EmployeePayrollController;
 use App\Http\Controllers\AuthController;
 use App\Models\Attendance;
@@ -208,5 +208,15 @@ Route::prefix('/')->middleware('auth')->group(function(){
         Route::get('/restore/{id?}' , [EmployeeLoanController::class , 'restore'])->name('employee_loans.restore');
         Route::POST('/status/{id?}' , [EmployeeLoanController::class , 'status'])->name('employee_loans.status');
         Route::POST('/pay/loan' , [EmployeeLoanController::class , 'payLoan'])->name('employee_loans.pay_loan');
+
+    });
+
+    Route::prefix('loan/installement')->group(function(){
+        Route::get('/', [LoanInstallmentController::class , 'index'])->name('loan_installment.index');
+        Route::get('/list', [LoanInstallmentController::class , 'list'])->name('loan_installment.list');
+        Route::get('/allData', [LoanInstallmentController::class , 'allData'])->name('loan_installment.allData');
+        Route::POST('/store', [LoanInstallmentController::class , 'store'])->name('loan_installment.store');
+        Route::get('/status/{id?}', [LoanInstallmentController::class , 'status'])->name('loan_installment.status');
+        Route::POST('/update/{id?}', [LoanInstallmentController::class , 'update'])->name('loan_installment.update');
     });
 });
