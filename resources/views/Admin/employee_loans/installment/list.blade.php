@@ -16,9 +16,7 @@
                 <div>
                     <a href="#" class="btn btn-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                         <i class="fe fe-filter"></i>
-                    </a> |
-                    <a href="{{ route('employees.create') }}" class="btn btn-info text-white" ><i class="fe fe-plus"></i></a>
-
+                    </a>
                 </div>
             </div>
             <div class="col-md-12">
@@ -28,7 +26,7 @@
                       </h2>
                       <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-
+                            @include('Admin.employee_loans.installment.partial.filter')
                         </div>
                       </div>
                     </div>

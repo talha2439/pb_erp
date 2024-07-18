@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\Notifications;
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use App\Models\EmployeeLoan;
 use App\Models\LoanInstallment;
+use App\Models\LoanType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -75,10 +77,31 @@ class LoanInstallmentController extends Controller
         }
     }
     public function list(){
-        return view($this->parentView.'.list');
+        $data['employees'] = Employee::where('employment_status' , 'parmanent')->latest()->get()->map(function($query){
+            return [
+                'id' => $query->id,
+                'name' => $query->first_name .' ' . $query->last_name
+            ];
+        })->pluck('name', 'id');
+        $data['loan_type']  = LoanType::latest()->pluck('name' , 'id');
+        return view($this->parentView.'.list' ,$data);
     }
     public function allData(Request $request){
         $data  = $this->parentModel::latest();
+        if(!empty($request->employee_id)){
+            $data->whereHas('loans' , function($query) use($request){
+                $query->where('employee_id', $request->employee_id);
+            });
+        }
+        if(!empty($request->loan_type)){
+            $data->whereHas('loans' , function($query) use($request){
+                $query->where('loan_type_id', $request->loan_type);
+            });
+        }
+        if(!empty($request->date)){
+            $data->whereDate('payment_date', $request->date);
+        }
+
         $result = $data->get();
         return DataTables::of($result)->addColumn('index', function($item) use (&$index){
             $index ++;
@@ -186,7 +209,9 @@ class LoanInstallmentController extends Controller
                     $loanData->save();
                     return response()->json(['exceed' => true]);
                 }
-
+                if($loanData->remaining_amount == 0){
+                    $loanData->status = 'paid';
+                }
                 $loanData->save();
                 return response()->json(['success' => true]);
             }

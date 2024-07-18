@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    var isValid = true;
     $("input[name='attachment']").on('change' , function(e){
         let allowed = ['pdf', 'png', 'jpeg' ,'jpg'];
         let file = $(this)[0].files[0];

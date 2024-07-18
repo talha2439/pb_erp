@@ -1,7 +1,11 @@
 $(document).ready(function() {
     let table;
     getData();
-    function getData (){
+    $("#filterForm").on('submit' ,  function(e){
+        e.preventDefault();
+        getData($('#employee_id').val(), $("#loan_type").val() , $("#date_range").val());
+    })
+    function getData (emp_id = null , loan_type = null, date_range=null){
         if(table != null){
             table.fnDestroy();
         }
@@ -11,6 +15,9 @@ $(document).ready(function() {
                     ajax:{
                         url:allDataURL,
                         type:'GET',
+                        data:{
+                            employee_id:emp_id,loan_type:loan_type,date:date_range
+                        }
                     },
                     columns:[
                         {data:'index', sorting:false},
