@@ -20,16 +20,13 @@
 
         public function index(){
             try{
-                $submenuId   = SubMenu::where('route', $this->parentRoute . '.all')->first();
-                $checkAccess = $this->check_access($submenuId->id, 'view_status');
-                if ($checkAccess) {
+                $this->parentModel::role('view_status', null , null);
+
                     $data['attendance']  = $this->parentModel::withoutTrashed()->where('date' , Carbon::now()->format('Y-m-d'))->get();
                     $data['employees']   = Employee::all();
                     $data['departments'] = Department::withoutTrashed()->get();
                     return view($this->parentView . '.index', $data);
-                } else {
-                abort(403);
-                }
+
             }
             catch(\Exception $e){
                 return redirect()->back()->with('error', $e->getMessage());
@@ -176,18 +173,6 @@
             })
             ->rawColumns(['DT_RowIndex' ,'extra_hours' , 'total_hours' , 'employee_id' , 'employee_name' ,'department','date','attendance_status','checkin_checkout','working_hours','working_status','action'])->make(true);
         }
-        public function check_access($subMenuId, $status)
-        {
-            $checkAccess =  UserAccess::where(['sub_menu_id' => $subMenuId, $status => 1, 'user_id' => Auth::user()->id])->first();
-            $checkAdmin  = User::where(['id' => Auth::user()->id, 'role' => 1])->count();
-            if ($checkAdmin > 0) {
-                return true;
-            }
-            if ($checkAccess) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+
 
     }

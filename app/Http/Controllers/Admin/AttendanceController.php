@@ -19,7 +19,7 @@ class AttendanceController extends Controller
     public $parentRoute = 'attendance';
     public $parentView   = 'Admin.attendance.reports';
     public function create($id = null){
-
+        $this->parentModel::role('view_status' , null , null);
         $data['attendance'] = $this->parentModel::where('id', $id)->with('users' , function($query){
             $query->with('employees');
         })->first();
@@ -34,6 +34,7 @@ class AttendanceController extends Controller
     }
     public function checkin(Request $request)
     {
+      
         try {
             $data = $request->except('_token');
             $data['employee_id'] = Auth::user()->id;
@@ -139,6 +140,7 @@ class AttendanceController extends Controller
         }}
 
         public function store(Request $request, $id = null){
+            $this->parentModel::role('create_status', null , null);
             try{
                 $data = $request->except("_token");
                 $employees = $this->childModel::where('id', $data['employee_id'])->first();
@@ -178,8 +180,9 @@ class AttendanceController extends Controller
 
         }
         public function mark_holidays(Request $request){
+            $this->parentModel::role('create_status', $this->parentRoute.'index'  ,'response');
             try{
-                $data  = $request->except("_token");
+                      $data  = $request->except("_token");
 
                     $employees =  $this->childModel::latest()->pluck('user_id');
                     $carbonDateRange = [];

@@ -82,6 +82,11 @@ $("#markHolidayForm").submit(function(e){
                 'X-CSRF-TOKEN': $("#csrf-token").val(),
             },
             success:function(res){
+                if(res.unathorized){
+                    toastr['error']('You are not authorized to mark Holidays..!');
+                    $("#holidaysModal").modal('hide');
+                    return false;
+                }
                 if(res.success){
                     toastr['success']("Holidays has been marked");
                      $("#submitBtnHoliday").prop('disabled',false);

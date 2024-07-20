@@ -16,6 +16,7 @@ class EmployeeBankDetailController extends Controller
 
     public function create(){
         try{
+            $this->parentModel::role('view_status', null , null);
             $data['employees'] = Employee::latest()->get();
             return view($this->parentView.'.bank_details' , $data);
         }
@@ -26,6 +27,7 @@ class EmployeeBankDetailController extends Controller
     }
     public function store(Request $request){
        try{
+        $this->parentModel::role('create_status', null , null);
         $data = $request->except("_token");
 
         $storeData = $this->parentModel::updateOrCreate(['employee_id' => $data['id']], $data);
@@ -43,6 +45,7 @@ class EmployeeBankDetailController extends Controller
     }
     public function employee_bank_details($id = null){
         try{
+
             $employeeData = $this->parentModel::where('employee_id', $id)->first();
             if(!empty($employeeData)){
                 return response()->json(['data' => $employeeData]);

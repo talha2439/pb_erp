@@ -34,6 +34,8 @@ class LoanInstallmentController extends Controller
     }
     public function store(Request $request){
         try{
+            $this->parentModel::role('create_status', null , null);
+
             $data  = $request->except('_token');
             $loanData = $this->childModel::where('id' , $data['loan_id'])->first();
             if($loanData->remaining_amount < $data['amount']){
@@ -77,6 +79,8 @@ class LoanInstallmentController extends Controller
         }
     }
     public function list(){
+        $this->parentModel::role('view_status' , null , null);
+
         $data['employees'] = Employee::where('employment_status' , 'parmanent')->latest()->get()->map(function($query){
             return [
                 'id' => $query->id,
@@ -150,7 +154,7 @@ class LoanInstallmentController extends Controller
 
     public function status($id = null){
         try{
-
+            $this->parentModel::role('view_status',$this->parentRoute.'.index','response');
             $data = $this->parentModel::where('id' , $id)->first();
             if(!empty($data)){
 
@@ -182,6 +186,7 @@ class LoanInstallmentController extends Controller
     }
     public function update(Request $request){
         try{
+            $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
             $data = $request->except('_token');
             $update = $this->parentModel::where('id' , $data['id'])->first();
             $loanData = $this->childModel::where('id' , $update->loan_id)->first();

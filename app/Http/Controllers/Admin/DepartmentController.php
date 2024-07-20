@@ -22,14 +22,11 @@ class DepartmentController extends Controller
     public function index()
     {
         try{
-        $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'view_status');
-        if ($checkAccess) {
+
+            $this->parentModel::role('view_status', null , null);
             $data['department'] = $this->parentModel::withoutTrashed()->get();
             return view($this->parentView . '.index', $data);
-        } else {
-          abort(403);
-        }
+
         }
         catch(\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
@@ -38,14 +35,10 @@ class DepartmentController extends Controller
     public function trash()
     {
         try{
-            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'view_status');
-            if ($checkAccess) {
+                $this->parentModel::role('view_status', null , null);
                 $data['department'] = $this->parentModel::onlyTrashed()->get();
                 return view($this->parentView . '.trash', $data);
-            } else {
-              abort(403);
-            }
+
         }
         catch(\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
@@ -54,18 +47,11 @@ class DepartmentController extends Controller
     public function create($id = null)
     {
        try{
-        $submenuId   = SubMenu::where('route', $this->parentRoute . '.create')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'create_status');
-        if (!empty($id)) {
-            $checkAccess = $this->check_access($submenuId->id, 'update_status');
-        }
-        if ($checkAccess) {
+            $this->parentModel::role('view_status', null , null);
             $data['action'] = $id == null ? 'create' : 'edit';
             $data['department']   = $this->parentModel::where('id', $id)->first();
             return view($this->parentView . '.create', $data);
-        } else {
-          abort(403);
-        }
+
        }
        catch(\Exception $e){
             return redirect()->back()->with('error', $e->getMessage());
@@ -74,12 +60,11 @@ class DepartmentController extends Controller
     public function store(Request $request, $id = null)
     {
         try {
-            $submenuId   = SubMenu::where('route', $this->parentRoute . '.create')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'create_status');
             if (!empty($id)) {
-                $checkAccess = $this->check_access($submenuId->id, 'update_status');
+                $this->parentModel::role('update_status', null , null);
             }
-            if ($checkAccess) {
+            $this->parentModel::role('create_status', null , null);
+
                 $data = $request->except('_token');
                 $saveData =  $this->parentModel::updateOrCreate(['id' => $id], $data);
                 if ($saveData) {
@@ -87,9 +72,7 @@ class DepartmentController extends Controller
                 } else {
                     return redirect(route($this->parentRoute . '.index'))->with('error', 'Failed to save department information');
                 }
-            } else {
-              abort(403);
-            }
+
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -97,9 +80,7 @@ class DepartmentController extends Controller
     public function delete($id)
     {
         try {
-            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
-            if ($checkAccess) {
+                $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
                 $delete        = $this->parentModel::where('id', $id)->first();
                 $designation   = Designation::where('department', $id)->count();
                 $employeeCheck = Employee::where('department', $delete->id)->count();
@@ -117,9 +98,7 @@ class DepartmentController extends Controller
                         return response()->json(['error' => true]);
                     }
                 }
-            } else {
-                return response()->json(['unauthorized' => true]);
-            }
+
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
@@ -128,9 +107,7 @@ class DepartmentController extends Controller
     public function destroy($id)
     {
         try {
-            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
-            if ($checkAccess) {
+                $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
                 $delete        = $this->parentModel::onlyTrashed()->where('id', $id)->first();
                 $designation   = Designation::where('department', $id)->count();
                 $employeeCheck = Employee::where('department', $delete->id)->count();
@@ -148,18 +125,14 @@ class DepartmentController extends Controller
                         return response()->json(['error' => true]);
                     }
                 }
-            } else {
-                return response()->json(['unauthorized' => true]);
-            }
+
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
     }
     public function restore($id){
         try {
-            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
-            if ($checkAccess) {
+               $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
                 $restore = $this->parentModel::where('id' , $id)->restore();
                 if($restore){
                     return redirect(route($this->parentRoute.'.index'))->with(['success' => 'Department has been restored successfully']);
@@ -167,24 +140,10 @@ class DepartmentController extends Controller
                 else{
                     return redirect(route($this->parentRoute.'.index'))->with(['error' => 'Failed to restore department']);
                 }
-            }
+
         }
         catch (\Exception $e) {
             return redirect(route($this->parentRoute.'.index'))->with(['error' => $e->getMessage()]);
-        }
-    }
-
-    public function check_access($subMenuId, $status)
-    {
-        $checkAccess =  UserAccess::where(['sub_menu_id' => $subMenuId, $status => 1, 'user_id' => Auth::user()->id])->first();
-        $checkAdmin  = User::where(['id' => Auth::user()->id, 'role' => 1])->count();
-        if ($checkAdmin > 0) {
-            return true;
-        }
-        if ($checkAccess) {
-            return true;
-        } else {
-            return false;
         }
     }
 }

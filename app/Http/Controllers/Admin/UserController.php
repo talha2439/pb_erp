@@ -21,18 +21,13 @@ class UserController extends Controller
         public $imagePath  = 'images/UsersImages/';
         public function index(Request $request){
           try{
-            $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.index')->first();
-            $checkAccess = $this->check_access($submenuId->id , 'view_status');
-            if($checkAccess){
+            $this->parentModel::role('view_status',null,null);
             $data['user'] = $this->parentModel::whereNot('role' , 1)->get();
             if(!empty($request->type) && $request->type == "active_users"){
             $data['user'] = $this->parentModel::whereNot('role' , 1)->whereNot('email_verified_at' , null)->get();
             }
             return view($this->parentView.'.index', $data);
-            }
-            else{
-              abort(403);
-            }
+
           }
           catch(\Exception $e){
             return redirect()->back()->with('error', "internal error: ". $e->getMessage());
@@ -40,19 +35,18 @@ class UserController extends Controller
         }
         public function create($id = null){
            try{
-            $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.create')->first();
-            $checkAccess = $this->check_access($submenuId->id , 'create_status');
             if(!empty($id)){
-            $checkAccess = $this->check_access($submenuId->id , 'update_status');
+                $this->parentModel::role('update_status', null , null);
+
             }
-            if($checkAccess){
+            else{
+                $this->parentModel::role('create_status', null , null);
+
+            }
             $data['action'] = $id == null? 'create': 'edit';
             $data['user']   = $this->parentModel::where('id', $id)->first();
             return view($this->parentView.'.create', $data);
-            }
-            else{
-              abort(403);
-            }
+
            }
            catch(\Exception $e){
             return redirect()->back()->with('error', "internal error: ". $e->getMessage());
@@ -85,13 +79,16 @@ class UserController extends Controller
                 }
                 }
             }
-            // Acccess
-            $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.create')->first();
-            $checkAccess = $this->check_access($submenuId->id , 'create_status');
+
             if(!empty($id)){
-             $checkAccess = $this->check_access($submenuId->id , 'update_status');
+                $this->parentModel::role('update_status', null , null);
+
             }
-            if($checkAccess || $query == 'profile'){
+            else{
+                $this->parentModel::role('create_status', null , null);
+
+            }
+            if($query == 'profile'){
             try{
             $storeStatus         = empty($id)  ? 'saved' : 'updated';
             if($request->hasFile('image')){
@@ -170,17 +167,14 @@ class UserController extends Controller
             catch(\Exception $e){
                 return redirect()->back()->with('error' , "Internal Server Error:". $e);
              } }
-             else{
-                abort(403);
-             }
+
 
         }
         public function status(Request $request , $id){
             try{
 
-            $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.index')->first();
-            $checkAccess = $this->check_access($submenuId->id , 'update_status');
-            if($checkAccess){
+            $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
+
             $activeStatus = $request->status == 1 ? Carbon::now() : null;
             $deactive = $this->parentModel::where('id' , $id)->update(['email_verified_at' => $activeStatus]);
             $userInfo = $this->parentModel::where('id' , $id)->first();
@@ -199,9 +193,7 @@ class UserController extends Controller
             else{
                 return response()->json(['error' => true]);
             }
-            } else{
-                return response()->json(['unauthorized'=> true]);
-            }
+
             }
             catch(\Exception $e){
                 return response()->json(['error' =>$e->getMessage()]);
@@ -209,13 +201,13 @@ class UserController extends Controller
         }
         public function delete($id){
        try{
-        $submenuId   = $this->menuModel::where('route' , $this->parentRoute.'.index')->first();
-        $checkAccess = $this->check_access($submenuId->id , 'delete_status');
+        $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
+
         $checkEmployee = Employee::where('user_id' , $id)->count();
         if($checkEmployee > 0){
             return response()->json(['exists' => true]);
         }
-        if($checkAccess){
+
         $delete  =  $this->parentModel::where('id', $id)->delete();
         if($delete){
             $subject = 'User has been Deleted';
@@ -228,26 +220,10 @@ class UserController extends Controller
             return response()->json(['error' => true]);
         }
         }
-        else{
-            return response()->json(['unauthorized'=> true]);
-        }}
         catch(\Exception $e){
             return response()->json(['error' =>$e->getMessage()]);
         }
 
         }
-        public function check_access($subMenuId , $status)
-        {
-            $checkAccess =  UserAccess::where(['sub_menu_id'=> $subMenuId , $status => 1 , 'user_id' => Auth::user()->id ])->first();
-            $checkAdmin  = User::where(['id' => Auth::user()->id , 'role' => 1])->count();
-            if($checkAdmin > 0){
-                return true;
-            }
-            if($checkAccess){
-                return true ;
-            }
-            else{
-                return false;
-            }
-        }
+
 }

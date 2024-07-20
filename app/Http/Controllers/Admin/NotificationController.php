@@ -11,6 +11,7 @@ use DataTables;
 class NotificationController extends Controller
 {
     public $parentModel  = Notification::class;
+    public $parentRoute  = 'notifications';
     public function notifications(){
         $data = $this->parentModel::latest()->where('is_readed' , 0 )->get();
         $data->transform(function($query){
@@ -20,7 +21,7 @@ class NotificationController extends Controller
         return response()->json(['data' => $data]);
     }
     public function index(){
-
+        $this->parentModel::role('view_status',null,null);
         return view('Admin.notifications.notifications');
     }
     public function alldata(Request $request){
@@ -49,6 +50,7 @@ class NotificationController extends Controller
     }
     public function readed($id = null){
        try{
+        $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
         $update = $this->parentModel::where('id', $id)->update([
             'is_readed' => 1
         ]);
@@ -65,6 +67,7 @@ class NotificationController extends Controller
     }
     public function markall(){
        try{
+        $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
         $update = $this->parentModel::where('is_readed', 0)->pluck('id');
         $update = $this->parentModel::whereIn('id', $update)->update([
             'is_readed' => 1
@@ -80,9 +83,10 @@ class NotificationController extends Controller
              return response()->json(['error' => $e->getMessage()]);
        }
     }
-    
+
     public function delete($id){
         try{
+         $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
         $delete = $this->parentModel::where(['id'=>$id])->forceDelete();
         if($delete){
              return response()->json(['success' => true]);

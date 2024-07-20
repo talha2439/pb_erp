@@ -37,17 +37,14 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         try{
-            $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'view_status');
-            if ($checkAccess) {
+                $this->parentModel::role('view_status', null , null);
+
                 $data['employees'] = $this->parentModel::latest()->get(['first_name' , 'id' , 'last_name']);
                 $data['departments'] = Department::pluck('name','id');
                 $data['designations'] = Designation::pluck('name','id');
                 $data['shifts'] = Shift::pluck('name' , 'id');
                 return view($this->parentView . '.index', $data);
-            } else {
-              abort(403);
-            }
+
         }
         catch(\Exception $e){
             return redirect()->back()->with('error', $e->getMessage());
@@ -56,9 +53,7 @@ class EmployeeController extends Controller
     public function employee_details($id)
     {
         try{
-            $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'view_status');
-            if ($checkAccess) {
+
                 try {
                     $id  =  decrypt($id);
 
@@ -71,9 +66,7 @@ class EmployeeController extends Controller
                 } catch (\Exception $e) {
                     return redirect(route($this->parentRoute.'.index'))->with('error', $e->getMessage());
                 }
-            } else {
-              abort(403);
-            }
+
         }
         catch(\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
@@ -82,17 +75,14 @@ class EmployeeController extends Controller
     public function trash(Request $request)
     {
         try{
-            $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.trash')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'view_status');
-            if ($checkAccess) {
+            $this->parentModel::role('view_status', null , null);
+
                 $data['employees'] = $this->parentModel::onlyTrashed()->latest()->get(['first_name' , 'id' , 'last_name']);
                 $data['departments'] = Department::pluck('name','id');
                 $data['designations'] = Designation::pluck('name','id');
                 $data['shifts'] = Shift::pluck('name' , 'id');
                 return view($this->parentView . '.trash', $data);
-            } else {
-              abort(403);
-            }
+
         }
         catch(\Exception $e){
             return redirect()->back()->with('error', $e->getMessage());
@@ -101,12 +91,7 @@ class EmployeeController extends Controller
     public function create($id = null)
     {
         try{
-            $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.create')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'create_status');
-        if (!empty($id)) {
-            $checkAccess = $this->check_access($submenuId->id, 'update_status');
-        }
-        if ($checkAccess) {
+            $this->parentModel::role('view_status', null , null);
             $data['action']      = $id == null ? 'create' : 'edit';
             $data['employee']    = $this->parentModel::where('id', $id)->first();
             $data['country'] = Country::orderBy('name', 'asc')->pluck('name', 'id');
@@ -118,9 +103,7 @@ class EmployeeController extends Controller
             }
             $data['department'] = Department::all();
             return view($this->parentView . '.create', $data);
-        } else {
-          abort(403);
-        }
+
         }
         catch(\Exception $e){
             return redirect()->back()->with('error', $e->getMessage());
@@ -129,13 +112,12 @@ class EmployeeController extends Controller
     public function store(Request $request, $id = null)
     {
         try {
-            $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.create')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'create_status');
-
             if (!empty($id)) {
-                $checkAccess = $this->check_access($submenuId->id, 'update_status');
+                $this->parentModel::role('update_status', null , null);
+
             }
-            if ($checkAccess) {
+                $this->parentModel::role('create_status', null , null);
+
                 $requestData = $request->data;
                 parse_str($requestData, $data);
 
@@ -203,9 +185,7 @@ class EmployeeController extends Controller
                 } else {
                     return response()->json(['error' => true]);
                 }
-            } else {
-                return response()->json(['unauthorized' => true]);
-            }
+
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
@@ -374,9 +354,8 @@ class EmployeeController extends Controller
     public function delete($id)
     {
         try {
-            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
-            if ($checkAccess) {
+            $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
+
                 $empDetail        = $this->parentModel::where('id', $id)->first();
                 $empName          = $empDetail->first_name. " " .$empDetail->last_name;
                 $subject = 'Information For Employee'." ".$empName." ".' has been Deleted';
@@ -392,10 +371,8 @@ class EmployeeController extends Controller
                 } else {
                     return response()->json(['error' => true]);
                 }
-            } else {
-                return response()->json(['unauthorized' => true]);
             }
-        } catch (\Exception $e) {
+         catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
     }
@@ -403,10 +380,7 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         try {
-            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
-
-            if ($checkAccess) {
+               $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
                 $empDetail        = $this->parentModel::where('id', $id)->withTrashed()->first();
                 $empName          = $empDetail->first_name. " " .$empDetail->last_name;
                 $subject = 'Information For Employee'." ".$empName." ".' has been Deleted';
@@ -422,9 +396,7 @@ class EmployeeController extends Controller
                 } else {
                     return response()->json(['error' => true]);
                 }
-            } else {
-                return response()->json(['unauthorized' => true]);
-            }
+
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
@@ -432,10 +404,8 @@ class EmployeeController extends Controller
     public function delete_document($id)
     {
         try {
-            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
+              $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
 
-            if ($checkAccess) {
                 $documentDetail   = EmployeeDocument::where('id' , $id)->first();
                 $empDetail        = $this->parentModel::where('id', $documentDetail->employee_id)->withTrashed()->first();
                 $empName          = $empDetail->first_name. " " .$empDetail->last_name;
@@ -449,9 +419,7 @@ class EmployeeController extends Controller
                 } else {
                     return response()->json(['error' => true]);
                 }
-            } else {
-                return response()->json(['unauthorized' => true]);
-            }
+
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
@@ -472,9 +440,8 @@ class EmployeeController extends Controller
     public function restore($id)
     {
         try {
-            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
-            if ($checkAccess) {
+               $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
+
                 $empDetail        = $this->parentModel::where('id', $id)->withTrashed()->first();
                 $empName          = $empDetail->first_name. " " .$empDetail->last_name;
                 $subject = 'Information For Employee '." ".$empName." ".' has been Restored';
@@ -489,22 +456,10 @@ class EmployeeController extends Controller
                 } else {
                     return redirect(route($this->parentRoute . '.index'))->with(['error' => 'Failed to restore Employee Information']);
                 }
-            }
+
         } catch (\Exception $e) {
             return redirect(route($this->parentRoute . '.index'))->with(['error' => $e->getMessage()]);
         }
     }
-    public function check_access($subMenuId, $status)
-    {
-        $checkAccess =  UserAccess::where(['sub_menu_id' => $subMenuId, $status => 1, 'user_id' => Auth::user()->id])->first();
-        $checkAdmin  = User::where(['id' => Auth::user()->id, 'role' => 1])->count();
-        if ($checkAdmin > 0) {
-            return true;
-        }
-        if ($checkAccess) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 }

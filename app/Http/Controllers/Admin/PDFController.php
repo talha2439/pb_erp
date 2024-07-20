@@ -16,6 +16,7 @@ class PDFController extends Controller
     public $parentModel  = Employee::class ;
     public function attendance_report(Request $request){
       try{
+        $this->parentModel::role('create_status','attendance.reports.all',null );
         $data = $this->parentModel::where('id' , $request->employee_id)->with(['attendance' => function($query) use ($request) {
             if (!empty($request->month)) {
                 $query->whereMonth('date', $request->month);}
@@ -34,6 +35,9 @@ class PDFController extends Controller
     }
     public function employee_cv($id){
       try{
+
+        $this->parentModel::role('create_status','employees.index',null);
+
         $id = decrypt($id);
         $data = $this->parentModel::where('id', $id)
         ->with([
@@ -56,6 +60,7 @@ class PDFController extends Controller
     }
     public function leave_application($id){
         try{
+            $this->parentModel::role('create_status','leave.application.index',null);
             $data  = LeaveApplication::where('id', $id)->with('employees','approved','applied')->first();
             $pdf_type  = 'Pdf.leave_application';
             $filename = str_replace(" " ,'-' , strtolower($data->employees->first_name ?? "").'leave-application');

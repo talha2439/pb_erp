@@ -105,7 +105,12 @@ $(document).ready(function(){
             type: 'Get',
             success: function(res) {
                 let qualificationData = "";
-                if (res.success) {
+                if(res.unauthorized){
+                    toastr['error']('You are not allowed to see Qualification information');
+                    $("#qualificationModal").modal('hide');
+                    return false;
+                }
+                else if (res.success) {
                     if (res.data.length > 0) {
                         $(res.data).each(function(key, val) {
                             let docspath = "../images/employee_qualification/" + val
@@ -141,7 +146,12 @@ $(document).ready(function(){
             type: 'Get',
             success: function(res) {
                 let experienceData = "";
-                if (res.success) {
+                if(res.unauthorized){
+                    toastr['error']("You are not allowed to view experience Information..!");
+                    $('#experienceModal').modal('hide');
+                    return false;
+                }
+                else if (res.success) {
                     if (res.data.length > 0) {
                         $(res.data).each(function(key, val) {
                             let docspath = "../images/emp_experience_attachment/" + val

@@ -19,6 +19,7 @@ class EmployeeLoanController extends Controller
     public $parentView      = 'Admin.employee_loans';
     public $parentRoute     = 'employee_loans';
     public function index(){
+        $this->parentModel::role('view_status', null , null);
         $data['loans'] = $this->childModel::latest()->with(['employees','loan_types'])->get();
         return view($this->parentView.'.index' , $data);
     }
@@ -38,6 +39,14 @@ class EmployeeLoanController extends Controller
         }
     }
     public function create($id = null){
+        if(!empty($id)){
+            $this->parentModel::role('update_status', null , null);
+
+        }
+        else{
+            $this->parentModel::role('create_status', null , null);
+
+        }
         $data['employees'] = $this->parentModel::where('employment_status' , 'parmanent')->latest()->get()->map(function($query){
             return [
                 'id' => $query->id,
@@ -52,6 +61,14 @@ class EmployeeLoanController extends Controller
     }
     public function store( Request $request , $id = null){
         try{
+            if(!empty($id)){
+                $this->parentModel::role('update_status', null , null);
+
+            }
+            else{
+                $this->parentModel::role('create_status', null , null);
+
+            }
             $data = $request->except('_token');
             $data['employee_id']  = isset($data['employee_id']) && !empty($data['employee_id']) ? $data['employee_id'] : Auth::user()->employees->id;
             $data['total_month']  = isset($data['total_month']) && !empty($data['total_month']) ? $data['total_month'] : 0 ;
@@ -94,6 +111,7 @@ class EmployeeLoanController extends Controller
 
     public function status(Request $request){
         try{
+            $this->parentModel::role('update_status', $this->parentRoute.'.index','resposnse');
             $data = $request->except('_token');
             $loanData = $this->childModel::where('id', $data['id'])->first();
             if($loanData->requested_amount < (int) $data['approved_amount']){
@@ -145,6 +163,8 @@ class EmployeeLoanController extends Controller
     }
     public function delete($id = null){
         try{
+            $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
+
             $delete = $this->childModel::where('id', $id)->delete();
             if($delete){
                 return response()->json(['success' => true]);
@@ -159,6 +179,8 @@ class EmployeeLoanController extends Controller
     }
     public function payLoan(Request $request){
         try{
+            $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
+
             $data  = $request->except('_token');
             $loanData  = $this->childModel::where('id' , $data['id'])->first();
             if(round($loanData->remaining_amount) < $data['paid_amount']){

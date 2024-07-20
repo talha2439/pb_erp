@@ -28,15 +28,12 @@ class LeaveController extends Controller
     public function index()
     {
         try{
-        $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'view_status');
-        if ($checkAccess) {
+            $this->parentModel::role('view_status', null , null);
+
             $data['departments'] = Department::withoutTrashed()->get();
             $data['employees']   = $this->childModel::withoutTrashed()->get();
             return view($this->parentView . '.index' , $data);
-        } else {
-          abort(403);
-        }
+
         }
         catch(\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
@@ -46,19 +43,19 @@ class LeaveController extends Controller
     public function create($id = null)
     {
       try{
-        $submenuId   = SubMenu::where('route', $this->parentRoute . '.create')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'create_status');
-        if (!empty($id)) {
-            $checkAccess = $this->check_access($submenuId->id, 'update_status');
+        if(!empty($id)){
+            $this->parentModel::role('update_status', null , null);
+
         }
-        if ($checkAccess) {
+        else{
+            $this->parentModel::role('create_status', null , null);
+
+        }
             $data['action']       = $id == null ? 'create' : 'edit';
             $data['leave']        = $this->parentModel::with('employees')->where('id', $id)->first();
             $data['employees']    = $this->childModel::all();
             return view($this->parentView . '.create', $data);
-        } else {
-          abort(403);
-        }
+
       }
       catch(\Exception $e){
         return  redirect()->back()->with('error', $e->getMessage());
@@ -168,6 +165,14 @@ class LeaveController extends Controller
     }
     public function store(Request $request , $id = null){
         try{
+            if(!empty($id)){
+                $this->parentModel::role('update_status', null , null);
+
+            }
+            else{
+                $this->parentModel::role('create_status', null , null);
+
+            }
             $data = $request->except("_token");
 
             $from_date = Carbon::parse($data['from_date']);
@@ -211,9 +216,8 @@ class LeaveController extends Controller
     }
     public function status(Request $request){
        try{
-        $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-        $checkAccess = $this->check_access($submenuId->id, 'update_status');
-        if ($checkAccess) {
+        $this->parentModel::role('update_status',$this->parentRoute.'.index', 'response');
+
         $data = $request->except(['token']);
         $employeedata = $this->parentModel::where('id' , $data['id'])->first();
         if($data['status'] == 'approved'){
@@ -246,10 +250,7 @@ class LeaveController extends Controller
         else{
               return response()->json(['error' => true]);
         }
-        }
-        else{
-              return response()->json(['unauthorized' => true]);
-        }
+
        }
        catch(\Exception $e){
            return response()->json(['error' =>  $e->getMessage()]);
@@ -273,34 +274,18 @@ class LeaveController extends Controller
     }
     public function destroy($id){
         try {
-            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
-            if ($checkAccess) {
+            $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
+
                 $delete        = $this->parentModel::where('id', $id)->forceDelete();
                 if ($delete) {
                     return response()->json(['success' => true]);
                 } else {
                     return response()->json(['error' => true]);
                 }
-            } else {
-                return response()->json(['unauthorized' => true]);
-            }
+
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
     }
-    public function check_access($subMenuId , $status)
-    {
-        $checkAccess =  UserAccess::where(['sub_menu_id'=> $subMenuId , $status => 1 , 'user_id' => Auth::user()->id ])->first();
-        $checkAdmin  = User::where(['id' => Auth::user()->id , 'role' => 1])->count();
-        if($checkAdmin > 0){
-            return true;
-        }
-        if($checkAccess){
-            return true ;
-        }
-        else{
-            return false;
-        }
-    }
+
 }

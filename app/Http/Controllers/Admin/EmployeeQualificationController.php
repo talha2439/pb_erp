@@ -32,12 +32,14 @@ class EmployeeQualificationController extends Controller
     public function store(Request $request, $id = null)
     {
         try {
-            $submenuId = $this->menuModel::where('route', $this->parentRoute . '.create')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'create_status');
-            if (!empty($id)) {
-                $checkAccess = $this->check_access($submenuId->id, 'update_status');
+            if(!empty($id)){
+                $this->parentModel::role('update_status', null , null);
+
             }
-            if ($checkAccess) {
+            else{
+                $this->parentModel::role('create_status', null , null);
+
+            }
                 $requestData = $request->data;
                 parse_str($requestData, $data);
                 $data['employee_id'] = $request->employee_id;
@@ -65,7 +67,8 @@ class EmployeeQualificationController extends Controller
                     }
                     $enddate = Carbon::parse($data['end_date'][$key])->format('Y-m-d');
                     $status = $currentDate == $enddate ? 1 : 0;
-                    $storedata = $this->parentModel::updateOrCreate(['id' => $data['qualification_id'][$key] ?? null], [
+                    $qualificationId = isset($data['qualification_id'][$key]) ? $data['qualification_id'][$key] : null;
+                    $storedata = $this->parentModel::updateOrCreate(['id' => $qualificationId], [
                         'institute' => $data['institute'][$key],
                         'document' => $fileNames ?? "",
                         'qualification' => $data['qualification'][$key],
@@ -86,9 +89,7 @@ class EmployeeQualificationController extends Controller
                 } else {
                     return response()->json(['error' => true]);
                 }
-            } else {
-                return response()->json(['unauthorized' => true]);
-            }
+
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
@@ -96,51 +97,32 @@ class EmployeeQualificationController extends Controller
     public function delete($id)
     {
         try {
-            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'delete_status');
-            if ($checkAccess) {
+            $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
+
                 $delete        = $this->parentModel::where('id', $id)->forceDelete();
                 if ($delete) {
                     return response()->json(['success' => true]);
                 } else {
                     return response()->json(['error' => true]);
                 }
-            } else {
-                return response()->json(['unauthorized' => true]);
-            }
+
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
     }
     public function get_qualification($id){
         try {
-            $submenuId   = SubMenu::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'view_status');
-            if ($checkAccess) {
+                $this->parentModel::role('view_status' ,$this->parentRoute.'.index','response');
                 $qualification        = $this->parentModel::withTrashed()->where('employee_id', $id)->get();
                 if ($qualification) {
                     return response()->json(['success' => true , 'data' => $qualification]);
                 } else {
                     return response()->json(['error' => true]);
                 }
-            } else {
-                return response()->json(['unauthorized' => true]);
-            }
+
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
     }
-    public function check_access($subMenuId, $status)
-    {
-        $checkAccess = UserAccess::where(['sub_menu_id' => $subMenuId, $status => 1, 'user_id' => Auth::user()->id])->first();
-        $checkAdmin = User::where(['id' => Auth::user()->id, 'role' => 1])->count();
-        if ($checkAdmin > 0) {
-            return true;
-        }
-        if ($checkAccess) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 }

@@ -57,11 +57,7 @@ $(document).on('click', '.deleteDepart', function(e) {
             type: 'Get',
             success: function(res) {
                 if (res.unauthorized) {
-                    toastr['error']('You are not authorized to delete department information..!');
-                    return false;
-                }
-               else if (res.employee_exist) {
-                    toastr['error']('Failed to delete department some employees are assigned with it delete them first..!');
+                    toastr['error']('You are not authorized to delete leave application information..!');
                     return false;
                 }
                else if (res.designation_exist) {

@@ -25,9 +25,7 @@ class EmployeePayrollController extends Controller
     public $parentRoute = 'payroll';
     public function index(){
         try{
-            $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'view_status');
-            if($checkAccess){
+                $this->parentModel::role('view_status', null , null);
                 $data['employees'] = $this->parentModel::latest()->get()->map(function($item) {
                     return [
                         'id' => $item->id,
@@ -36,10 +34,7 @@ class EmployeePayrollController extends Controller
                 })->pluck('name', 'id');
                 $data['departments'] = Department::latest()->pluck('name', 'id');
                 return view($this->parentView.'.index', $data);
-            }
-                else{
-                  abort(403);
-                }
+
             }
             catch(\Exception $e){
                 return redirect()->back()->with('error', $e->getMessage());
@@ -47,17 +42,19 @@ class EmployeePayrollController extends Controller
     }
     public function create($id = null){
         try{
-            $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
-            $checkAccess = $this->check_access($submenuId->id, 'create_status');
-            if($checkAccess){
+            if(!empty($id)){
+                $this->parentModel::role('update_status', null , null);
+
+            }
+            else{
+                $this->parentModel::role('create_status', null , null);
+
+            }
                 $data['payroll']      = $this->childModel::where('id' , $id)->first();
                 $data['employees']   = $this->parentModel::latest()->get();
                 $data['action']   = !empty($data['payroll']) ? 'edit' : 'create';
                 return view($this->parentView.'.create',$data);
-            }
-            else{
-              abort(403);
-            }
+
         }
         catch(\Exception $e){
             return redirect()->back()->with('error', $e->getMessage());
@@ -65,14 +62,16 @@ class EmployeePayrollController extends Controller
     }
     public function store(Request $request , $id = null){
         try{
-            $submenuId   = $this->menuModel::where('route', $this->parentRoute . '.index')->first();
+
             if(!empty($id)){
-                $checkAccess = $this->check_access($submenuId->id, 'update_status');
+                $this->parentModel::role('update_status', null , null);
+
             }
             else{
-                $checkAccess = $this->check_access($submenuId->id, 'create_status');
+                $this->parentModel::role('create_status', null , null);
+
             }
-            if($checkAccess){
+
             $data = $request->except('_token');
 
             if($data['total_absents'] > 0 ){
@@ -126,10 +125,7 @@ class EmployeePayrollController extends Controller
                     return redirect()->route($this->parentRoute.'.index')->with('error', 'Failed to save Payroll information');
                 }
 
-             }
-            else{
-              abort(403);
-            }
+
         }
         catch(\Exception $e){
             return redirect()->back()->with('error', $e->getMessage());
@@ -200,17 +196,5 @@ class EmployeePayrollController extends Controller
         })
         ->rawColumns(['row_index' ,'month_year', 'employee_id' ,'name' , 'gross_salary','absent_deduction','total_absents','total_lates','total_early_outs','total_off','total_deduction','loan_amount','bonus_amount','allowance','net_salary','action'])->make(true);
     }
-    public function check_access($subMenuId, $status)
-    {
-        $checkAccess =  UserAccess::where(['sub_menu_id' => $subMenuId, $status => 1, 'user_id' => Auth::user()->id])->first();
-        $checkAdmin  = User::where(['id' => Auth::user()->id, 'role' => 1])->count();
-        if ($checkAdmin > 0) {
-            return true;
-        }
-        if ($checkAccess) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 }

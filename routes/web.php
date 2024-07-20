@@ -47,7 +47,7 @@ Route::post('authenticate', [AuthController::class,'authenticate'])->name('auth.
 
 // Admin Panel Routes
 
-Route::prefix('/')->middleware('auth')->group(function(){
+Route::prefix('/')->middleware(['auth','role'])->group(function(){
     Route::get('/', [Dashboardcontroller::class,'index'])->name('dashboard');
     Route::get('profile/setting/{id?}' , [AuthController::class,'profile_settings'])->name('profile_settings');
     // Users Settings

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Knp\Snappy\Pdf as PDF;
 use Barryvdh\Snappy\PdfWrapper;
+use Illuminate\Support\Facades\Session;
 
 trait Crud {
     public static function columns($table){
@@ -34,5 +35,8 @@ trait Crud {
         catch(\Exception $e){
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+    public static function role($status,$route = null ,  $type = null){
+        Session::put([ 'role.route' => $route,  'role.status' => $status , 'role.type' => $type]);
     }
 }
