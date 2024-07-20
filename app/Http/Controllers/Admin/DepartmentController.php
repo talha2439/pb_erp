@@ -106,8 +106,8 @@ class DepartmentController extends Controller
 
     public function destroy($id)
     {
+        $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
         try {
-                $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
                 $delete        = $this->parentModel::onlyTrashed()->where('id', $id)->first();
                 $designation   = Designation::where('department', $id)->count();
                 $employeeCheck = Employee::where('department', $delete->id)->count();

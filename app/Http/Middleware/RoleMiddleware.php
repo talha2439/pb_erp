@@ -22,12 +22,10 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next)
     {
 
-        $routeName    =  $request->route()->getName();
+        $routeName    =  $request->session()->get('role.route') == null ?  $request->route()->getName() : $request->session()->get('role.route');
         $status       =  $request->session()->get('role.status');
         $type         =  $request->session()->get('role.type');
-
         if(!empty($routeName)){
-
             $checkSubMenu = SubMenu::where('route' , $routeName)->first();
             if(!empty($checkSubMenu) && !empty($status)){
                 $checkAccess =  UserAccess::where(['sub_menu_id'=> $checkSubMenu->id , $status => 1 , 'user_id' => Auth::user()->id ])->first();
