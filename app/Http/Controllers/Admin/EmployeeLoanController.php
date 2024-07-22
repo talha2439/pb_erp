@@ -113,7 +113,10 @@ class EmployeeLoanController extends Controller
     }
 
     public function status(Request $request){
-        $this->parentModel::role('update_status', $this->roleRoute,'resposnse');
+        $role = $this->parentModel::role('update_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try{
             $data = $request->except('_token');
             $loanData = $this->childModel::where('id', $data['id'])->first();
@@ -165,7 +168,10 @@ class EmployeeLoanController extends Controller
         }
     }
     public function delete($id = null){
-        $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try{
 
             $delete = $this->childModel::where('id', $id)->delete();
@@ -181,7 +187,10 @@ class EmployeeLoanController extends Controller
         }
     }
     public function payLoan(Request $request){
-        $this->parentModel::role('update_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('update_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try{
 
             $data  = $request->except('_token');

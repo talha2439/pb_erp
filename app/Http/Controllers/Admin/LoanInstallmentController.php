@@ -154,7 +154,10 @@ class LoanInstallmentController extends Controller
     }
 
     public function status($id = null){
-        $this->parentModel::role('update_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('update_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try{
             $data = $this->parentModel::where('id' , $id)->first();
             if(!empty($data)){
@@ -186,7 +189,10 @@ class LoanInstallmentController extends Controller
         }
     }
     public function update(Request $request){
-        $this->parentModel::role('update_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('update_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try{
             $data = $request->except('_token');
             $update = $this->parentModel::where('id' , $data['id'])->first();

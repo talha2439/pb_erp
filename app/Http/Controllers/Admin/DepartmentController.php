@@ -85,7 +85,10 @@ class DepartmentController extends Controller
     }
     public function delete($id)
     {
-        $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try {
                 $delete        = $this->parentModel::where('id', $id)->first();
                 $designation   = Designation::where('department', $id)->count();
@@ -112,7 +115,10 @@ class DepartmentController extends Controller
 
     public function destroy($id)
     {
-        $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try {
                 $delete        = $this->parentModel::onlyTrashed()->where('id', $id)->first();
                 $designation   = Designation::where('department', $id)->count();
@@ -137,7 +143,10 @@ class DepartmentController extends Controller
         }
     }
     public function restore($id){
-        $this->parentModel::role('update_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('update_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try {
             $restore = $this->parentModel::where('id' , $id)->restore();
                 if($restore){

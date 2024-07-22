@@ -51,7 +51,10 @@ class NotificationController extends Controller
     }
     public function readed($id = null){
        try{
-        $this->parentModel::role('update_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('update_status',$this->roleRoute,'response');
+            if(!empty($role)){
+                return $role;
+         }
         $update = $this->parentModel::where('id', $id)->update([
             'is_readed' => 1
         ]);
@@ -67,7 +70,10 @@ class NotificationController extends Controller
        }
     }
     public function markall(){
-        $this->parentModel::role('update_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('update_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
        try{
         $update = $this->parentModel::where('is_readed', 0)->pluck('id');
         $update = $this->parentModel::whereIn('id', $update)->update([
@@ -86,7 +92,10 @@ class NotificationController extends Controller
     }
 
     public function delete($id){
-        $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try{
         $delete = $this->parentModel::where(['id'=>$id])->forceDelete();
         if($delete){

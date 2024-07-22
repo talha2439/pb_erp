@@ -97,7 +97,10 @@ class EmployeeQualificationController extends Controller
     }
     public function delete($id)
     {
-        $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('delete_status',$this->roleRoute,'response');
+            if(!empty($role)){
+                return $role;
+            }
         try {
 
                 $delete        = $this->parentModel::where('id', $id)->forceDelete();
@@ -112,7 +115,10 @@ class EmployeeQualificationController extends Controller
         }
     }
     public function get_qualification($id){
-        $this->parentModel::role('view_status' ,$this->roleRoute,'response');
+        $role = $this->parentModel::role('view_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try {
                 $qualification        = $this->parentModel::withTrashed()->where('employee_id', $id)->get();
                 if ($qualification) {

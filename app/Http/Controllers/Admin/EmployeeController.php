@@ -361,7 +361,10 @@ class EmployeeController extends Controller
     }
     public function delete($id)
     {
-        $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try {
 
                 $empDetail        = $this->parentModel::where('id', $id)->first();
@@ -387,7 +390,10 @@ class EmployeeController extends Controller
 
     public function destroy($id)
     {
-        $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try {
                 $empDetail        = $this->parentModel::where('id', $id)->withTrashed()->first();
                 $empName          = $empDetail->first_name. " " .$empDetail->last_name;
@@ -411,7 +417,10 @@ class EmployeeController extends Controller
     }
     public function delete_document($id)
     {
-        $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try {
 
                 $documentDetail   = EmployeeDocument::where('id' , $id)->first();
@@ -447,7 +456,10 @@ class EmployeeController extends Controller
     }
     public function restore($id)
     {
-        $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
+        $role = $this->parentModel::role('update_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try {
 
                 $empDetail        = $this->parentModel::where('id', $id)->withTrashed()->first();

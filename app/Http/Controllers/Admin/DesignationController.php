@@ -84,7 +84,10 @@ class DesignationController extends Controller
     }
     public function delete($id)
     {
-        $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try {
 
                 $delete        = $this->childModel::where('id', $id)->first();
@@ -109,7 +112,10 @@ class DesignationController extends Controller
 
     public function destroy($id)
     {
-        $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try {
 
                 $delete        = $this->childModel::onlyTrashed()->where('id', $id)->first();
@@ -133,7 +139,10 @@ class DesignationController extends Controller
         }
     }
     public function restore($id){
-        $this->parentModel::role('update_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('update_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try {
 
                 $restore = $this->childModel::where('id' , $id)->restore();

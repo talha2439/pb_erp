@@ -26,7 +26,7 @@ class AttendanceController extends Controller
         else{
         $this->parentModel::role('create_status', $this->roleRoute , null);
         }
-        
+
         $data['attendance'] = $this->parentModel::where('id', $id)->with('users' , function($query){
             $query->with('employees');
         })->first();
@@ -192,7 +192,10 @@ class AttendanceController extends Controller
 
         }
         public function mark_holidays(Request $request){
-            $this->parentModel::role('create_status', $this->roleRoute ,'response');
+            $role = $this->parentModel::role('create_status',$this->roleRoute,'response');
+            if(!empty($role)){
+                return $role;
+            }
             try{
                       $data  = $request->except("_token");
 

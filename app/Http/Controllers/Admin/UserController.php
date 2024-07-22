@@ -172,7 +172,10 @@ class UserController extends Controller
 
         }
         public function status(Request $request , $id){
-            $this->parentModel::role('update_status',$this->roleRoute,'response');
+            $role = $this->parentModel::role('update_status',$this->roleRoute,'response');
+            if(!empty($role)){
+                return $role;
+            }
             try{
 
 
@@ -201,7 +204,10 @@ class UserController extends Controller
             }
         }
         public function delete($id){
-        $this->parentModel::role('delete_status',$this->roleRoute,'response');
+            $role = $this->parentModel::role('delete_status',$this->roleRoute,'response');
+            if(!empty($role)){
+                return $role;
+            }
         try{
             $checkEmployee = Employee::where('user_id' , $id)->count();
             if($checkEmployee > 0){

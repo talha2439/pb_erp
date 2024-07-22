@@ -217,7 +217,10 @@ class LeaveController extends Controller
         }
     }
     public function status(Request $request){
-        $this->parentModel::role('update_status',$this->roleRoute, 'response');
+        $role = $this->parentModel::role('update_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
        try{
 
         $data = $request->except(['token']);
@@ -275,7 +278,10 @@ class LeaveController extends Controller
         }
     }
     public function destroy($id){
-        $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        $role = $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        if(!empty($role)){
+            return $role;
+        }
         try {
 
                 $delete        = $this->parentModel::where('id', $id)->forceDelete();
