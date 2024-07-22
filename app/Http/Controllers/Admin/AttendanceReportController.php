@@ -17,10 +17,10 @@
         public $parentModel  = Attendance::class;
         public $parentView   = 'Admin.attendance.reports';
         public $parentRoute  = 'attendance.reports';
-
+        public $roleRoute   = 'attendance.reports.all';
         public function index(){
+            $this->parentModel::role('view_status', $this->roleRoute , null);
             try{
-                $this->parentModel::role('view_status', null , null);
 
                     $data['attendance']  = $this->parentModel::withoutTrashed()->where('date' , Carbon::now()->format('Y-m-d'))->get();
                     $data['employees']   = Auth::user()->role == 4 ? Employee::where('id', Auth::user()->employees->id)->get() : Employee::all();

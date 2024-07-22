@@ -12,9 +12,10 @@ use Illuminate\Support\Facades\Auth;
 class Dashboardcontroller extends Controller
 {
     public $parentView = 'Admin.';
+    public $roleRoute = 'dashboard';
     public function index(){
+        Crud::role('view_status', $this->roleRoute , null);
         try{
-            Crud::role('view_status', null , null);
             $data['attendance'] = Attendance::where(['employee_id' => Auth::user()->id , 'date' => Carbon::now()->format('Y-m-d')])->first();
             return view($this->parentView.'dashboard' ,  $data);
         }

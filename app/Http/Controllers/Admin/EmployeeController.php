@@ -34,10 +34,11 @@ class EmployeeController extends Controller
     public $parentRoute = "employees";
     public $imagePath  = 'images/Employees/profile/';
     public $childimagePath  = 'images/Employees/documents/';
+    public $roleRoute       = 'employees.index';
     public function index(Request $request)
     {
+        $this->parentModel::role('view_status', $this->roleRoute , null);
         try{
-                $this->parentModel::role('view_status', null , null);
 
                 $data['employees'] = $this->parentModel::latest()->get(['first_name' , 'id' , 'last_name']);
                 $data['departments'] = Department::pluck('name','id');
@@ -74,8 +75,8 @@ class EmployeeController extends Controller
     }
     public function trash(Request $request)
     {
+        $this->parentModel::role('view_status', $this->roleRoute , null);
         try{
-            $this->parentModel::role('view_status', null , null);
 
                 $data['employees'] = $this->parentModel::onlyTrashed()->latest()->get(['first_name' , 'id' , 'last_name']);
                 $data['departments'] = Department::pluck('name','id');
@@ -90,8 +91,14 @@ class EmployeeController extends Controller
     }
     public function create($id = null)
     {
+        if (!empty($id)) {
+            $this->parentModel::role('update_status', $this->roleRoute , null);
+
+        }
+        else{
+            $this->parentModel::role('create_status', $this->roleRoute , null);
+        }
         try{
-            $this->parentModel::role('view_status', null , null);
             $data['action']      = $id == null ? 'create' : 'edit';
             $data['employee']    = $this->parentModel::where('id', $id)->first();
             $data['country'] = Country::orderBy('name', 'asc')->pluck('name', 'id');
@@ -111,13 +118,14 @@ class EmployeeController extends Controller
     }
     public function store(Request $request, $id = null)
     {
+        if (!empty($id)) {
+            $this->parentModel::role('update_status', $this->roleRoute , null);
+
+        }
+        else{
+            $this->parentModel::role('create_status', $this->roleRoute , null);
+        }
         try {
-            if (!empty($id)) {
-                $this->parentModel::role('update_status', null , null);
-
-            }
-                $this->parentModel::role('create_status', null , null);
-
                 $requestData = $request->data;
                 parse_str($requestData, $data);
 
@@ -353,8 +361,8 @@ class EmployeeController extends Controller
     }
     public function delete($id)
     {
+        $this->parentModel::role('delete_status',$this->roleRoute,'response');
         try {
-            $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
 
                 $empDetail        = $this->parentModel::where('id', $id)->first();
                 $empName          = $empDetail->first_name. " " .$empDetail->last_name;
@@ -379,8 +387,8 @@ class EmployeeController extends Controller
 
     public function destroy($id)
     {
+        $this->parentModel::role('delete_status',$this->roleRoute,'response');
         try {
-               $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
                 $empDetail        = $this->parentModel::where('id', $id)->withTrashed()->first();
                 $empName          = $empDetail->first_name. " " .$empDetail->last_name;
                 $subject = 'Information For Employee'." ".$empName." ".' has been Deleted';
@@ -403,8 +411,8 @@ class EmployeeController extends Controller
     }
     public function delete_document($id)
     {
+        $this->parentModel::role('delete_status',$this->roleRoute,'response');
         try {
-              $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
 
                 $documentDetail   = EmployeeDocument::where('id' , $id)->first();
                 $empDetail        = $this->parentModel::where('id', $documentDetail->employee_id)->withTrashed()->first();
@@ -439,8 +447,8 @@ class EmployeeController extends Controller
     }
     public function restore($id)
     {
+        $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
         try {
-               $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
 
                 $empDetail        = $this->parentModel::where('id', $id)->withTrashed()->first();
                 $empName          = $empDetail->first_name. " " .$empDetail->last_name;

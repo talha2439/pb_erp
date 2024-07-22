@@ -16,11 +16,12 @@ class LoanTypeController extends Controller
     public $parentModel =  LoanType::class;
     public $parentView  = 'Admin.loan_type';
     public $parentRoute = 'loan_type';
+    public $roleRoute = 'loan_type.index';
 
     public function index()
     {
+        $this->parentModel::role('view_status',$this->roleRoute,null);
         try{
-            $this->parentModel::role('view_status',null,null);
 
             $data['loan_type'] = $this->parentModel::withoutTrashed()->get();
             return view($this->parentView . '.index', $data);
@@ -32,8 +33,8 @@ class LoanTypeController extends Controller
     }
     public function trash()
     {
+        $this->parentModel::role('view_status',$this->roleRoute, null);
         try{
-                $this->parentModel::role('view_status',null, null);
                 $data['loan_type'] = $this->parentModel::onlyTrashed()->get();
                 return view($this->parentView . '.trash', $data);
 
@@ -44,15 +45,15 @@ class LoanTypeController extends Controller
     }
     public function create($id = null)
     {
+        if(!empty($id)){
+            $this->parentModel::role('update_status', $this->roleRoute , null);
+
+        }
+        else{
+            $this->parentModel::role('create_status', $this->roleRoute , null);
+
+        }
        try{
-            if(!empty($id)){
-                $this->parentModel::role('update_status', null , null);
-
-            }
-            else{
-                $this->parentModel::role('create_status', null , null);
-
-            }
             $data['action'] = $id == null ? 'create' : 'edit';
             $data['loan_type']   = $this->parentModel::where('id', $id)->first();
             return view($this->parentView . '.create', $data);
@@ -64,16 +65,16 @@ class LoanTypeController extends Controller
     }
     public function store(Request $request, $id = null)
     {
+        if(!empty($id)){
+            $this->parentModel::role('update_status', $this->roleRoute , null);
+
+        }
+        else{
+            $this->parentModel::role('create_status', $this->roleRoute , null);
+
+        }
         try {
 
-                if(!empty($id)){
-                    $this->parentModel::role('update_status', null , null);
-
-                }
-                else{
-                    $this->parentModel::role('create_status', null , null);
-
-                }
                 $data = $request->except('_token');
                 $saveData =  $this->parentModel::updateOrCreate(['id' => $id], $data);
                 if ($saveData) {
@@ -88,8 +89,8 @@ class LoanTypeController extends Controller
     }
     public function delete($id)
     {
+        $this->parentModel::role('delete_status',$this->roleRoute,'response');
         try {
-            $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
 
                 $delete        = $this->parentModel::where('id', $id)->first();
                 $loan_exists   = EmployeeLoan::where('loan_type_id', $id)->count();
@@ -113,8 +114,8 @@ class LoanTypeController extends Controller
 
     public function destroy($id)
     {
+        $this->parentModel::role('delete_status',$this->roleRoute,'response');
         try {
-            $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
 
                 $delete        = $this->parentModel::onlyTrashed()->where('id', $id)->first();
                 $loan_exists   = EmployeeLoan::where('loan_type_id', $id)->count();
@@ -136,8 +137,8 @@ class LoanTypeController extends Controller
         }
     }
     public function restore($id){
+        $this->parentModel::role('update_status',$this->roleRoute,'response');
         try {
-            $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
 
                 $restore = $this->parentModel::where('id' , $id)->restore();
                 if($restore){

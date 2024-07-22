@@ -18,11 +18,12 @@ class ShiftController extends Controller
     public $childModel  =  Shift::class;
     public $parentView  = 'Admin.shift';
     public $parentRoute = 'shifts';
+    public $roleRoute = 'shifts.index';
 
     public function index()
     {
+        $this->parentModel::role('view_status',$this->roleRoute,null);
         try {
-                $this->parentModel::role('view_status',null,null);
                 $data['shift'] = $this->childModel::with('departments')->withoutTrashed()->get();
 
                 return view($this->parentView . '.index', $data);
@@ -33,8 +34,8 @@ class ShiftController extends Controller
     }
     public function trash()
     {
+        $this->parentModel::role('view_status',$this->roleRoute,null);
         try {
-                 $this->parentModel::role('view_status',null,null);
 
                 $data['shift'] = $this->childModel::with('departments')->onlyTrashed()->get();
                 return view($this->parentView . '.trash', $data);
@@ -45,15 +46,15 @@ class ShiftController extends Controller
     }
     public function create($id = null)
     {
+        if(!empty($id)){
+            $this->parentModel::role('update_status', $this->roleRoute , null);
+
+        }
+        else{
+            $this->parentModel::role('create_status', $this->roleRoute , null);
+
+        }
        try{
-            if(!empty($id)){
-                $this->parentModel::role('update_status', null , null);
-
-            }
-            else{
-                $this->parentModel::role('create_status', null , null);
-
-            }
             $data['action'] = $id == null ? 'create' : 'edit';
             $data['shift']   = $this->childModel::with('departments')->where('id', $id)->first();
             $data['department']    = $this->parentModel::all();
@@ -65,16 +66,16 @@ class ShiftController extends Controller
        }
     }
     public function store(Request $request, $id = null)
-    {
-        try {
-            if(!empty($id)){
-                $this->parentModel::role('update_status', null , null);
+    {   if(!empty($id)){
+                $this->parentModel::role('update_status', $this->roleRoute , null);
 
             }
             else{
-                $this->parentModel::role('create_status', null , null);
+                $this->parentModel::role('create_status', $this->roleRoute , null);
 
             }
+        try {
+
                 $data = $request->except('_token');
                 $data['days'] = isset($data['days']) && in_array('all', $data["days"])  ? json_encode([0 => 'all']) : json_encode($data['days']);
                 if(!isset($data['days'])){
@@ -96,8 +97,8 @@ class ShiftController extends Controller
     }
     public function delete($id)
     {
+        $this->parentModel::role('delete_status',$this->roleRoute,'response');
         try {
-             $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
 
                 $delete        = $this->childModel::where('id', $id)->first();
                 $employeeCheck = Employee::where('shift', $delete->id)->count();
@@ -120,8 +121,8 @@ class ShiftController extends Controller
 
     public function destroy($id)
     {
+        $this->parentModel::role('delete_status',$this->roleRoute,'response');
         try {
-            $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
 
                 $delete        = $this->childModel::onlyTrashed()->where('id', $id)->first();
 
@@ -144,9 +145,9 @@ class ShiftController extends Controller
     }
     public function restore($id)
     {
+        $this->parentModel::role('update_status',$this->roleRoute,'response');
         try {
-                $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
-                $restore = $this->childModel::where('id', $id)->restore();
+            $restore = $this->childModel::where('id', $id)->restore();
                 if ($restore) {
                     return redirect(route($this->parentRoute . '.index'))->with(['success' => 'Shift and Timing has been restored successfully']);
                 } else {

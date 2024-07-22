@@ -19,6 +19,7 @@ class EmployeeExperienceController extends Controller
     public $parentModel = EmployeeExperience::class;
     public $imagePath = 'images/emp_experience_attachment/';
     public $parentRoute = "employees";
+    public $roleRoute =  'employees.index';
     public $menuModel = SubMenu::class;
     public function edit($id = null)
     {
@@ -32,12 +33,13 @@ class EmployeeExperienceController extends Controller
     }
     public function store(Request $request, $id = null)
     {
+        if (!empty($id)) {
+            $this->parentModel::role('update_status', $this->roleRoute , null);
+        }
+        else{
+            $this->parentModel::role('create_status', $this->roleRoute , null);
+        }
         try {
-            if (!empty($id)) {
-                $this->parentModel::role('update_status', null , null);
-            }
-            $this->parentModel::role('create_status', null , null);
-
                 $requestData = $request->data;
                 parse_str($requestData, $data);
                 $data['employee_id'] = $request->employee_id;
@@ -91,8 +93,8 @@ class EmployeeExperienceController extends Controller
     }
     public function delete($id)
     {
+        $this->parentModel::role('delete_status',$this->roleRoute,'response');
         try {
-            $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
 
                 $delete        = $this->parentModel::where('id', $id)->forceDelete();
                 if ($delete) {
@@ -106,8 +108,8 @@ class EmployeeExperienceController extends Controller
         }
     }
     public function get_experience($id){
+        $this->parentModel::role('view_status',$this->roleRoute,'response');
         try {
-            $this->parentModel::role('view_status',$this->parentRoute.'.index','response');
 
                 $qualification        = $this->parentModel::withTrashed()->where('employee_id', $id)->get();
                 if ($qualification) {

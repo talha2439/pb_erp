@@ -1,11 +1,16 @@
 <?php
 namespace App\Trait;
 
+use App\Events\RoleManagement;
 use App\Models\Notification;
+use App\Models\SubMenu;
+use App\Models\User;
+use App\Models\UserAccess;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Knp\Snappy\Pdf as PDF;
 use Barryvdh\Snappy\PdfWrapper;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 trait Crud {
@@ -37,6 +42,21 @@ trait Crud {
         }
     }
     public static function role($status,$route = null ,  $type = null){
-        Session::put([ 'role.route' => $route,  'role.status' => $status , 'role.type' => $type]);
+        if(!empty($route)){
+            $checkSubMenu = SubMenu::where('route' , $route)->first();
+            if(!empty($checkSubMenu) && !empty($status)){
+                $checkAccess =  UserAccess::where(['sub_menu_id'=> $checkSubMenu->id , $status => 1 , 'user_id' => Auth::user()->id ])->first();
+                $checkAdmin  =  User::where(['id' => Auth::user()->id , 'role' => 1])->count();
+                if($checkAdmin <= 0 && empty($checkAccess)){
+                    if($type == 'response'){
+
+                       return response()->json(['unauthorized' => true]);
+                    }
+                    else{
+                        return abort(403);
+                    }
+                }
+            }
+        }
     }
 }

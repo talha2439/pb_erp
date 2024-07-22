@@ -13,10 +13,10 @@ class EmployeeBankDetailController extends Controller
     public $parentModel = EmployeeBankDetail::class;
     public $parentRoute = 'employees';
     public $parentView  = 'Admin.employee';
-
+    public $roleRoute   = 'employees.bank_details.create';
     public function create(){
+        $this->parentModel::role('create_status', $this->roleRoute , null);
         try{
-            $this->parentModel::role('view_status', null , null);
             $data['employees'] = Employee::latest()->get();
             return view($this->parentView.'.bank_details' , $data);
         }
@@ -26,8 +26,8 @@ class EmployeeBankDetailController extends Controller
         }
     }
     public function store(Request $request){
+        $this->parentModel::role('create_status', $this->roleRoute , null);
        try{
-        $this->parentModel::role('create_status', null , null);
         $data = $request->except("_token");
 
         $storeData = $this->parentModel::updateOrCreate(['employee_id' => $data['id']], $data);

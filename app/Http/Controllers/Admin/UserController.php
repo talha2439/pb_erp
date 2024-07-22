@@ -19,9 +19,10 @@ class UserController extends Controller
         public $parentView  = 'Admin.user';
         public $parentRoute = "users";
         public $imagePath  = 'images/UsersImages/';
+        public $roleRoute  = 'users.index';
         public function index(Request $request){
+          $this->parentModel::role('view_status',$this->roleRoute,null);
           try{
-            $this->parentModel::role('view_status',null,null);
             $data['user'] = $this->parentModel::whereNot('role' , 1)->get();
             if(!empty($request->type) && $request->type == "active_users"){
             $data['user'] = $this->parentModel::whereNot('role' , 1)->whereNot('email_verified_at' , null)->get();
@@ -34,15 +35,15 @@ class UserController extends Controller
           }
         }
         public function create($id = null){
-           try{
             if(!empty($id)){
-                $this->parentModel::role('update_status', null , null);
+                $this->parentModel::role('update_status', $this->roleRoute , null);
 
             }
             else{
-                $this->parentModel::role('create_status', null , null);
+                $this->parentModel::role('create_status', $this->roleRoute , null);
 
             }
+           try{
             $data['action'] = $id == null? 'create': 'edit';
             $data['user']   = $this->parentModel::where('id', $id)->first();
             return view($this->parentView.'.create', $data);
@@ -54,7 +55,14 @@ class UserController extends Controller
         }
 
         public function store(Request $request, $id = null){
+            if(!empty($id)){
+                $this->parentModel::role('update_status', $this->roleRoute , null);
 
+            }
+            else{
+                $this->parentModel::role('create_status', $this->roleRoute , null);
+
+            }
             $data                = $request->except('_token');
             $query               = $request->query('type');
 
@@ -80,14 +88,7 @@ class UserController extends Controller
                 }
             }
 
-            if(!empty($id)){
-                $this->parentModel::role('update_status', null , null);
 
-            }
-            else{
-                $this->parentModel::role('create_status', null , null);
-
-            }
             if($query == 'profile'){
             try{
             $storeStatus         = empty($id)  ? 'saved' : 'updated';
@@ -171,9 +172,9 @@ class UserController extends Controller
 
         }
         public function status(Request $request , $id){
+            $this->parentModel::role('update_status',$this->roleRoute,'response');
             try{
 
-            $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
 
             $activeStatus = $request->status == 1 ? Carbon::now() : null;
             $deactive = $this->parentModel::where('id' , $id)->update(['email_verified_at' => $activeStatus]);
@@ -200,29 +201,28 @@ class UserController extends Controller
             }
         }
         public function delete($id){
-       try{
-        $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
+        $this->parentModel::role('delete_status',$this->roleRoute,'response');
+        try{
+            $checkEmployee = Employee::where('user_id' , $id)->count();
+            if($checkEmployee > 0){
+                return response()->json(['exists' => true]);
+            }
 
-        $checkEmployee = Employee::where('user_id' , $id)->count();
-        if($checkEmployee > 0){
-            return response()->json(['exists' => true]);
-        }
-
-        $delete  =  $this->parentModel::where('id', $id)->delete();
-        if($delete){
-            $subject = 'User has been Deleted';
-            $route = route('users.index');
-            $storeNotification =  $this->parentModel::notification($subject ,  $route  , Carbon::now()->format('d F , Y h:iA') );
-            event(new Notifications($storeNotification));
-            return response()->json(['success' => true]);
-        }
-        else{
-            return response()->json(['error' => true]);
-        }
-        }
-        catch(\Exception $e){
-            return response()->json(['error' =>$e->getMessage()]);
-        }
+            $delete  =  $this->parentModel::where('id', $id)->delete();
+            if($delete){
+                $subject = 'User has been Deleted';
+                $route = route('users.index');
+                $storeNotification =  $this->parentModel::notification($subject ,  $route  , Carbon::now()->format('d F , Y h:iA') );
+                event(new Notifications($storeNotification));
+                return response()->json(['success' => true]);
+            }
+            else{
+                return response()->json(['error' => true]);
+            }
+            }
+            catch(\Exception $e){
+                return response()->json(['error' =>$e->getMessage()]);
+         }
 
         }
 

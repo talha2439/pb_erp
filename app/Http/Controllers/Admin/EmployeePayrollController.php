@@ -22,10 +22,11 @@ class EmployeePayrollController extends Controller
     public $menuModel    =  SubMenu::class;
     public $childModel   =  Payroll::class;
     public $parentView   = 'Admin.payroll';
-    public $parentRoute = 'payroll';
+    public $parentRoute  = 'payroll';
+    public $roleRoute    = 'payroll.index';
     public function index(){
+        $this->parentModel::role('view_status', $this->roleRoute , null);
         try{
-                $this->parentModel::role('view_status', null , null);
                 $data['employees'] = Auth::user()->role == 4   ? $this->parentModel::where('employee_id' , Auth::user()->employees->id)->latest()->get()->map(function($item) {
                     return [
                         'id' => $item->id,
@@ -46,15 +47,15 @@ class EmployeePayrollController extends Controller
             }
     }
     public function create($id = null){
+        if(!empty($id)){
+            $this->parentModel::role('update_status', $this->roleRoute , null);
+
+        }
+        else{
+            $this->parentModel::role('create_status', $this->roleRoute , null);
+
+        }
         try{
-            if(!empty($id)){
-                $this->parentModel::role('update_status', null , null);
-
-            }
-            else{
-                $this->parentModel::role('create_status', null , null);
-
-            }
                 $data['payroll']      = $this->childModel::where('id' , $id)->first();
                 $data['employees']   = $this->parentModel::latest()->get();
                 $data['action']   = !empty($data['payroll']) ? 'edit' : 'create';
@@ -66,16 +67,16 @@ class EmployeePayrollController extends Controller
         }
     }
     public function store(Request $request , $id = null){
+
+        if(!empty($id)){
+            $this->parentModel::role('update_status', $this->roleRoute , null);
+
+        }
+        else{
+            $this->parentModel::role('create_status', $this->roleRoute , null);
+
+        }
         try{
-
-            if(!empty($id)){
-                $this->parentModel::role('update_status', null , null);
-
-            }
-            else{
-                $this->parentModel::role('create_status', null , null);
-
-            }
 
             $data = $request->except('_token');
 

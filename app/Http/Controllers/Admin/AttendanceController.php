@@ -18,8 +18,15 @@ class AttendanceController extends Controller
     public $childModel  = Employee::class;
     public $parentRoute = 'attendance';
     public $parentView   = 'Admin.attendance.reports';
+    public $roleRoute    = 'attendance.reports.all';
     public function create($id = null){
-        $this->parentModel::role('view_status' , null , null);
+        if (!empty($id)) {
+            $this->parentModel::role('update_status', $this->roleRoute , null);
+        }
+        else{
+        $this->parentModel::role('create_status', $this->roleRoute , null);
+        }
+        
         $data['attendance'] = $this->parentModel::where('id', $id)->with('users' , function($query){
             $query->with('employees');
         })->first();
@@ -34,7 +41,7 @@ class AttendanceController extends Controller
     }
     public function checkin(Request $request)
     {
-      
+
         try {
             $data = $request->except('_token');
             $data['employee_id'] = Auth::user()->id;
@@ -140,7 +147,12 @@ class AttendanceController extends Controller
         }}
 
         public function store(Request $request, $id = null){
-            $this->parentModel::role('create_status', null , null);
+            if (!empty($id)) {
+                $this->parentModel::role('update_status', $this->roleRoute , null);
+            }
+            else{
+            $this->parentModel::role('create_status', $this->roleRoute , null);
+                 }
             try{
                 $data = $request->except("_token");
                 $employees = $this->childModel::where('id', $data['employee_id'])->first();
@@ -180,7 +192,7 @@ class AttendanceController extends Controller
 
         }
         public function mark_holidays(Request $request){
-            $this->parentModel::role('create_status', $this->parentRoute.'index'  ,'response');
+            $this->parentModel::role('create_status', $this->roleRoute ,'response');
             try{
                       $data  = $request->except("_token");
 

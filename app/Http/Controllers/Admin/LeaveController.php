@@ -25,10 +25,11 @@ class LeaveController extends Controller
     public $parentView        =  'Admin.attendance.leave_application';
     public $parentRoute       =  'leave.application';
     public $imagePath         =  'images/leave_application/';
+    public $roleRoute           =  'leave.application.index';
     public function index()
     {
+        $this->parentModel::role('view_status', $this->roleRoute , null);
         try{
-            $this->parentModel::role('view_status', null , null);
 
             $data['departments'] = Department::withoutTrashed()->get();
             $data['employees']   = Auth::user()->role == 4  ?$this->childModel::where('id', Auth::user()->employees->id)->withoutTrashed()->get() :$this->childModel::withoutTrashed()->get();
@@ -42,15 +43,15 @@ class LeaveController extends Controller
 
     public function create($id = null)
     {
-      try{
         if(!empty($id)){
-            $this->parentModel::role('update_status', null , null);
+            $this->parentModel::role('update_status', $this->roleRoute , null);
 
         }
         else{
-            $this->parentModel::role('create_status', null , null);
+            $this->parentModel::role('create_status', $this->roleRoute , null);
 
         }
+      try{
             $data['action']       = $id == null ? 'create' : 'edit';
             $data['leave']        = $this->parentModel::with('employees')->where('id', $id)->first();
             $data['employees']    = $this->childModel::all();
@@ -165,15 +166,15 @@ class LeaveController extends Controller
         ->rawColumns(['row_index' , 'employee_id' , 'employee_name' , 'department' , 'applied_at' ,'leave_type' ,'duration' ,'total_days', 'approved_days' , 'status' ,'approved_by' ,'approved_at' , 'action'])->make(true);
     }
     public function store(Request $request , $id = null){
+        if(!empty($id)){
+            $this->parentModel::role('update_status', $this->roleRoute , null);
+
+        }
+        else{
+            $this->parentModel::role('create_status', $this->roleRoute , null);
+
+        }
         try{
-            if(!empty($id)){
-                $this->parentModel::role('update_status', null , null);
-
-            }
-            else{
-                $this->parentModel::role('create_status', null , null);
-
-            }
             $data = $request->except("_token");
 
             $from_date = Carbon::parse($data['from_date']);
@@ -216,8 +217,8 @@ class LeaveController extends Controller
         }
     }
     public function status(Request $request){
+        $this->parentModel::role('update_status',$this->roleRoute, 'response');
        try{
-        $this->parentModel::role('update_status',$this->parentRoute.'.index', 'response');
 
         $data = $request->except(['token']);
         $employeedata = $this->parentModel::where('id' , $data['id'])->first();
@@ -274,8 +275,8 @@ class LeaveController extends Controller
         }
     }
     public function destroy($id){
+        $this->parentModel::role('delete_status',$this->roleRoute,'response');
         try {
-            $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
 
                 $delete        = $this->parentModel::where('id', $id)->forceDelete();
                 if ($delete) {

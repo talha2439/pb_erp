@@ -18,7 +18,8 @@ class EmployeeQualificationController extends Controller
     public $parentModel = EmployeeQualification::class;
     public $imagePath = 'images/employee_qualification/';
     public $parentRoute = "employees";
-    public $menuModel = SubMenu::class;
+    public $menuModel  = SubMenu::class;
+    public $roleRoute = 'employees.index';
     public function edit($id = null)
     {
         try{
@@ -31,15 +32,15 @@ class EmployeeQualificationController extends Controller
     }
     public function store(Request $request, $id = null)
     {
+        if(!empty($id)){
+            $this->parentModel::role('update_status', $this->roleRoute , null);
+
+        }
+        else{
+            $this->parentModel::role('create_status', $this->roleRoute , null);
+
+        }
         try {
-            if(!empty($id)){
-                $this->parentModel::role('update_status', null , null);
-
-            }
-            else{
-                $this->parentModel::role('create_status', null , null);
-
-            }
                 $requestData = $request->data;
                 parse_str($requestData, $data);
                 $data['employee_id'] = $request->employee_id;
@@ -96,8 +97,8 @@ class EmployeeQualificationController extends Controller
     }
     public function delete($id)
     {
+        $this->parentModel::role('delete_status',$this->roleRoute,'response');
         try {
-            $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
 
                 $delete        = $this->parentModel::where('id', $id)->forceDelete();
                 if ($delete) {
@@ -111,8 +112,8 @@ class EmployeeQualificationController extends Controller
         }
     }
     public function get_qualification($id){
+        $this->parentModel::role('view_status' ,$this->roleRoute,'response');
         try {
-                $this->parentModel::role('view_status' ,$this->parentRoute.'.index','response');
                 $qualification        = $this->parentModel::withTrashed()->where('employee_id', $id)->get();
                 if ($qualification) {
                     return response()->json(['success' => true , 'data' => $qualification]);

@@ -18,11 +18,11 @@ class DesignationController extends Controller
     public $childModel  = Designation::class;
     public $parentView  = 'Admin.designation';
     public $parentRoute = 'designations';
-
+    public $roleRoute   = 'designations.index';
     public function index()
     {
+        $this->parentModel::role('view_status', $this->roleRoute , null);
         try{
-                $this->parentModel::role('view_status', null , null);
                 $data['designation'] = $this->childModel::with('departments')->withoutTrashed()->get();
 
                 return view($this->parentView . '.index', $data);
@@ -45,8 +45,13 @@ class DesignationController extends Controller
     }
     public function create($id = null)
     {
+        if (!empty($id)) {
+            $this->parentModel::role('update_status', $this->roleRoute , null);
+        }
+        else{
+            $this->parentModel::role('create_status', $this->roleRoute , null);
+        }
         try{
-                $this->parentModel::role('view_status', null , null);
                 $data['action'] = $id == null ? 'create' : 'edit';
                 $data['designation']   = $this->childModel::with('departments')->where('id', $id)->first();
                 $data['department']    = $this->parentModel::all();
@@ -59,12 +64,12 @@ class DesignationController extends Controller
     }
     public function store(Request $request, $id = null)
     {
+        if (!empty($id)) {
+         $this->parentModel::role('update_status', $this->roleRoute , null);
+        }else{
+         $this->parentModel::role('create_status', $this->roleRoute , null);
+        }
         try {
-            if (!empty($id)) {
-                $this->parentModel::role('update_status', null , null);
-            }
-            $this->parentModel::role('create_status', null , null);
-
                 $data = $request->except('_token');
                 $saveData =  $this->childModel::updateOrCreate(['id' => $id], $data);
                 if ($saveData) {
@@ -79,8 +84,8 @@ class DesignationController extends Controller
     }
     public function delete($id)
     {
+        $this->parentModel::role('delete_status',$this->roleRoute,'response');
         try {
-            $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
 
                 $delete        = $this->childModel::where('id', $id)->first();
                 $employeeCheck = Employee::where('designation', $delete->id)->count();
@@ -104,8 +109,8 @@ class DesignationController extends Controller
 
     public function destroy($id)
     {
+        $this->parentModel::role('delete_status',$this->roleRoute,'response');
         try {
-            $this->parentModel::role('delete_status',$this->parentRoute.'.index','response');
 
                 $delete        = $this->childModel::onlyTrashed()->where('id', $id)->first();
 
@@ -128,8 +133,8 @@ class DesignationController extends Controller
         }
     }
     public function restore($id){
+        $this->parentModel::role('update_status',$this->roleRoute,'response');
         try {
-            $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
 
                 $restore = $this->childModel::where('id' , $id)->restore();
                 if($restore){

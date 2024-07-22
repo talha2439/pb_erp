@@ -21,6 +21,7 @@ class LoanInstallmentController extends Controller
     public $childModel   = EmployeeLoan::class;
     public $parentView   = 'Admin.employee_loans.installment';
     public $parentRoute  = 'loan_installment';
+    public $roleRoute    = 'loan_installment.index';
     public $imagePath    = 'images/loans_installment/';
     public function index(){
        if(Auth::user()->role != 1){
@@ -32,8 +33,8 @@ class LoanInstallmentController extends Controller
        }
     }
     public function store(Request $request){
+        $this->parentModel::role('create_status', $this->roleRoute , null);
         try{
-            $this->parentModel::role('create_status', null , null);
 
             $data  = $request->except('_token');
             $loanData = $this->childModel::where('id' , $data['loan_id'])->first();
@@ -78,7 +79,7 @@ class LoanInstallmentController extends Controller
         }
     }
     public function list(){
-        $this->parentModel::role('view_status' , null , null);
+        $this->parentModel::role('view_status' , $this->roleRoute , null);
 
         $data['employees'] = Employee::where('employment_status' , 'parmanent')->latest()->get()->map(function($query){
             return [
@@ -153,8 +154,8 @@ class LoanInstallmentController extends Controller
     }
 
     public function status($id = null){
+        $this->parentModel::role('update_status',$this->roleRoute,'response');
         try{
-            $this->parentModel::role('view_status',$this->parentRoute.'.index','response');
             $data = $this->parentModel::where('id' , $id)->first();
             if(!empty($data)){
 
@@ -185,8 +186,8 @@ class LoanInstallmentController extends Controller
         }
     }
     public function update(Request $request){
+        $this->parentModel::role('update_status',$this->roleRoute,'response');
         try{
-            $this->parentModel::role('update_status',$this->parentRoute.'.index','response');
             $data = $request->except('_token');
             $update = $this->parentModel::where('id' , $data['id'])->first();
             $loanData = $this->childModel::where('id' , $update->loan_id)->first();
