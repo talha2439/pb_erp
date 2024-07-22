@@ -23,7 +23,7 @@
                 $this->parentModel::role('view_status', null , null);
 
                     $data['attendance']  = $this->parentModel::withoutTrashed()->where('date' , Carbon::now()->format('Y-m-d'))->get();
-                    $data['employees']   = Employee::all();
+                    $data['employees']   = Auth::user()->role == 4 ? Employee::where('id', Auth::user()->employees->id)->get() : Employee::all();
                     $data['departments'] = Department::withoutTrashed()->get();
                     return view($this->parentView . '.index', $data);
 
@@ -45,9 +45,11 @@
             {
                 $data = $data->where('date',  Carbon::now()->format('Y-m-d'));
             }
-            if(!empty($request->employee)){
-                $data = $data->where('employee_id', $request->employee);
+            $employeeId = Auth::user()->role == 4 ? Auth::user()->id : $request->employee;
+            if(!empty($employeeId)){
+                $data = $data->where('employee_id',$employeeId );
             }
+
             if(!empty($request->department)){
                 $data = $data->whereHas('users.employees.departments', function($query) use ($request){
                     $query->where('department', $request->department);

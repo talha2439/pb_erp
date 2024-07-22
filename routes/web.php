@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\{ SettingController , AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeBankDetailController, EmployeeController, EmployeeExperienceController, EmployeeLoanController, EmployeeQualificationController, EmployeeSalaryController, LeaveController, LoanInstallmentController, LoanTypeController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
-use App\Http\Controllers\Admin\EmployeePayrollController;
+use App\Http\Controllers\Admin\{ SettingController, EmployeePayrollController , AttendanceController, AttendanceReportController, Dashboardcontroller, DepartmentController, DesignationController, EmployeeBankDetailController, EmployeeController, EmployeeExperienceController, EmployeeLoanController, EmployeeQualificationController, EmployeeSalaryController, LeaveController, LoanInstallmentController, LoanTypeController, MenuAccessController, MenuSettingController, NotificationController, PDFController, ShiftController, UserAccessController, UserController};
 use App\Http\Controllers\AuthController;
-use App\Models\Attendance;
 use Illuminate\Support\Facades\Route;
 
 /*

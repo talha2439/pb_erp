@@ -26,7 +26,12 @@ class EmployeePayrollController extends Controller
     public function index(){
         try{
                 $this->parentModel::role('view_status', null , null);
-                $data['employees'] = $this->parentModel::latest()->get()->map(function($item) {
+                $data['employees'] = Auth::user()->role == 4   ? $this->parentModel::where('employee_id' , Auth::user()->employees->id)->latest()->get()->map(function($item) {
+                    return [
+                        'id' => $item->id,
+                        'name' => $item->first_name . ' ' . $item->last_name
+                     ];
+                })->pluck('name', 'id') : $this->parentModel::latest()->get()->map(function($item) {
                     return [
                         'id' => $item->id,
                         'name' => $item->first_name . ' ' . $item->last_name
@@ -133,8 +138,9 @@ class EmployeePayrollController extends Controller
     }
     public function allData(Request $request){
         $data = $this->childModel::whereMonth('date' ,  Carbon::now()->subMonth()->format('m'));
-        if(!empty($request->employee_id)){
-            $data->where('employee_id', $request->employee_id);
+        $employee_id = Auth::user()->role == 4 ? Auth::user()->employees->id : $request->employee_id;
+        if(!empty($employee_id)){
+            $data->where('employee_id', $employee_id);
 
         }
         if(!empty($request->department_id)){

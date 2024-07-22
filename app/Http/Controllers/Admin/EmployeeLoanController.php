@@ -20,7 +20,9 @@ class EmployeeLoanController extends Controller
     public $parentRoute     = 'employee_loans';
     public function index(){
         $this->parentModel::role('view_status', null , null);
-        $data['loans'] = $this->childModel::latest()->with(['employees','loan_types'])->get();
+        $data['loans'] = Auth::user()->role == 4 ? $this->childModel::latest()->whereHas('employees', function($query){
+            $query->where('employee_id', Auth::user()->employees->id);
+        })->with(['employees','loan_types'])->get(): $this->childModel::latest()->with(['employees','loan_types'])->get();
         return view($this->parentView.'.index' , $data);
     }
     public function details($id = null){

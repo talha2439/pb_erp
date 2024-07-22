@@ -25,7 +25,6 @@ class LoanInstallmentController extends Controller
     public function index(){
        if(Auth::user()->role != 1){
         $data['loan'] = $this->childModel::where(['employee_id'=> Auth::user()->employees->id,'status' => 'approved'])->whereNot('status','paid')->first();
-
         return view($this->parentView.'.index', $data);
        }
        else{
@@ -92,9 +91,10 @@ class LoanInstallmentController extends Controller
     }
     public function allData(Request $request){
         $data  = $this->parentModel::latest();
-        if(!empty($request->employee_id)){
-            $data->whereHas('loans' , function($query) use($request){
-                $query->where('employee_id', $request->employee_id);
+        $employee_id = Auth::user()->role == 4 ? Auth::user()->employees->id : $request->employee_id;
+        if(!empty($employee_id)){
+            $data->whereHas('loans' , function($query) use($employee_id){
+                $query->where('employee_id', $employee_id);
             });
         }
         if(!empty($request->loan_type)){

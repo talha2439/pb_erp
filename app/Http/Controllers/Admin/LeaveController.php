@@ -31,7 +31,7 @@ class LeaveController extends Controller
             $this->parentModel::role('view_status', null , null);
 
             $data['departments'] = Department::withoutTrashed()->get();
-            $data['employees']   = $this->childModel::withoutTrashed()->get();
+            $data['employees']   = Auth::user()->role == 4  ?$this->childModel::where('id', Auth::user()->employees->id)->withoutTrashed()->get() :$this->childModel::withoutTrashed()->get();
             return view($this->parentView . '.index' , $data);
 
         }
@@ -71,8 +71,9 @@ class LeaveController extends Controller
         if(!empty($request->date)){
             $data->whereDate('created_at' ,$request->date);
         }
-        if(!empty($request->employee)){
-        $data->where('employee_id', $request->employee);
+        $employee_id = Auth::user()->role == 4 ? Auth::user()->employees->id : $request->employee;
+        if(!empty($employee_id)){
+        $data->where('employee_id', $employee_id);
         }
         if(!empty($request->department)){
            $data->whereHas('employees.departments', function($query) use ($request){
