@@ -1,0 +1,301 @@
+$(document).ready(function () {
+    let expContainer = $(document).find("#experienceContainer");
+    var totalAdded = 0;
+    $(document).on("click", "#addMoreExperience", function (e) {
+        e.preventDefault();
+        if(totalAdded < 3){
+            let appenddata = `  <div class="row">
+            <div class="col-md-12 d-flex justify-content-end ">
+
+                    <div class="form-group ">
+                     <button class="btn btn-danger removeExp mt-3" ><i class="fe fe-trash"></i></button>
+                    </div>
+                    <input  type="hidden" value="" name="exp_id[]" />
+
+            </div>
+            <div class="col-md-4 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">Company Name / Job Title <span class="text-danger">( Required )</span></label>
+                   <input type="text" class="form-control" name="job_title[]" placeholder="Company Name / Title">
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">Start Date <span class="text-danger">( Required )</span></label>
+                   <input type="date" class="form-control" name="exp_start_date[]" placeholder="Start Date">
+                </div>
+            </div>
+            <div class="col-md-4 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">End Date <span class="text-danger">( Required )</span></label>
+                   <input type="date" class="form-control" name="exp_end_date[]" placeholder="End Date">
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-2 mb-3">
+            <div class="form-group">
+                <label for="">Designation / Position <small class="text-secondary" >( Optional )</small></label>
+                <input type="text" name="designation[]" class="form-control" placeholder="Designation">
+
+            </div>
+        </div>
+        <div class="col-md-4 mt-2 mb-3">
+            <div class="form-group">
+                <label for="">Salary  <small class="text-secondary">( Optional ) last salary from the previous job</small></label>
+                <input type="number" value="0" placeholder="Last Salary from the previous Job" name="salary[]" class="form-control documentFile" >
+            </div>
+        </div>
+        <div class="col-md-4 mt-2 mb-3">
+            <div class="form-group">
+                <label for="">Attachment  <small class="text-secondary">( Optional )</small></label>
+                <input type="file" name="attachment[]" class="form-control documentFile" >
+            </div>
+        </div>
+
+            <div class="col-md-12 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">Reason of Leaving <span class="text-secondary">( Optional )</span></label>
+                   <textarea  cols="40"  rows="5" class="form-control" name="reason_for_leaving[]" placeholder="Reason for leaving previous job."></textarea>
+                </div>
+            </div>
+            <div class="col-md-12 mt-2 mb-3">
+                <div class="form-group">
+                    <label for="">Job Description <span class="text-secondary">( Optional )</span></label>
+                   <textarea  cols="40"  rows="5" class="form-control" name="description[]" placeholder="Brief description or information about previous job."></textarea>
+                </div>
+            </div>
+
+
+        </div>`;
+            $(expContainer).append(appenddata)
+            totalAdded++;
+        }
+
+    });
+    $(document).on('click', '.removeExp', function (e) {
+        e.preventDefault();
+        $(document).find('.saveBtn').text("Please wait...");
+        $(document).find('.saveBtn').attr("disabled", true)
+        totalAdded --;
+        let id = $(this).data('id');
+        if (id != undefined || id == '') {
+            Swal.fire({
+                title:"Are you sure?",
+                text: "You sure you want to remove it ? ",
+                icon:'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#6C05A8',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((res) => {
+                if(res.isConfirmed){
+                 $(this).closest('.row').remove();
+
+                    $.ajax({
+                        url: deleteExperience + '/' + id,
+                        type: "GET",
+                        success: function (res) {
+                            if (res.success) {
+                                $(document).find('.saveBtn[title="Save"]').text("Save")
+                                $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                                $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                                $(document).find('.saveBtn').attr("disabled", false)
+                                toastr['success']("Experience deleted successfully");
+                                return false;
+                            }
+                            else if (res.unauthorized) {
+                                toastr['error']("You are not authorized to delete this..!");
+                                $(document).find('.saveBtn[title="Save"]').text("Save")
+                                $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                                $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                                $(document).find('.saveBtn').attr("disabled", false)
+                                return false;
+                            }
+                            else if (res.error) {
+
+                                toastr['error'](res.error);
+                                $(document).find('.saveBtn[title="Save"]').text("Save")
+                                $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                                $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                                $(document).find('.saveBtn').attr("disabled", false)
+                                return false;
+                            }
+                            else {
+                                toastr['error']("Something went wrong..!");
+                                $(document).find('.saveBtn[title="Save"]').text("Save")
+                                $(document).find('.saveBtn[title="Save and Next"]').text("Save & Next")
+                                $(document).find('.saveBtn[title="Submit"]').text("Submit")
+                                $(document).find('.saveBtn').attr("disabled", false)
+                                return false;
+                            }
+                        }, error: function (xhr, status, error) {
+                            e.preventDefault();
+                            toastr["error"](xhr.responseJSON.message);
+                            return false;
+                        }
+                    })
+                }
+
+
+            });
+
+
+
+            }
+            else{
+                $(this).closest('.row').remove();
+            }
+
+    });
+    // Validation For Form
+    let expForm = $("#step3Form");
+    let emp_id = $('input[name="emp_id"]');
+    let csrf_token = $('input[name="csrf_token"]');
+    let submitBtn = $('.step_3_next');
+    $(submitBtn).on('click', function (e) {
+        isValid = true;
+        let jobTitle = $(document).find('input[name="job_title[]"]').map(function () {
+            return $(this).val();
+        }).get();
+        if (jobTitle.some(jobTitle => jobTitle === "")) {
+            e.preventDefault();
+            toastr['error']("Job title or Company name is required");
+            isValid = false;
+            return false;
+        }
+        let start_date = $(document).find('input[name="exp_start_date[]"]').map(function () {
+            return $(this).val();
+        }).get();
+
+        if (start_date.some(start_date => start_date === "")) {
+            toastr['error']("Start Date  field is required..!");
+            isValid = false;
+            return false;
+        }
+        let end_date = $(document).find('input[name="exp_end_date[]"]').map(function () {
+            return $(this).val();
+        }).get();
+
+        if (end_date.some(end_date => end_date === "")) {
+            toastr['error']("End Date field is required..!");
+            isValid = false;
+            return false;
+        }
+        $(document).find('input[name="attachment[]"]').each(function (index, input) {
+            let attachments = $(input).val();
+
+            if (attachments !== "") {
+                e.preventDefault();
+                let ext = attachments.split('.').pop().toLowerCase();
+                if ($.inArray(ext, ['pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx']) === -1) {
+                    e.preventDefault();
+                    toastr['error']("Only PDF, DOCX, DOC, PNG, JPG, and JPEG files are allowed..!");
+                    isValid = false;
+                    return false;
+                }
+
+                let fileSize = input.files[0].size;
+                if (fileSize > 15 * (1024 * 1024)) {
+                    e.preventDefault();
+                    toastr["error"]("Attachment file size should be less than 15MB");
+                    isValid = false;
+                    return false; // Stop further iteration
+                }
+
+
+            }
+        }
+        );
+        for (let i = 0; i < start_date.length; i++) {
+            let start_dates = start_date[i];
+            let end_dates = end_date[i];
+            if (start_dates !== "" && end_dates !== "") {
+                let start_date_obj = new Date(start_dates);
+                let end_date_obj = new Date(end_dates);
+                if (end_date_obj <= start_date_obj) {
+                    toastr['error']("End Date of Experience should be after Start Date..!");
+                    isValid = false;
+                    return false;
+                }
+            }
+        }
+
+        if (isValid) {
+            e.preventDefault();
+            $('#submitStep3').prop('disabled', true);
+            $('#submitStep3').text('Submitting...');
+            let formData = new FormData();
+
+            let jobtitles = $(document).find('input[name="job_title[]"]');
+            let imageFiles = [];
+            // Collect all selected image files
+            $("input[name='attachment[]']").each(function (index, element) {
+                let files = element.files;
+                let selectedFile = files.length > 0 ? files[0] : ""; // Only take the first file, adjust as needed
+                imageFiles.push(selectedFile);
+            });
+            // Append each image file to its corresponding institute
+            jobtitles.each(function (index, element) {
+                let imageFile = imageFiles[index] || "";
+                formData.append('attachment['+index+']', imageFile);
+            });
+            formData.append('data', expForm.serialize());
+            formData.append('employee_id', $(emp_id).val());
+            $.ajax({
+                url: storeExperiencePost,
+                data: formData,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                headers: {
+                    "X-CSRF-TOKEN": csrf_token.val()
+                },
+                success: function (res) {
+                    if (res.success) {
+                        e.preventDefault();
+                        $('#submitStep3').prop('disabled', true);
+                        $('#submitStep3').text('Submitted');
+                        setTimeout(() => {
+                            window.location.href = employeesListUrl;
+                        }, 1000)
+
+                    }
+                    else if (res.unauthorized) {
+                        e.preventDefault();
+                        $('#submitStep3').prop('disabled', false);
+                        $('#submitStep3').text('Submit');
+                        toastr.error("Failed to save Information , you are not allowed to save information about Employees");
+                        return false;
+                    }
+                    else if (res.error) {
+                        e.preventDefault();
+                        $('#submitStep3').prop('disabled', false);
+                        $('#submitStep3').text('Submit');
+                        toastr["error"](res.error);
+                        return false;
+                    }
+                    else {
+                        e.preventDefault();
+                        $('#submitStep3').prop('disabled', false);
+                        $('#submitStep3').text('Submit');
+                        toastr["error"]("An error occurred while saving experience information for employee");
+                        return false;
+                    }
+                },
+                error: function (xhr, status, error) {
+                    e.preventDefault();
+                    $('#submitStep3').prop('disabled', false);
+                    $('#submitStep3').text('Submit');
+                    toastr["error"](xhr.responseJSON.message);
+                    return false;
+                }
+            })
+        }
+
+
+    });
+
+
+})

@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Attendance;
+use App\Models\Employee;
+use App\Models\LeaveApplication;
+use Barryvdh\Snappy\PdfWrapper;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\View;
+
+class PDFController extends Controller
+{
+    public $parentModel  = Employee::class ;
+    public function attendance_report(Request $request){
+      try{
+        $this->parentModel::role('create_status','attendance.reports.all',null );
+        $data = $this->parentModel::where('id' , $request->employee_id)->with(['attendance' => function($query) use ($request) {
+            if (!empty($request->month)) {
+                $query->whereMonth('date', $request->month);}
+            if (!empty($request->year)) {
+                $query->whereYear('date', $request->year); }
+        }])->first();
+        $data['type'] =  empty($request->month) && !empty($request->year) ? 'Yearly' : 'Monthly';
+        $view = 'Pdf.attendanceReport';
+        $filename = str_replace(" " , "-" ,strtolower($data->first_name) ).'-attendanceReport';
+        $generate  = $this->parentModel::PDFgenerate($filename , $view , $data , 'landscape');
+        return $generate;
+      }
+      catch(\Exception $e){
+        return redirect()->back()->with('error', 'Error generating attendance report: '. $e->getMessage());
+      }
+    }
+    public function employee_cv($id){
+      try{
+
+        $this->parentModel::role('create_status','employees.index',null);
+
+        $id = decrypt($id);
+        $data = $this->parentModel::where('id', $id)
+        ->with([
+            'qualifications' => function($query) {
+                $query->orderBy('id' , 'desc')->latest()->take(2);
+            },
+            'experiences' => function($query) {
+                $query->orderBy('id', 'desc')->take(2)->latest();
+            }
+        ])
+        ->oldest()->first();
+        $view = 'Pdf.employee_cv';
+        $filename = str_replace(" " , "-" ,strtolower($data->first_name) ).'-cv';
+        $generate  = $this->parentModel::PDFgenerate($filename , $view ,$data ,'portrait');
+        return $generate;
+      }
+      catch (\Exception $e){
+        return redirect()->back()->with('error', 'Error generating CV: '. $e->getMessage());
+      }
+    }
+    public function leave_application($id){
+        try{
+            $this->parentModel::role('create_status','leave.application.index',null);
+            $data  = LeaveApplication::where('id', $id)->with('employees','approved','applied')->first();
+            $pdf_type  = 'Pdf.leave_application';
+            $filename = str_replace(" " ,'-' , strtolower($data->employees->first_name ?? "").'leave-application');
+            $generate = $this->parentModel::PDFgenerate($filename , $pdf_type , $data , 'portrait');
+            return $generate;
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('error', 'Error generating leave application: '. $e->getMessage());
+        }
+    }
+}
